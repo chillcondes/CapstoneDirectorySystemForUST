@@ -42,7 +42,7 @@
 		<link rel="icon" href="assets/images/icon.png" type="image/x-icon" />
 		<link rel="shortcut icon" type="image/x-icon" href="assets/images/icon.png" />
 
-		<title>College of Information and Computing Sciences - Capstone Project Directory System for IT Department</title>
+		<title>A College of Information and Computing Sciences - Capstone Project Directory System for IT Department</title>
 
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
