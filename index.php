@@ -3,21 +3,22 @@
 	session_start();
 	include('global/model.php');
 
-	if (isset($_SESSION['sess'])) {
-		echo "<script>window.open('admin/index.php','_self');</script>";
+	if (isset($_SESSION['student_sess'])) {
+		echo "<script>window.open('student/index.php','_self');</script>";
 	}
 
 	if (isset($_POST['submit'])) {
-		if (!isset($_COOKIE['rlimited'])) {
-			$uname = $_POST['username'];
+		if (!isset($_COOKIE['rrlimited'])) {
+			$uname = $_POST['email'];
 			$pword = $_POST['password'];
 
 			$model = new Model();
-			$model->signInStudent($uname, $pword);	
+			$access = 1;
+			$model->signInAccount($uname, $pword, $access);	
 		}
 
 		else {
-			echo "<script>alert('w8 b4 trying again m8')</script>";
+			echo "<script>alert('Too many attempts. Please try again later.')</script>";
 		}
 	}
 
@@ -65,7 +66,7 @@
 					<div class="account-container">
 						<div class="heading-bx left">
 							<h2 class="title-head">Student <span>Access</span></h2>
-							<p>Don't have an account? <a href="student-registration.php">Register here</a></p>
+							<p>Don't have an account? <a href="student-registration">Register here</a></p>
 						</div>	
 						<form class="contact-bx" method="POST">
 							<div class="row placeani">
@@ -73,7 +74,7 @@
 									<div class="form-group">
 										<div class="input-group">
 											<label>Your Email</label>
-											<input name="username" type="email" class="form-control" required>
+											<input name="email" type="email" class="form-control" required>
 										</div>
 									</div>
 								</div>
@@ -96,7 +97,7 @@
 								</div>
 								<div class="col-lg-12 m-b30">
 									<?php
-										if (isset($_COOKIE['rlimited'])) {
+										if (isset($_COOKIE['rrlimited'])) {
 											echo '<button name="submit" type="submit" value="Submit" class="red-hover btn button-md" disabled>Login</button>';
 										}
 

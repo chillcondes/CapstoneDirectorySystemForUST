@@ -1,23 +1,24 @@
 <?php
-
+	
 	session_start();
 	include('global/model.php');
 
-	if (isset($_SESSION['sess'])) {
-		echo "<script>window.open('admin/index.php','_self');</script>";
+	if (isset($_SESSION['faculty'])) {
+		echo "<script>window.open('faculty/index.php','_self');</script>";
 	}
 
 	if (isset($_POST['submit'])) {
-		if (!isset($_COOKIE['rlimited'])) {
+		if (!isset($_COOKIE['rrlimited'])) {
 			$uname = $_POST['username'];
 			$pword = $_POST['password'];
 
 			$model = new Model();
-			$model->signInFaculty($uname, $pword);	
+			$access = 0;
+			$model->signInAccount($uname, $pword, $access);	
 		}
 
 		else {
-			echo "<script>alert('w8 b4 trying again m8')</script>";
+			echo "<script>alert('Too many attempts. Please try again later.')</script>";
 		}
 	}
 
@@ -96,7 +97,7 @@
 								</div>
 								<div class="col-lg-12 m-b30">
 									<?php
-										if (isset($_COOKIE['rlimited'])) {
+										if (isset($_COOKIE['rrlimited'])) {
 											echo '<button name="submit" type="submit" value="Submit" class="red-hover btn button-md" disabled>Login</button>';
 										}
 

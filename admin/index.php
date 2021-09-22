@@ -1,15 +1,7 @@
 <?php
-	
 	session_start();
-
 	include('../global/model.php');
-	$model = new Model();
 	include('department.php');
-
-	if (empty($_SESSION['sess'])) {
-		echo "<script>window.open('../','_self');</script>";
-	}
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -154,16 +146,53 @@
 								<div class="row">
 									<div class="col-lg-6">
 										<div class="new-user-list">
-											<h3>Welcome BSIT Administrator!</h3>
+											<h3>Welcome <?php echo $abbrv; ?> Administrator!</h3>
 
+											<h6><?php echo $nm; ?></h6>
 											<h6>University of Santo Tomas</h6>
-											<h6>Bachelor of Science in Information Technology</h6>
+											<h6><?php echo $dpt;  ?></h6>
 											<h6>España Blvd, Sampaloc, Manila, 1008 Metro Manila</h6>
-											<h6>bsit_administrator@ust.edu.ph</h6>
+											<h6><?php echo $unm; ?></h6>
 										</div>
 										<hr>
-										<a href="update-profile.php" class="btn blue radius-xl" style="float: left;"><i class="ti-marker-alt"></i><span>&nbsp;&nbsp;UPDATE PROFILE</span></a>
+										<a href="" class="btn blue radius-xl" style="float: left;" data-toggle="modal" data-target="#update-profile"><i class="ti-marker-alt"></i><span>&nbsp;&nbsp;UPDATE PROFILE</span></a>
 										<div style="padding: 18px;"></div>
+										<div id="update-profile" class="modal fade" role="dialog">
+											<form class="edit-profile m-b30" method="POST">
+												<div class="modal-dialog modal-lg">
+													<div class="modal-content">
+														<div class="modal-header">
+															<h4 class="modal-title"><img src="../assets/images/icon.png" style="width: 30px; height: 30px;">&nbsp;Update Admin Profile</h4>
+															<button type="button" class="close" data-dismiss="modal">&times;</button>
+														</div>
+														<div class="modal-body">
+															<div class="form-group">
+																<label class="col-form-label">Name</label>
+																<input class="form-control" type="text" name="name" value="<?php echo $nm; ?>" pattern="[A-Za-z. ]+" onkeypress="return blockSpecialChar(event)" minlength="2" maxlength="60">
+															</div>
+															<div class="form-group">
+																<label class="col-form-label">Department</label>
+																<input class="form-control" type="text" value="<?php echo $dpt; ?>" disabled>
+															</div>
+															<div class="form-group">
+																<label class="col-form-label">Email</label>
+																<input class="form-control" type="text" value="<?php echo $unm; ?>" disabled>
+															</div>
+														</div>
+														<div class="modal-footer">
+															<input type="submit" class="btn green radius-xl outline" name="save" value="Update">
+															<button type="button" class="btn red outline radius-xl" data-dismiss="modal">Close</button>
+														</div>
+													</div>
+												</div>
+											</form>
+										</div>
+										<?php
+										if (isset($_POST['save'])) {
+											$fnm = $_POST['name'];
+											$model->updateAdminName($fnm, $department_id);
+										}
+										?>
 									</div>
 									<div class="col-lg-6">
 										<img src="../assets/images/about.jpg">

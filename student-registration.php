@@ -1,3 +1,28 @@
+<?php
+
+	session_start();
+	include('global/model.php');
+
+	$model = new Model();
+
+	if (isset($_POST['submit'])) {
+		$fname = ucwords(strtolower($_POST['first_name']));
+		$mname = ucwords($_POST['middle_name']);
+		$lname = ucwords(strtolower($_POST['last_name']));
+		$gender = $_POST['gender'];
+		$cont = $_POST['contact']; 
+		$course = $_POST['course'];
+		$email = strtolower($_POST['email']);
+		$status = 1;
+		$access = 1;
+		$date = date("Y-m-d H:i:s");
+		$pword = password_hash($_POST['password'], PASSWORD_DEFAULT);
+
+		$model->addAccount($fname, $mname, $lname, $email, $cont, $gender, $pword, $access, $status, $date, $course);
+		echo "<script>window.open('success?id=1.php','_self');</script>";
+	}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -44,13 +69,13 @@
 			}
 
 			@media screen and (max-width: 1920px) {
-				button[data-id="year"] {
-					width: 180px!important;
+				button[data-id="gender"] {
+					width: 400px!important;
 				}
 			}
 
 			@media screen and (max-width: 1000px) {
-				button[data-id="year"] {
+				button[data-id="gender"] {
 					width: 360px!important;
 				}
 			}
@@ -89,7 +114,7 @@
 					<div class="account-container">
 						<div class="heading-bx left">
 							<h2 class="title-head">Student <span>Registration</span></h2>
-							<p>Log in your account <a href="index.php">Click here</a></p>
+							<p>Log in your account <a href="index">Click here</a></p>
 						</div>	
 						<form class="contact-bx" id="form-id" method="POST">
 							<div class="row placeani">
@@ -98,11 +123,19 @@
 										<div class="input-group">
 											<label>Course</label>
 											<select class="form-control" name="course" id="course" required>
-												<option disabled selected>Select Course</option>
-												<option value="0">Bachelor of Science in Information Technology</option>
-                                                <option value="1">Bachelor of Science in Computer Engineering</option>
-												<option value="0">Bachelor of Science in Electronics Engineering</option>
-                                                <option value="1">Bachelor of Science in Mechanical Engineering</option>
+												<option value="" disabled selected>Select Course</option>
+												<?php
+													$rows = $model->fetchCourses();
+
+													if (!empty($rows)) {
+														foreach ($rows as $row) {
+															$dep_id = $row['id'];
+															$course = $row['department'];
+
+															echo '<option value="'.$dep_id.'">'.$course.'</option>';
+														}
+													}
+												?>
 											</select>
 										</div>
 									</div>
@@ -134,11 +167,11 @@
 								<div class="col-lg-12">
 									<div class="form-group">
 										<div class="input-group">
-											<label>Course</label>
-											<select class="form-control" name="course" id="course" required>
-												<option disabled selected>Select Gender</option>
+											<label>Gender</label>
+											<select class="form-control" name="gender" id="gender" required>
+												<option value="" disabled selected>Select Gender</option>
 												<option value="0">Male</option>
-                                                <option value="1">Female</option>
+												<option value="1">Female</option>
 											</select>
 										</div>
 									</div>
@@ -155,7 +188,7 @@
 									<div class="form-group">
 										<div class="input-group">
 											<label>Email</label>
-											<input class="form-control" name="email" type="email" required>
+											<input class="form-control" name="email" id="email" type="email" required>
 										</div>
 									</div>
 								</div>
@@ -163,7 +196,7 @@
 									<div class="form-group">
 										<div class="input-group">
 											<label>Password</label>
-											<input class="form-control" name="password" type="password" minlength="5" maxlength="20" required>
+											<input class="form-control" name="password" type="password" id="password" minlength="5" maxlength="20" required>
 										</div>
 									</div>
 								</div>
@@ -171,7 +204,7 @@
 									<div class="form-group">
 										<div class="input-group">
 											<label>Confirm Password</label>
-											<input class="form-control" name="password" type="password" minlength="5" maxlength="20" required>
+											<input class="form-control" name="password" type="password" id="confirm_password" minlength="5" maxlength="20" required>
 										</div>
 									</div>
 								</div>
@@ -184,7 +217,7 @@
 									</div>
 								</div>
 								<div class="col-lg-12 m-b30">
-									<input name="submit" type="submit" value="Register" class="red-hover btn button-md">
+									<input name="submit" type="submit" value="Register" class="red-hover btn button-md" onclick="return validateSelect()">
 								</div>
 							</div>
 						</form>
@@ -226,6 +259,71 @@
 				if (charCode > 31 && (charCode < 48 || charCode > 57)) {
 					return false;
 				}
+				return true;
+			}
+
+			var password = document.getElementById("password"), confirm_password = document.getElementById("confirm_password");
+
+			function validatePassword() {
+				if(password.value != confirm_password.value) {
+					confirm_password.setCustomValidity("Passwords Don't Match");
+				} 
+
+				else {
+					confirm_password.setCustomValidity('');
+				}
+			}
+
+			password.onchange = validatePassword;
+			confirm_password.onkeyup = validatePassword;
+
+			var accept = ["ust.edu.ph"];
+
+			function validateEmailField() {
+				var email = document.getElementById("email");
+				var emailVal = $('#email').val();
+				var split = emailVal.split('@');
+
+				if(accept.indexOf(split[1]) >= 0) {
+					email.setCustomValidity('');
+				}
+
+				else{
+					email.setCustomValidity("Please use an @ust.edu.ph email address.");
+				}
+
+			}
+
+			email.onchange = validateEmailField;
+			email.onkeyup = validateEmailField;
+
+			$("#course").change(function() {
+				$('[data-id="course"]').find('.filter-option').css("color", "#606060");
+			});
+
+			$("#gender").change(function() {
+				$('[data-id="gender"]').find('.filter-option').css("color", "#606060");
+			});
+
+			var course = document.getElementById("course");
+			var gender = document.getElementById("gender");
+
+			function validateSelect() {
+
+				if (course.value == "") {
+					$('[data-id="course"]').find('.filter-option').css("color", "red");
+
+					if (gender.value == "") {
+						$('[data-id="gender"]').find('.filter-option').css("color", "red");
+					}
+					return false;
+				}
+
+				else if (gender.value == "") {
+					$('[data-id="gender"]').find('.filter-option').css("color", "red");
+					return false;
+				}
+
 				return true;
 			}
 		</script>

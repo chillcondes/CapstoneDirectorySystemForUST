@@ -1,16 +1,7 @@
 <?php
-	ob_start(); 
 	session_start(); 
 	include('../global/model.php');
-	$model = new Model();
 	include('department.php');
-
-	if (empty($_SESSION['sess'])) {
-		echo "<script>window.open('../','_self');</script>";
-	}
-
-	$depart = "1";
-	$status = "1";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -156,35 +147,30 @@
 									<table id="table" class="table table-bordered hover" style="width:100%">
 										<thead>
 											<tr>
-												<th width="80">Action</th>
-												<th>Project Title</th>
-												<th>Section</th>
-												<th>Group Number</th>
-												<th>Subject Coordinator</th>
-												<th>Technical Adviser</th>
-												<th>Client</th>
+												<th width="100">Action</th>
+												<th>IP Reg. Num.</th>
+												<th>Capstone Title</th>
+												<th>Specialization</th>
+												<th>Year Published</th>
 											</tr>
 										</thead>
 										<tbody>
 											<?php
 
-											
-											$rows = $model->displayStudents();
+											$proj_status =1;
+											$rows = $model->displayProjects($department_id, $proj_status);;
 
 											if (!empty($rows)) {
 												foreach ($rows as $row) {
-
 											?>
 											<tr>
 												<td>
 													<a href="" class="btn blue" style="width: 95px; height: 37px;"><i class="ti-search" style="font-size: 12px;"></i><span>&nbsp;View</span></a>&nbsp;
 												</td>
+												<td>1234567-7897123</td>
 												<td>Capstone Project Directory System for IT Department</td>
-												<td>SECTION</td>
-												<td>Llander Vidar, Ian Cantada, Krizzia Padernal</td>
-												<td>Ricky Tepora</td>
-												<td>Mark Lopez</td>
-												<td>University of Santo Tomas</td>
+												<td>Network and Security</td>
+												<td>2019</td>
 											</tr>
 											<?php
 

@@ -1,15 +1,7 @@
 <?php
-	
 	session_start();
-
 	include('../global/model.php');
-	$model = new Model();
 	include('department.php');
-
-	if (empty($_SESSION['sess'])) {
-		echo "<script>window.open('../','_self');</script>";
-	}
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -154,15 +146,15 @@
 								<div class="row">
 									<div class="col-lg-6">
 										<div class="new-user-list">
-											<h3>Welcome Rajon Rondo!</h3>
+											<h3>Welcome <?php echo ucwords(strtolower($fname)); ?> <?php echo ucwords(strtolower($lname)); ?>!</h3>
 
 											<h6>University of Santo Tomas</h6>
-											<h6>Bachelor of Science in Information Technology</h6>
+											<h6><?php echo $dpt; ?></h6>
 											<h6>España Blvd, Sampaloc, Manila, 1008 Metro Manila</h6>
-											<h6>rajonrondo@ust.edu.ph</h6>
+											<h6><?php echo $email; ?></h6>
 										</div>
 										<hr>
-										<a href="update-profile.php" class="btn blue radius-xl" style="float: left;"><i class="ti-marker-alt"></i><span>&nbsp;&nbsp;UPDATE PROFILE</span></a>
+										<a href="" class="btn blue radius-xl" style="float: left;"><i class="ti-marker-alt"></i><span>&nbsp;&nbsp;UPDATE PROFILE</span></a>
 										<div style="padding: 18px;"></div>
 									</div>
 									<div class="col-lg-6">

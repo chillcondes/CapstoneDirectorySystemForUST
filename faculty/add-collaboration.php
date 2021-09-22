@@ -1,15 +1,7 @@
 <?php
-	
 	session_start();
-
 	include('../global/model.php');
-	$model = new Model();
 	include('department.php');
-
-	if (empty($_SESSION['sess'])) {
-		echo "<script>window.open('../','_self');</script>";
-	}
-
 ?>
 <!DOCTYPE html>
 <html lang="en">

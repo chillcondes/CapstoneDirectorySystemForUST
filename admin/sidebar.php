@@ -9,8 +9,8 @@
 						<div style="height: 8px;">
 						</div>
 						<div class="info-container">
-							<div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white; font-size: 15px;"><b>BSIT Administrator</b></div>
-							<div class="email" style="color: white; font-size: 12px;">bsit_administrator@ust.edu.ph</div>
+							<div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white; font-size: 15px;"><b><?php echo $abbrv; ?> Administrator</b></div>
+							<div class="email" style="color: white; font-size: 12px;"><?php echo $unm; ?></div>
 						</div>
 					</div>
 				</div>

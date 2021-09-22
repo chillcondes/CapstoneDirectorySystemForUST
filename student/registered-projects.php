@@ -1,16 +1,7 @@
 <?php
-	ob_start(); 
 	session_start(); 
 	include('../global/model.php');
-	$model = new Model();
 	include('department.php');
-
-	if (empty($_SESSION['sess'])) {
-		echo "<script>window.open('../','_self');</script>";
-	}
-
-	$depart = "1";
-	$status = "1";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -166,34 +157,11 @@
 										<tbody>
 											<?php
 
-											
-											$rows = $model->displayStudents();
+											$proj_status =1;
+											$rows = $model->displayProjects($department_id, $proj_status);;
 
 											if (!empty($rows)) {
 												foreach ($rows as $row) {
-													$uid = $row['id'];
-													$si = $row['stud_id'];
-													$fn = $row['fname'];
-													$mn = $row['mname'];
-													$ln = $row['lname'];
-													$yr = $row['year'];
-													$sc = $row['section'];
-													$em = $row['email'];
-													$cn = $row['contact'];
-													$g = $row['gender'];
-													$bd = date('M. d, Y', strtotime($row['birth_date']));
-													$bdt = date('Y', strtotime($row['birth_date']));
-													$dttt = date("Y");
-													$age = $dttt - $bdt;
-
-													switch ($g) {
-														case 0:
-															$g = 'Male';
-														break;
-														case 1:
-															$g = 'Female';
-														break;
-													}
 											?>
 											<tr>
 												<td>

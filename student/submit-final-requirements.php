@@ -1,15 +1,7 @@
 <?php
-	
 	session_start();
-
 	include('../global/model.php');
-	$model = new Model();
 	include('department.php');
-
-	if (empty($_SESSION['sess'])) {
-		echo "<script>window.open('../','_self');</script>";
-	}
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -95,7 +87,7 @@
 							</a>
 							<ul>
 								<li>
-									<a href="registered-projects" class="ttr-material-button"><span class="ttr-label" style="color: #BE1630;">IP Registered Capstone Projects</span></a>
+									<a href="registered-projects" class="ttr-material-button"><span class="ttr-label">IP Registered Capstone Projects</span></a>
 								</li>
 								<li>
 									<a href="best-projects" class="ttr-material-button"><span class="ttr-label">Best IT Capstone Projects</span></a>

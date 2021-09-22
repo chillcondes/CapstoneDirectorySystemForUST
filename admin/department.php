@@ -1,7 +1,11 @@
 <?php
+	if (empty($_SESSION['sess'])) {
+		echo "<script>window.open('../','_self');</script>";
+	}		
 
-	$department = $model->displayDepartment();
-
+	$department_id = $_SESSION['sess'];
+	$model = new Model();
+	$department = $model->displayDepartment($department_id);
 	if (!empty($department)) {
 		foreach ($department as $dep) {
 			$dpt = $dep['department'];
@@ -9,5 +13,5 @@
 			$unm = $dep['uname'];
 			$abbrv = $dep['abbreviation'];
 		}
-	}		
+	}
 ?> 

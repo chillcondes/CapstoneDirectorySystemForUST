@@ -17,7 +17,7 @@
 		}
 
 		else {
-			echo "<script>alert('w8 b4 trying again m8')</script>";
+			echo "<script>alert('Too many attempts. Please try again later.')</script>";
 		}
 	}
 

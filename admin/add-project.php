@@ -1,15 +1,7 @@
 <?php
-	
 	session_start();
-
 	include('../global/model.php');
-	$model = new Model();
 	include('department.php');
-
-	if (empty($_SESSION['sess'])) {
-		echo "<script>window.open('../','_self');</script>";
-	}
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -151,90 +143,155 @@
 								<h4><img src="../assets/images/icon.png" style="width: 30px; height: 30px;">&nbsp;Add Capstone Projects</h4>
 							</div>
 							<div class="widget-inner">
-								<form class="edit-profile m-b30">
+								<form class="edit-profile m-b30" method="POST" enctype="multipart/form-data">
 									<div class="row">
 										<div class="form-group col-6">
 											<label class="col-form-label">IP Registration #: <span style="color: red;">*</span></label>
 											<div class="row">
 												<div class="form-group col-6">
-													<input class="form-control" type="text" required>
+													<input class="form-control" name="reg-1" type="text" required>
 												</div>
 												<div class="form-group col-6">
-													<input class="form-control" type="text" required>
+													<input class="form-control" name="reg-2" type="text" required>
 												</div>
 											</div>
 										</div>
 										<div class="form-group col-6">
-											<label class="col-form-label">Specialization: <span style="color: red;">*</span></label>
+											<label class="col-form-label">Specialization</label>
 											<div>
-												<input class="form-control" type="text" required>
+												<select class="form-control" name="specialization" id="specialization" required>
+													<?php
+														$ca = $model->displaySpecialization($_SESSION['sess']);
+														if (!empty($ca)) {
+															foreach ($ca as $c) {
+																
+													?>
+													<option value="<?php echo $c['id']; ?>"><?php echo $c['category']; ?></option>
+													<?php
+															}
+														}
+
+													?>
+												</select>
 											</div>
 										</div>
 										<div class="form-group col-12">
 											<label class="col-form-label">Capstone Title: <span style="color: red;">*</span></label>
 											<div>
-												<input class="form-control" type="text" required>
+												<input class="form-control" name="title" type="text" minlength="5" maxlength="100" required>
 											</div>
 										</div>
 										<div class="form-group col-12">
 											<label class="col-form-label">Author/s: <span style="color: red;">*</span></label>
 											<div>
-												<input class="form-control" type="text" required>
+												<input class="form-control" name="author" type="text" required>
 											</div>
 										</div>
 										<div class="form-group col-6">
 											<label class="col-form-label">Year Published:</label>
 											<div>
-												<input class="form-control" type="text" required>
+												<input class="form-control" name="year" type="text" required>
 											</div>
 										</div>
 										<div class="form-group col-6">
 											<label class="col-form-label">Technical Adviser: <span style="color: red;">*</span></label>
 											<div>
-												<input class="form-control" type="text" required>
+												<input class="form-control" name="adviser" type="text" required>
 											</div>
 										</div>
 										<div class="form-group col-12">
 											<label class="col-form-label">Full Document: <span style="color: red;">*</span></label>
 											<div>
-												<input class="form-control" style="padding: 0px; border-width: 0px;" type="file" required>
+												<input class="form-control" name="full-doc" style="padding: 0px; border-width: 0px;" accept="application/pdf" type="file" required>
 											</div>
 										</div>
 										<div class="form-group col-12">
 											<label class="col-form-label">Conference Paper: <span style="color: red;">*</span></label>
 											<div>
-												<input class="form-control" style="padding: 0px; border-width: 0px;" type="file" required>
+												<input class="form-control" name="con-paper" style="padding: 0px; border-width: 0px;" accept="application/pdf" type="file" required>
 											</div>
 										</div>
 										<div class="form-group col-12">
 											<label class="col-form-label">AVP: <span style="color: red;">*</span></label>
 											<div>
-												<input class="form-control" style="padding: 0px; border-width: 0px;" type="file" required>
+												<input class="form-control" name="avp" style="padding: 0px; border-width: 0px;" type="file" required>
 											</div>
 										</div>
 										<div class="form-group col-12">
 											<label class="col-form-label">Source Code: <span style="color: red;">*</span></label>
 											<div>
-												<input class="form-control" style="padding: 0px; border-width: 0px;" type="file" required>
+												<input class="form-control" name="source-code" style="padding: 0px; border-width: 0px;" type="file" required>
 											</div>
 										</div>
 										<div class="form-group col-12">
 											<label class="col-form-label">Approval Form: <span style="color: red;">*</span></label>
 											<div>
-												<input class="form-control" style="padding: 0px; border-width: 0px;" type="file" required>
+												<input class="form-control" name="approval-form" style="padding: 0px; border-width: 0px;" accept="application/pdf" type="file" required>
 											</div>
 										</div>
 										<div class="form-group col-12">
 											<label class="col-form-label">Keywords: <span style="color: red;">*</span></label>
 											<div>
-												<input class="form-control" type="text" required>
+												<input class="form-control" name="keywords" type="text" required>
 											</div>
 										</div>
 										<div class="col-12" style="padding-top: 20px;">
-											<button type="button" class="btn">Add Project</button>
+											<button type="submit" class="btn" name="submit" style="float: left;background-color: #BE1630;color: white;">Add Capstone Project</button>
 										</div>
 									</div>
 								</form>
+								<?php
+
+									if (isset($_POST['submit'])) {
+										$firstPath = '../directory/full-document/';
+										$secondPath = '../directory/conference-paper/';
+										$fifthPath = '../directory/approval-form/';
+
+										$firstUnique = time().uniqid(rand());
+										$firstDest = $firstPath . $firstUnique . '.pdf';
+										$firstBase = basename($_FILES["full-doc"]["name"]);
+										$firstType = strtolower(pathinfo($firstPath . $firstBase, PATHINFO_EXTENSION));
+
+										$secondUnique = time().uniqid(rand());
+										$secondDest = $secondPath . $secondUnique . '.pdf';
+										$secondBase = basename($_FILES["con-paper"]["name"]);
+										$secondType = strtolower(pathinfo($secondPath . $secondBase, PATHINFO_EXTENSION));
+
+										$fifthUnique = time().uniqid(rand());
+										$fifthDest = $fifthPath . $fifthUnique . '.pdf';
+										$fifthBase = basename($_FILES["approval-form"]["name"]);
+										$fifthType = strtolower(pathinfo($fifthPath . $fifthBase, PATHINFO_EXTENSION));
+
+										if($firstType != "pdf" && $secondType != "pdf" && $fifthType != "pdf") {
+											echo "<script>alert('Only PDF files are allowed.');window.open('submit-title.php', '_self')</script>";
+										}
+
+										else {
+											$first = $_FILES["full-doc"]["tmp_name"];
+											$second = $_FILES["con-paper"]["tmp_name"];
+											$third = 'N/A';
+											$fourth = 'N/A';
+											$fifth = $_FILES["approval-form"]["tmp_name"];
+
+											move_uploaded_file($first, $firstDest);
+											move_uploaded_file($second, $secondDest);
+											move_uploaded_file($fifth, $fifthDest);
+
+											$ipReg = ''.$_POST['reg-1'].'-'.$_POST['reg-2'].'';
+											$specialization = $_POST['specialization'];
+											$title = $_POST['title'];
+											$author = $_POST['author'];
+											$year = $_POST['year'];
+											$adviser = $_POST['adviser'];
+											$keywords = $_POST['keywords'];
+
+											$model->addCapstoneProject($ipReg, $specialization, $title, $author, $year, $adviser, $firstBase, $firstUnique, $secondBase, $secondUnique, $third, $third, $fourth, $fourth, $fifthBase, $fifthUnique, $keywords, $department_id);
+											echo "<script>;window.open('registered-projects','_self');</script>";
+
+										}
+									}
+
+								?>
 							</div>
 						</div>
 					</div>
@@ -272,6 +329,15 @@
 					var re = /^[A-Za-z. ]+$/ 
 					return re.test(keyChar); 
 				} 
+			}
+
+			function isNumber(evt) {
+				evt = (evt) ? evt : window.event;
+				var charCode = (evt.which) ? evt.which : evt.keyCode;
+				if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+					return false;
+				}
+				return true;
 			}
 		</script>
 	</body>

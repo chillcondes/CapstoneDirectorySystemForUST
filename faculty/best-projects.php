@@ -1,16 +1,7 @@
 <?php
-	ob_start(); 
 	session_start(); 
 	include('../global/model.php');
-	$model = new Model();
 	include('department.php');
-
-	if (empty($_SESSION['sess'])) {
-		echo "<script>window.open('../','_self');</script>";
-	}
-
-	$depart = "1";
-	$status = "1";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -148,15 +139,11 @@
 								</div>
 							</div>
 							<div class="widget-inner">
-								<!-- <div align="right">
-									<a href="add-project" class="btn red radius-xl" style="float: right;"><i class="ti-harddrives"></i><span>&nbsp;REJECTED CAPSTONE PROJECT</span></a><br>
-								</div> -->
-								<div style="padding: 25px;"></div>
-								<!-- <div class="table-responsive">
+								<div class="table-responsive">
 									<table id="table" class="table table-bordered hover" style="width:100%">
 										<thead>
 											<tr>
-												<th width="210">Action</th>
+												<th width="100">Action</th>
 												<th>IP Reg. Num.</th>
 												<th>Capstone Title</th>
 												<th>Specialization</th>
@@ -166,172 +153,29 @@
 										<tbody>
 											<?php
 
-											
-											$rows = $model->displayStudents();
+											$proj_status =1;
+											$rows = $model->displayProjects($department_id, $proj_status);;
 
 											if (!empty($rows)) {
 												foreach ($rows as $row) {
-													$uid = $row['id'];
-													$si = $row['stud_id'];
-													$fn = $row['fname'];
-													$mn = $row['mname'];
-													$ln = $row['lname'];
-													$yr = $row['year'];
-													$sc = $row['section'];
-													$em = $row['email'];
-													$cn = $row['contact'];
-													$g = $row['gender'];
-													$bd = date('M. d, Y', strtotime($row['birth_date']));
-													$bdt = date('Y', strtotime($row['birth_date']));
-													$dttt = date("Y");
-													$age = $dttt - $bdt;
-
-													switch ($g) {
-														case 0:
-															$g = 'Male';
-														break;
-														case 1:
-															$g = 'Female';
-														break;
-													}
 											?>
 											<tr>
 												<td>
-													<a href="" class="btn green" style="height: 37px;"><i class="ti-check" style="font-size: 12px;"></i><span>&nbsp;Approve</span></a>&nbsp;
-													<a href="" class="btn red" style="width: 95px; height: 37px;"><i class="ti-close" style="font-size: 12px;"></i><span>&nbsp;Reject</span></a>
+													<a href="" class="btn blue" style="width: 95px; height: 37px;"><i class="ti-search" style="font-size: 12px;"></i><span>&nbsp;View</span></a>&nbsp;
 												</td>
 												<td>1234567-7897123</td>
 												<td>Capstone Project Directory System for IT Department</td>
 												<td>Network and Security</td>
 												<td>2019</td>
 											</tr>
-											<div id="archive-<?php echo $si; ?>i" class="modal fade" role="dialog">
-												<form class="edit-profile m-b30" method="POST">
-													<div class="modal-dialog modal-lg">
-														<div class="modal-content">
-															<div class="modal-header">
-																<h4 class="modal-title"><img src="../assets/images/icon/pup-icon.png" style="width: 30px; height: 30px;">&nbsp;Archive Student</h4>
-																<button type="button" class="close" data-dismiss="modal">&times;</button>
-															</div>
-															<div class="modal-body">
-																<div class="row">
-																	<div class="form-group col-6">
-																		<label class="col-form-label">Student ID</label>
-																		<div>
-																			<input type="hidden" name="user_id" value="<?php echo $uid; ?>">
-																			<input class="form-control" type="text" name="student_id" value="<?php echo $si; ?>" disabled>
-																		</div>
-																	</div>
-																	<div class="form-group col-6">
-																		<label class="col-form-label">Course</label>
-																		<div>
-																			<input class="form-control" type="text" value="<?php echo $dpt; ?>" disabled>
-																		</div>
-																	</div>
-																	<div class="form-group col-4">
-																		<label class="col-form-label">First Name</label>
-																		<div>
-																			<input class="form-control" type="text" name="first_name" value="<?php echo $fn; ?>" disabled>
-																		</div>
-																	</div>
-																	<div class="form-group col-4">
-																		<label class="col-form-label">Middle Name</label>
-																		<div>
-																			<input class="form-control" type="text" name="middle_name" value="<?php echo $mn; ?>" disabled>
-																		</div>
-																	</div>
-																	<div class="form-group col-4">
-																		<label class="col-form-label">Last Name</label>
-																		<div>
-																			<input class="form-control" type="text" name="last_name" value="<?php echo $ln; ?>" disabled>
-																		</div>
-																	</div>
-																	<div class="form-group col-6">
-																		<label class="col-form-label">Year</label>
-																		<div>
-																			<input class="form-control" type="text" name="year" <?php 
-																				switch ($yr) {
-																				case 1:
-																					echo 'value="First Year"';
-																					break;
-																				case 2:
-																					echo 'value="Second Year"';
-																					break;
-																				case 3:
-																					echo 'value="Third Year"';
-																					break;
-																				case 3:
-																					echo 'value="Fourth Year"';
-																					break;
-																				default:
-																					echo 'value="Fifth Year"';
-																					break;
-																				}
-																			?> disabled>
-																		</div>
-																	</div>
-																	<div class="form-group col-6">
-																		<label class="col-form-label">Section</label>
-																		<div>
-																			<input class="form-control" type="text" value="<?php echo $sc; ?>" disabled> 
-																		</div>
-																	</div>
-																	<div class="form-group col-4">
-																		<label class="col-form-label">Gender</label>
-																		<div>
-																			<input class="form-control" type="text" value="<?php echo $g; ?>" disabled> 
-																		</div>
-																	</div>
-																	<div class="form-group col-4">
-																		<label class="col-form-label">Date of Birth</label>
-																		<div>
-																			<input class="form-control" type="text" value="<?php echo $bd; ?>" disabled>
-																		</div>
-																	</div>
-																	<div class="form-group col-4">
-																		<label class="col-form-label">Age</label>
-																		<div>
-																			<input class="form-control" type="text" value="<?php echo $age; ?>" disabled> 
-																		</div>
-																	</div>
-																	<div class="form-group col-6">
-																		<label class="col-form-label">Email</label>
-																		<div>
-																			<input class="form-control" type="email" name="email" value="<?php echo $em; ?>" disabled>
-																		</div>
-																	</div>
-																	<div class="form-group col-6">
-																		<label class="col-form-label">Contact</label>
-																		<div>
-																			<input class="form-control" type="text" name="contact" value="<?php echo $cn; ?>" disabled>
-																		</div>
-																	</div>
-																</div>
-															</div>
-															<div class="modal-footer">
-																<input type="submit" class="btn red radius-xl outline" name="archive" value="Archive">
-																<button type="button" class="btn red outline radius-xl" data-dismiss="modal">Close</button>
-															</div>
-														</div>
-													</div>
-												</form>
-											</div>
 											<?php
 
 												}
 											}
-
-
-												if (isset($_POST['archive'])) {
-													$uuid = $_POST['user_id'];
-
-													$model->archive($uuid, $_GET['year']);
-												}
-
 											?>
 										</tbody>
 									</table>
-								</div> -->
+								</div>
 								<br>
 							</div>
 						</div>

@@ -1,7 +1,7 @@
 <?php
 
 	session_start();
-	unset($_SESSION['sess']);
-	echo "<script>window.open('../index.php', '_self');</script>";
+	unset($_SESSION['student_sess']);
+	echo "<script>window.open('../index', '_self');</script>";
 
 ?>
