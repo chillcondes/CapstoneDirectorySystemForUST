@@ -21,6 +21,7 @@
 						<div class="ttr-header-submenu">
 							<ul>
 								<li><a href="index">My profile</a></li>
+								<li><a href="change-password">Change Password</a></li>
 								<li><a href="logout">Logout</a></li>
 							</ul>
 						</div>

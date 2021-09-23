@@ -115,7 +115,7 @@
 				</nav>
 			</div>
 		</div>
-		<main class="ttr-wrapper">
+		<main class="ttr-wrapper" style="background-color: #F3F3F3;">
 			<div class="container-fluid">
 				<div class="db-breadcrumb">
 					<h4 class="breadcrumb-title">Collaboration Group</h4>

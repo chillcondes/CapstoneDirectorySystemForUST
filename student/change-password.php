@@ -1,7 +1,16 @@
 <?php
-	session_start(); 
+	session_start();
 	include('../global/model.php');
 	include('department.php');
+
+	if (isset($_POST['save_pass'])) {
+		$cpass = $_POST['cpass'];
+		$npass = $_POST['npass'];
+		$newpword = password_hash($npass, PASSWORD_DEFAULT);
+		$model = new Model();
+		$model->changePasswordStudent($account_id, $cpass, $newpword);	
+	}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,7 +35,6 @@
 
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-		<link rel="stylesheet" type="text/css" href="../dashboard/assets/css/dataTables.bootstrap4.min.css">
 		<link rel="stylesheet" type="text/css" href="../dashboard/assets/css/assets.css">
 		<link rel="stylesheet" type="text/css" href="../dashboard/assets/vendors/calendar/fullcalendar.css">
 
@@ -36,14 +44,19 @@
 
 		<link rel="stylesheet" type="text/css" href="../dashboard/assets/css/style.css">
 		<link rel="stylesheet" type="text/css" href="../dashboard/assets/css/dashboard.css">
-
-		<style type="text/css">
+		<link class="skin" rel="stylesheet" type="text/css" href="../dashboard/assets/css/color/color-1.css">
+	</head>
+	<style type="text/css">
 			.btn.dropdown-toggle.btn-default:hover {
 				color: #000!important;
 			}
 
 			.btn.dropdown-toggle.btn-default:focus {
 				color: #000!important;
+			}
+
+			tbody tr:hover {
+				background-color: #d4d4d4;
 			}
 			.widget-card .icon {
 				position: absolute;
@@ -54,12 +67,7 @@
 				font-size: 65px;
 				color: rgba(0, 0, 0, 0.15);
 			}
-			tbody tr:hover {
-				background-color: #d4d4d4;
-			}
-		</style>
-		<link class="skin" rel="stylesheet" type="text/css" href="../dashboard/assets/css/color/color-1.css">
-	</head>
+	</style>
 	<body class="ttr-opened-sidebar ttr-pinned-sidebar">
 
 		<?php include 'navbar.php'; ?>
@@ -74,16 +82,16 @@
 						<li style="padding-left: 20px; padding-top: 5px; padding-bottom: 5px; background-color: #e0e0e0; margin-top: 0px; margin-bottom: 0px;">
 							<span class="ttr-label" style="color: black; font-weight: 500;">Main Navigation</span>
 						</li>
-						<li>
-							<a href="index" class="ttr-material-button">
-								<span class="ttr-icon"><i class="ti-home"></i></span>
-								<span class="ttr-label">Home</span>
+						<li class="show" style="margin-top: 0px;">
+							<a href="index.php" class="ttr-material-button">
+								<span class="ttr-icon"><i class="ti-home" style="color: #BE1630;"></i></span>
+								<span class="ttr-label" style="color: #BE1630;">Home</span>
 							</a>
 						</li>
-						<li class="show">
+						<li>
 							<a href="#" class="ttr-material-button">
-								<span class="ttr-icon"><i class="ti-harddrives" style="color: #BE1630;"></i></span>
-								<span class="ttr-label" style="color: #BE1630;">Capstone Projects</span>
+								<span class="ttr-icon"><i class="ti-harddrives"></i></span>
+								<span class="ttr-label">Capstone Projects</span>
 								<span class="ttr-arrow-icon"><i class="fa fa-angle-down"></i></span>
 							</a>
 							<ul>
@@ -91,7 +99,7 @@
 									<a href="registered-projects" class="ttr-material-button"><span class="ttr-label">IP Registered Capstone Projects</span></a>
 								</li>
 								<li>
-									<a href="best-projects" class="ttr-material-button"><span class="ttr-label" style="color: #BE1630;">Best IT Capstone Projects</span></a>
+									<a href="best-projects" class="ttr-material-button"><span class="ttr-label">Best IT Capstone Projects</span></a>
 								</li>
 							</ul>
 						</li>
@@ -117,86 +125,76 @@
 		</div>
 		<main class="ttr-wrapper" style="background-color: #F3F3F3;">
 			<div class="container-fluid">
-				<div class="db-breadcrumb">
-					<h4 class="breadcrumb-title">Capstone Projects</h4>
-					<ul class="db-breadcrumb-list">
-						<li><i class="ti-agenda"></i>Best Capstone Projects</li>
-					</ul>
-				</div>  
-				
-				<?php include 'widget.php'; ?>
+					<div class="db-breadcrumb">
+						<h4 class="breadcrumb-title">Dashboard</h4>
+						<ul class="db-breadcrumb-list">
+							<li><i class="fa fa-key"></i>Change Password</li>
+						</ul>
+					</div> 
+					
+					<?php include 'widget.php'; ?>
 
 				<div class="row">
 					<div class="col-lg-12 m-b30">
 						<div class="widget-box">
 							<div class="wc-title">
-								<div class="row">
-									<div class="col-lg-6">
-										<h4><img src="../assets/images/icon.png" style="width: 30px; height: 30px;">&nbsp;Best Capstone Projects</h4>
-									</div>
-									<div class="col-lg-6">
-									</div>
-								</div>
+								<h4><img src="../assets/images/icon.png" style="width: 30px; height: 30px;">&nbsp;Change Password</h4>
 							</div>
 							<div class="widget-inner">
-								<!-- <div align="right">
-									<a href="add-project" class="btn green radius-xl" style="float: right;"><i class="ti-harddrives"></i><span>&nbsp;ADD CAPSTONE PROJECT</span></a><br>
-								</div> -->
-								<div style="padding: 25px;"></div>
-								<div class="table-responsive">
-									<table id="table" class="table table-bordered hover" style="width:100%">
-										<thead>
-											<tr>
-												<th width="50">Action</th>
-												<th width="120">IP Reg. Num.</th>
-												<th>Capstone Title</th>
-												<th>Tech. Adviser</th>
-												<th>Specialization</th>
-												<th>Year</th>
-											</tr>
-										</thead>
-										<tbody>
-											<?php
-
-											$proj_status = 1;
-											$rows = $model->displayBestProjects($department_id, $proj_status);
-
-											if (!empty($rows)) {
-												foreach ($rows as $row) {
-													$project_id = $row['project_id'];
-													$ipReg = $row['ip_reg'];
-													$title = $row['title'];
-													$year = $row['year'];
-													$category = $row['category'];
-													$tech_adv = $row['tech_adv'];
-											?>
-											<tr>
-												<td>
-													<a href="project-details?id=<?php echo $project_id; ?>&spec=<?php echo $category; ?>" class="btn blue" style="width: 95px; height: 37px;"><i class="ti-search" style="font-size: 12px;"></i><span>&nbsp;View</span></a>
-												</td>
-												<td><?php echo $ipReg; ?></td>
-												<td><?php echo strtoupper($title); ?></td>
-												<td><?php echo strtoupper($tech_adv); ?></td>
-												<td><?php echo strtoupper($category); ?></td>
-												<td><?php echo $year; ?></td>
-											</tr>
-											<?php
-												}
-											}
-
-											?>
-										</tbody>
-									</table>
-								</div>
-								<br>
+								<form class="edit-profile" method="POST">
+									<div class="">
+										<div class="form-group row">
+											<div class="col-sm-10 ml-auto">
+												<h3>Password</h3>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="col-sm-2 col-form-label">Current Password</label>
+											<div class="col-sm-7">
+												<input class="form-control" type="password" name="cpass" minlength="5" maxlength="20" required>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="col-sm-2 col-form-label">New Password</label>
+											<div class="col-sm-7">
+												<input class="form-control" type="password" name="npass" minlength="5" maxlength="20" id="password" required>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="col-sm-2 col-form-label">Re Type Password</label>
+											<div class="col-sm-7">
+												<input class="form-control" type="password" name="rpass" minlength="5" maxlength="20" id="confirm_password" required>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-sm-2">
+										</div>
+										<div class="col-sm-7">
+											<label class="col-sm-2 col-form-label" id="message"></label><br>
+											<button name="save_pass" type="submit" class="btn" style="background-color: #BE1630;color: white;">Save changes</button>
+											<a href="index.php" class="btn-secondry">Cancel</a>
+										</div>
+									</div>
+								</form>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
 		</main>
 		<div class="ttr-overlay"></div>
-
 		<script src="../dashboard/assets/js/jquery.min.js"></script>
 		<script src="../dashboard/assets/vendors/bootstrap/js/popper.min.js"></script>
 		<script src="../dashboard/assets/vendors/bootstrap/js/bootstrap.min.js"></script>
@@ -213,14 +211,21 @@
 		<script src="../dashboard/assets/js/functions.js"></script>
 		<script src="../dashboard/assets/vendors/chart/chart.min.js"></script>
 		<script src="../dashboard/assets/js/admin.js"></script>
-		<script src='../dashboard/assets/vendors/calendar/moment.min.js'></script>   
-		<script src="../dashboard/assets/js/jquery.dataTables.min.js"></script>
-		<script src="../dashboard/assets/js/dataTables.bootstrap4.min.js"></script>
-
 		<script type="text/javascript">
-			$(document).ready(function() {
-				$('#table').DataTable();
-			});
+			var password = document.getElementById("password"), confirm_password = document.getElementById("confirm_password");
+
+			function validatePassword() {
+				if(password.value != confirm_password.value) {
+					confirm_password.setCustomValidity("Passwords Don't Match");
+				} 
+
+				else {
+					confirm_password.setCustomValidity('');
+				}
+			}
+
+			password.onchange = validatePassword;
+			confirm_password.onkeyup = validatePassword;
 		</script>
 	</body>
 

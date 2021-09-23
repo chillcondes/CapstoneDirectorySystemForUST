@@ -9,6 +9,13 @@
 				}
 		  	}
 
+		  	$rows = $model->count_capstone($department_id);
+			if (!empty($rows)) {
+				foreach ($rows as $row) {
+					$registered_proj = $row['registered_proj'];
+				}
+			}
+
 		  	$rows = $model->count_archive($department_id);
 			if (!empty($rows)) {
 				foreach ($rows as $row) {
@@ -48,7 +55,7 @@
 									<?php echo $abbrv; ?>
 								</span>
 								<span class="wc-stats">
-									<span class="counter">N/A</span>
+									<span class="counter"><?php echo $registered_proj; ?></span>
 								</span>		
 							</div>				      
 						</div>

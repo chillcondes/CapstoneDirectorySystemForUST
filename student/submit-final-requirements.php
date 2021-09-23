@@ -121,7 +121,7 @@
 					<ul class="db-breadcrumb-list">
 						<li><i class="ti-agenda"></i>Submit Final Requirements</li>
 					</ul>
-				</div>  
+				</div>    
 				
 				<?php include 'widget.php'; ?>
 
@@ -140,91 +140,21 @@
 					<div class="col-lg-12 m-b30">
 						<div class="widget-box">
 							<div class="wc-title">
-								<h4><img src="../assets/images/icon.png" style="width: 30px; height: 30px;">&nbsp;Submit Final Requirements</h4>
+								<h4><img src="../assets/images/icon.png" style="width: 30px; height: 30px;">&nbsp;My Capstone Projects</h4>
 							</div>
 							<div class="widget-inner">
-								<form class="edit-profile m-b30">
+								<form class="edit-profile m-b30" method="POST" enctype="multipart/form-data">
 									<div class="row">
-										<div class="form-group col-6">
-											<label class="col-form-label">IP Registration #: <span style="color: red;">*</span></label>
-											<div class="row">
-												<div class="form-group col-6">
-													<input class="form-control" type="text" required>
-												</div>
-												<div class="form-group col-6">
-													<input class="form-control" type="text" required>
-												</div>
-											</div>
-										</div>
-										<div class="form-group col-6">
-											<label class="col-form-label">Specialization: <span style="color: red;">*</span></label>
-											<div>
-												<input class="form-control" type="text" required>
-											</div>
-										</div>
-										<div class="form-group col-12">
-											<label class="col-form-label">Capstone Title: <span style="color: red;">*</span></label>
-											<div>
-												<input class="form-control" type="text" required>
-											</div>
-										</div>
-										<div class="form-group col-12">
-											<label class="col-form-label">Author/s: <span style="color: red;">*</span></label>
-											<div>
-												<input class="form-control" type="text" required>
-											</div>
-										</div>
-										<div class="form-group col-6">
-											<label class="col-form-label">Year Published:</label>
-											<div>
-												<input class="form-control" type="text" required>
-											</div>
-										</div>
-										<div class="form-group col-6">
-											<label class="col-form-label">Technical Adviser: <span style="color: red;">*</span></label>
-											<div>
-												<input class="form-control" type="text" required>
-											</div>
-										</div>
-										<div class="form-group col-12">
-											<label class="col-form-label">Full Document: <span style="color: red;">*</span></label>
-											<div>
-												<input class="form-control" style="padding: 0px; border-width: 0px;" type="file" required>
-											</div>
-										</div>
-										<div class="form-group col-12">
-											<label class="col-form-label">Conference Paper: <span style="color: red;">*</span></label>
-											<div>
-												<input class="form-control" style="padding: 0px; border-width: 0px;" type="file" required>
-											</div>
-										</div>
-										<div class="form-group col-12">
-											<label class="col-form-label">AVP: <span style="color: red;">*</span></label>
-											<div>
-												<input class="form-control" style="padding: 0px; border-width: 0px;" type="file" required>
-											</div>
-										</div>
-										<div class="form-group col-12">
-											<label class="col-form-label">Source Code: <span style="color: red;">*</span></label>
-											<div>
-												<input class="form-control" style="padding: 0px; border-width: 0px;" type="file" required>
-											</div>
-										</div>
-										<div class="form-group col-12">
-											<label class="col-form-label">Approval Form: <span style="color: red;">*</span></label>
-											<div>
-												<input class="form-control" style="padding: 0px; border-width: 0px;" type="file" required>
-											</div>
-										</div>
-										<div class="form-group col-12">
-											<label class="col-form-label">Keywords: <span style="color: red;">*</span></label>
-											<div>
-												<input class="form-control" type="text" required>
-											</div>
-										</div>
-										<div class="col-12" style="padding-top: 20px;">
-											<button type="button" class="btn">Submit Project</button>
-										</div>
+									<?php
+
+									if ($submit_req_status == "") {
+										include 'submit.php';
+									}
+									else {
+										include 'submit2.php';
+									}
+									?>
+										
 									</div>
 								</form>
 							</div>
@@ -264,6 +194,15 @@
 					var re = /^[A-Za-z. ]+$/ 
 					return re.test(keyChar); 
 				} 
+			}
+
+			function isNumber(evt) {
+				evt = (evt) ? evt : window.event;
+				var charCode = (evt.which) ? evt.which : evt.keyCode;
+				if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+					return false;
+				}
+				return true;
 			}
 		</script>
 	</body>

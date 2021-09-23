@@ -16,6 +16,7 @@
 			$contact = $acc['contact'];
 			$department_id = $acc['department_id'];
 			$gender = $acc['gender'];
+			$submit_req_status = $acc['project_id'];
 			$date_added = date('M d, Y g:i A', strtotime($acc['date_added']));
 		}
 	}
