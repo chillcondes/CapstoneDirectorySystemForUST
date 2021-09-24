@@ -4,7 +4,7 @@
 	Class Model {
 		private $server = "localhost";
 		private $username = "root";
-		private $password = "12345";
+		private $password = "";
 		private $dbname = "u134789687_ust";
 		private $conn;
 
@@ -162,6 +162,17 @@
 			return $data;
 		}
 
+		public function count_capstone($department_id){
+			$data = null;
+			$query = "SELECT SUM(IF(status = '1',1,0)) as registered_proj, SUM(IF(status = '2',1,0)) as pending_proj, SUM(IF(status = '3',1,0)) as rejected_proj FROM projects WHERE department_id = '$department_id'";
+			if ($sql = $this->conn->query($query)) {
+				while ($row = mysqli_fetch_assoc($sql)) {
+					$data[] = $row;
+				}
+			}
+			return $data;
+		}
+
 		public function displayDepartment($department_id) {
 			$data = null;
 			$query = "SELECT * FROM admin WHERE id = ?";
@@ -226,6 +237,22 @@
 			return $data;
 		}
 
+		public function displayProject($department_id, $proj_status, $proj_id) {
+			$data = null;
+			$query = "SELECT a.*, b.category FROM projects AS a INNER JOIN specialization AS b ON a.spec_id = b.id WHERE a.department_id = ? AND a.status = ? AND a.project_id = ? ORDER BY a.date_added DESC";
+			if ($stmt = $this->conn->prepare($query)) {
+				$stmt->bind_param('iii', $department_id, $proj_status, $proj_id);
+				$stmt->execute();
+				$result = $stmt->get_result();
+				$num_of_rows = $stmt->num_rows;
+				while ($row = $result->fetch_assoc()) {
+					$data[] = $row;
+				}
+				$stmt->close();
+			}
+			return $data;
+		}
+
 		public function displayBestProjects($department_id, $proj_status) {
 			$data = null;
 			$query = "SELECT a.*, b.category FROM projects AS a INNER JOIN specialization AS b ON a.spec_id = b.id WHERE a.department_id = ? AND a.status = ? AND a.award = 1 ORDER BY a.date_added DESC";
@@ -244,7 +271,7 @@
 
 		public function displayProjectDetails($department_id, $proj_id) {
 			$data = null;
-			$query = "SELECT * FROM projects WHERE department_id = ? AND project_id = ?";
+			$query = "SELECT  a.*, b.category FROM projects AS a INNER JOIN specialization AS b ON a.spec_id = b.id WHERE department_id = ? AND project_id = ?";
 			if ($stmt = $this->conn->prepare($query)) {
 				$stmt->bind_param('ii', $department_id, $proj_id);
 				$stmt->execute();
@@ -262,6 +289,25 @@
 			$query = "UPDATE projects SET award = ? WHERE project_id = ?";
 			if($stmt = $this->conn->prepare($query)) {
 				$stmt->bind_param("ii", $award, $proj_id);
+				$stmt->execute();
+				$stmt->close();
+			}
+		}
+
+		public function approveProject($status, $proj_id) {
+			$query = "UPDATE projects SET status = ? WHERE project_id = ?";
+			if($stmt = $this->conn->prepare($query)) {
+				$stmt->bind_param("ii", $status, $proj_id);
+				$stmt->execute();
+				$stmt->close();
+			}
+		}
+
+		public function updateProject($ipReg, $specialization, $title, $author, $year, $adviser, $keywords, $proj_id) {
+			$query = "UPDATE projects SET ip_reg = ?, spec_id = ?, title = ?, author = ?, year = ?, tech_adv = ?, keywords = ? WHERE project_id = ?";
+
+			if($stmt = $this->conn->prepare($query)) {
+				$stmt->bind_param("sisssssi", $ipReg, $specialization, $title, $author, $year, $adviser, $keywords, $proj_id);
 				$stmt->execute();
 				$stmt->close();
 			}
@@ -316,17 +362,31 @@
 			}
 		}
 
-		public function addCapstoneProject($ipReg, $specialization, $title, $author, $year, $adviser, $first, $firstUnique, $second, $secondUnique, $third, $thirdUnique, $fourth, $fourthUnique, $fifth, $fifthUnique, $keywords, $department_id) {
+		public function addCapstoneProject($ipReg, $specialization, $title, $author, $year, $adviser, $first, $firstUnique, $second, $secondUnique, $third, $thirdUnique, $fourth, $fourthUnique, $fifth, $fifthUnique, $keywords, $status, $department_id) {
 			$query = "INSERT INTO projects(ip_reg, spec_id, title, author, year, tech_adv, document, document_id, conference, conference_id, avp, avp_id, code, code_id, approval, approval_id, keywords, award, status, department_id, date_added) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			if($stmt = $this->conn->prepare($query)) {
 				$award = 0;
-				$status = 1;
 				$date = date("Y-m-d H:i:s");
 
 				$stmt->bind_param('sisssssssssssssssiiis', $ipReg, $specialization, $title, $author, $year, $adviser, $first, $firstUnique, $second, $secondUnique, $third, $thirdUnique, $fourth, $fourthUnique, $fifth, $fifthUnique, $keywords, $award, $status, $department_id, $date);
 				$stmt->execute();
+
+				$last_id = $this->conn->insert_id;
+
 				$stmt->close();
-			}		
+			}
+
+			return $last_id;
+		}
+
+		public function updateProjectID($project_id, $id) {
+			$query = "UPDATE accounts SET project_id = ? WHERE id = ?";
+
+			if($stmt = $this->conn->prepare($query)) {
+				$stmt->bind_param('si', $project_id, $id);
+				$stmt->execute();
+				$stmt->close();
+			}
 		}
 
 		public function changePassword($id, $pword, $newpword) {
@@ -340,6 +400,118 @@
 					if($stmt->fetch()) {
 						if (password_verify($pword, $hashed_pass)) {
 							$sql = "UPDATE admin SET pword = ? WHERE id = ?";
+							if ($ya = $this->conn->prepare($sql)) {
+								$ya->bind_param("si", $newpword, $id);
+								$ya->execute();
+								$ya->close();
+								echo "<script>alert('Password has been changed!');window.open('index','_self');</script>";
+								exit();
+							}
+						}
+						else {
+							echo "<script>alert('Incorrect Current Password');</script>";
+							if (empty($_SESSION['rlattempt'])) {
+								$_SESSION['rlattempt'] = 1;
+							}
+							
+							else {
+								switch ($_SESSION['rlattempt']) {
+									case 1:
+										$_SESSION['rlattempt']++;
+										break;
+									case 2:
+										$_SESSION['rlattempt']++;
+										break;
+									case 3:
+										$_SESSION['rlattempt']++;
+										break;
+									case 4:
+										$_SESSION['rlattempt']++;
+										break;
+									default:
+										unset($_SESSION['rlattempt']);
+										setcookie('rrlimited', '5', time() + (30), "/");
+										echo "<script>alert('Reached limit!')</script>";
+								}
+							}
+						}
+					}
+				}
+
+				else {
+				}
+				$stmt->close();
+			}
+			$this->conn->close();
+		}
+
+		public function changePasswordStudent($id, $pword, $newpword) {
+			$query = "SELECT id, pword FROM accounts WHERE id = ? AND access = 1 LIMIT 1";
+			if($stmt = $this->conn->prepare($query)) {
+				$stmt->bind_param("s", $id);
+				$stmt->execute();
+				$stmt->bind_result($id, $hashed_pass);
+				$stmt->store_result();
+				if($stmt->num_rows > 0) {
+					if($stmt->fetch()) {
+						if (password_verify($pword, $hashed_pass)) {
+							$sql = "UPDATE accounts SET pword = ? WHERE id = ?";
+							if ($ya = $this->conn->prepare($sql)) {
+								$ya->bind_param("si", $newpword, $id);
+								$ya->execute();
+								$ya->close();
+								echo "<script>alert('Password has been changed!');window.open('index','_self');</script>";
+								exit();
+							}
+						}
+						else {
+							echo "<script>alert('Incorrect Current Password');</script>";
+							if (empty($_SESSION['rlattempt'])) {
+								$_SESSION['rlattempt'] = 1;
+							}
+							
+							else {
+								switch ($_SESSION['rlattempt']) {
+									case 1:
+										$_SESSION['rlattempt']++;
+										break;
+									case 2:
+										$_SESSION['rlattempt']++;
+										break;
+									case 3:
+										$_SESSION['rlattempt']++;
+										break;
+									case 4:
+										$_SESSION['rlattempt']++;
+										break;
+									default:
+										unset($_SESSION['rlattempt']);
+										setcookie('rrlimited', '5', time() + (30), "/");
+										echo "<script>alert('Reached limit!')</script>";
+								}
+							}
+						}
+					}
+				}
+
+				else {
+				}
+				$stmt->close();
+			}
+			$this->conn->close();
+		}
+
+		public function changePasswordFaculty($id, $pword, $newpword) {
+			$query = "SELECT id, pword FROM accounts WHERE id = ? AND access = 0 LIMIT 1";
+			if($stmt = $this->conn->prepare($query)) {
+				$stmt->bind_param("s", $id);
+				$stmt->execute();
+				$stmt->bind_result($id, $hashed_pass);
+				$stmt->store_result();
+				if($stmt->num_rows > 0) {
+					if($stmt->fetch()) {
+						if (password_verify($pword, $hashed_pass)) {
+							$sql = "UPDATE accounts SET pword = ? WHERE id = ?";
 							if ($ya = $this->conn->prepare($sql)) {
 								$ya->bind_param("si", $newpword, $id);
 								$ya->execute();
@@ -438,8 +610,5 @@
 			}
 			$this->conn->close();
 		}
-
-
-
 	}
 ?>
