@@ -88,7 +88,7 @@
 							</a>
 							<ul>
 								<li>
-									<a href="registered-projects" class="ttr-material-button"><span class="ttr-label" style="color: #BE1630;">IP Registered Capstone Projects</span></a>
+									<a href="registered-projects" class="ttr-material-button"><span class="ttr-label">IP Registered Capstone Projects</span></a>
 								</li>
 								<li>
 									<a href="best-projects" class="ttr-material-button"><span class="ttr-label">Best IT Capstone Projects</span></a>
@@ -115,7 +115,7 @@
 				</nav>
 			</div>
 		</div>
-		<main class="ttr-wrapper">
+		<main class="ttr-wrapper" style="background-color: #F3F3F3;">
 			<div class="container-fluid">
 				<div class="db-breadcrumb">
 					<h4 class="breadcrumb-title">Collaboration Group</h4>
@@ -144,35 +144,196 @@
 									<table id="table" class="table table-bordered hover" style="width:100%">
 										<thead>
 											<tr>
-												<th width="100">Action</th>
-												<th>IP Reg. Num.</th>
-												<th>Capstone Title</th>
-												<th>Specialization</th>
-												<th>Year Published</th>
+												<th width="200">Action</th>
+												<th>Title</th>
+												<th>Subj. Coordinator</th>
+												<th>Tech. Adviser</th>
+												<th>Representative</th>
+												<th>Client</th>
+												<th width="125">Date Added</th>
 											</tr>
 										</thead>
 										<tbody>
 											<?php
 
-											$proj_status =1;
-											$rows = $model->displayProjects($department_id, $proj_status);;
+											$collab_status = 0;
+											$rows = $model->displayCollaborations($department_id, $account_id, $collab_status);
 
 											if (!empty($rows)) {
 												foreach ($rows as $row) {
+													$s_id = $row['id'];
+													$collaboration_id = $row['collaboration_id'];
+													$title = $row['title'];
+													$subject = $row['subject'];
+													$group_num = $row['group_num'];
+													$subj_coordinator = $row['subj_coordinator'];
+													$tech_adv = $row['tech_adv'];
+													$client = $row['client'];
+													$date_added = date('M. d, Y g:i A', strtotime($row['date_added']));
+													$name = $row['fname'] ." ". $row['lname'];
+													$fname = strtoupper($row['fname']);
+													$mname = strtoupper($row['mname']);
+													$lname = strtoupper($row['lname']);
+													$email = strtolower($row['email']);
+													$contact = $row['contact'];
+													$gender = $row['gender'];
+													switch ($gender) {
+														case 0:
+															$gender = 'MALE';
+														break;
+														case 1:
+															$gender = 'FEMALE';
+														break;
+													}
 											?>
 											<tr>
 												<td>
-													<a href="" class="btn blue" style="width: 95px; height: 37px;"><i class="ti-search" style="font-size: 12px;"></i><span>&nbsp;View</span></a>&nbsp;
+													<a href="collaboration-details?id=<?php echo $collaboration_id; ?>" class="btn blue" style="width: 95px; height: 37px;"><i class="ti-search" style="font-size: 12px;"></i><span>&nbsp;View</span></a>&nbsp;
+													<a href="" data-toggle="modal" data-target="#restore-<?php echo $s_id; ?>" class="btn green" style="width: 105px; height: 37px;"><i class="ti-back-left" style="font-size: 12px;"></i><span>&nbsp;Restore</span></a>
 												</td>
-												<td>1234567-7897123</td>
-												<td>Capstone Project Directory System for IT Department</td>
-												<td>Network and Security</td>
-												<td>2019</td>
+												<td><?php echo strtoupper($title); ?></td>
+												<td><?php echo strtoupper($subj_coordinator); ?></td>
+												<td><?php echo strtoupper($tech_adv); ?></td>
+												<td><a href="" data-toggle="modal" data-target="#student-<?php echo $s_id; ?>"><?php echo strtoupper($name); ?></a></td>
+												<td><?php echo strtoupper($client); ?></td>
+												<td style="font-size: 13px;"><?php echo $date_added; ?></td>
 											</tr>
+											<div id="student-<?php echo $s_id; ?>" class="modal fade" role="dialog">
+												<form class="edit-profile m-b30" method="POST">
+													<div class="modal-dialog modal-lg">
+														<div class="modal-content">
+															<div class="modal-header">
+																<h4 class="modal-title"><img src="../assets/images/icon.png" style="width: 30px; height: 30px;">&nbsp;Student Profile</h4>
+																<button type="button" class="close" data-dismiss="modal">&times;</button>
+															</div>
+															<div class="modal-body">
+																<div class="row">
+																	<div class="form-group col-4">
+																		<label class="col-form-label">First Name</label>
+																		<div>
+																			<input type="hidden" name="user_id" value="<?php echo $uid; ?>">
+																			<input class="form-control" type="text" name="first_name" value="<?php echo $fname; ?>" disabled>
+																		</div>
+																	</div>
+																	<div class="form-group col-4">
+																		<label class="col-form-label">Middle Name</label>
+																		<div>
+																			<input class="form-control" type="text" name="middle_name" value="<?php echo $mname; ?>" disabled>
+																		</div>
+																	</div>
+																	<div class="form-group col-4">
+																		<label class="col-form-label">Last Name</label>
+																		<div>
+																			<input class="form-control" type="text" name="last_name" value="<?php echo $lname; ?>" disabled>
+																		</div>
+																	</div>
+																	<div class="form-group col-8">
+																		<label class="col-form-label">Course</label>
+																		<div>
+																			<input class="form-control" type="text" value="<?php echo $dpt; ?>" disabled>
+																		</div>
+																	</div>
+																	<div class="form-group col-4">
+																		<label class="col-form-label">Gender</label>
+																		<div>
+																			<input class="form-control" type="text" value="<?php echo $gender; ?>" disabled> 
+																		</div>
+																	</div>
+																	<div class="form-group col-6">
+																		<label class="col-form-label">Email</label>
+																		<div>
+																			<input class="form-control" type="email" name="email" value="<?php echo $email; ?>" disabled>
+																		</div>
+																	</div>
+																	<div class="form-group col-6">
+																		<label class="col-form-label">Contact</label>
+																		<div>
+																			<input class="form-control" type="text" name="contact" value="<?php echo $contact; ?>" disabled>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<div class="modal-footer">
+																<button type="button" class="btn red outline radius-xl" data-dismiss="modal">Close</button>
+															</div>
+														</div>
+													</div>
+												</form>
+											</div>
+											<div id="restore-<?php echo $s_id; ?>" class="modal fade" role="dialog">
+												<form class="edit-profile m-b30" method="POST">
+													<div class="modal-dialog modal-lg">
+														<div class="modal-content">
+															<div class="modal-header">
+																<h4 class="modal-title"><img src="../assets/images/icon.png" style="width: 30px; height: 30px;">&nbsp;Restore Student</h4>
+																<button type="button" class="close" data-dismiss="modal">&times;</button>
+															</div>
+															<div class="modal-body">
+																<div class="row">
+																	<div class="form-group col-4">
+																		<label class="col-form-label">First Name</label>
+																		<div>
+																			<input type="hidden" name="collab_id" value="<?php echo $collaboration_id; ?>">
+																			<input class="form-control" type="text" name="first_name" value="<?php echo $fname; ?>" disabled>
+																		</div>
+																	</div>
+																	<div class="form-group col-4">
+																		<label class="col-form-label">Middle Name</label>
+																		<div>
+																			<input class="form-control" type="text" name="middle_name" value="<?php echo $mname; ?>" disabled>
+																		</div>
+																	</div>
+																	<div class="form-group col-4">
+																		<label class="col-form-label">Last Name</label>
+																		<div>
+																			<input class="form-control" type="text" name="last_name" value="<?php echo $lname; ?>" disabled>
+																		</div>
+																	</div>
+																	<div class="form-group col-8">
+																		<label class="col-form-label">Course</label>
+																		<div>
+																			<input class="form-control" type="text" value="<?php echo $dpt; ?>" disabled>
+																		</div>
+																	</div>
+																	<div class="form-group col-4">
+																		<label class="col-form-label">Gender</label>
+																		<div>
+																			<input class="form-control" type="text" value="<?php echo $gender; ?>" disabled> 
+																		</div>
+																	</div>
+																	<div class="form-group col-6">
+																		<label class="col-form-label">Email</label>
+																		<div>
+																			<input class="form-control" type="email" name="email" value="<?php echo $email; ?>" disabled>
+																		</div>
+																	</div>
+																	<div class="form-group col-6">
+																		<label class="col-form-label">Contact</label>
+																		<div>
+																			<input class="form-control" type="text" name="contact" value="<?php echo $contact; ?>" disabled>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<div class="modal-footer">
+																<button type="submit" name="restore" class="btn green outline radius-xl" >Restore</button>
+																<button type="button" class="btn red outline radius-xl" data-dismiss="modal">Close</button>
+															</div>
+														</div>
+													</div>
+												</form>
+											</div>
 											<?php
+
+													if (isset($_POST['restore'])) {
+														$model->collaborationArchiveRestore(1, $_POST['collab_id'], $department_id);
+
+														echo "<script>window.open('archived-panel-review','_self');</script>";
+													}
 
 												}
 											}
+
 											?>
 										</tbody>
 									</table>

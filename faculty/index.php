@@ -154,7 +154,7 @@
 											<h6><?php echo $email; ?></h6>
 										</div>
 										<hr>
-										<a href="" class="btn blue radius-xl" style="float: left;"><i class="ti-marker-alt"></i><span>&nbsp;&nbsp;UPDATE PROFILE</span></a>
+										<a href="change-password" class="btn blue radius-xl" style="float: left;"><i class="ti-marker-alt"></i><span>&nbsp;&nbsp;UPDATE PASSWORD</span></a>
 										<div style="padding: 18px;"></div>
 									</div>
 									<div class="col-lg-6">

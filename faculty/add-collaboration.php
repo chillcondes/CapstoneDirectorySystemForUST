@@ -143,67 +143,107 @@
 								<h4><img src="../assets/images/icon.png" style="width: 30px; height: 30px;">&nbsp;Create Group Collaboration</h4>
 							</div>
 							<div class="widget-inner">
-								<form class="edit-profile m-b30">
+								<form class="edit-profile m-b30" method="POST">
 									<div class="row">
 										<div class="form-group col-12">
 											<label class="col-form-label">Title of Project:</label>
 											<div>
-												<input class="form-control" type="text" required>
+												<input class="form-control" name="title" type="text" required>
 											</div>
 										</div>
 										<div class="form-group col-12">
 											<label class="col-form-label">Subject:</label>
 											<div>
-												<input class="form-control" type="text" required>
+												<input class="form-control" name="subject" type="text" required>
 											</div>
 										</div>
 										<div class="form-group col-12">
 											<label class="col-form-label">Group Number:</label>
 											<div>
-												<input class="form-control" type="text" required>
+												<input class="form-control" name="group-number" type="text" required>
 											</div>
 										</div>
 										<div class="form-group col-12">
 											<label class="col-form-label">Subject Coordinator:</label>
 											<div>
-												<input class="form-control" type="text" required>
+												<input class="form-control" name="subject-coordinator" type="text" required>
 											</div>
 										</div>
 										<div class="form-group col-12">
 											<label class="col-form-label">Technical Adviser:</label>
 											<div>
-												<input class="form-control" type="text" required>
+												<input class="form-control" name="technical-adviser" type="text" required>
+											</div>
+										</div>
+										<div class="form-group col-12">
+											<label class="col-form-label">Representative:</label>
+											<div>
+												<input class="form-control" name="representative" type="text" required>
 											</div>
 										</div>
 										<div class="form-group col-12">
 											<label class="col-form-label">Panel 1:</label>
 											<div>
-												<input class="form-control" type="text" required>
+												<input class="form-control" name="panel-1" type="text" required>
 											</div>
 										</div>
 										<div class="form-group col-12">
 											<label class="col-form-label">Panel 2:</label>
 											<div>
-												<input class="form-control" type="text" required>
+												<input class="form-control" name="panel-2" type="text" required>
 											</div>
 										</div>
 										<div class="form-group col-12">
 											<label class="col-form-label">Panel 3:</label>
 											<div>
-												<input class="form-control" type="text" required>
+												<input class="form-control" name="panel-3" type="text" required>
 											</div>
 										</div>
 										<div class="form-group col-12">
 											<label class="col-form-label">Client:</label>
 											<div>
-												<input class="form-control" type="text" required>
+												<input class="form-control" name="client" type="text" required>
 											</div>
 										</div>
 										<div class="col-12" style="padding-top: 20px;">
-											<button type="button" class="btn">Create</button>
+											<button type="submit" name="submit" class="btn" style="background-color: #BE1630;color: white;">CREATE GROUP COLLABORATION</button>
 										</div>
 									</div>
 								</form>
+								<?php
+
+									if (isset($_POST['submit'])) {
+										$title = $_POST['title'];
+										$subject = $_POST['subject'];
+										$grNum = $_POST['group-number'];
+										$subjCoor = $_POST['subject-coordinator'];
+										$techAdv = $_POST['technical-adviser'];
+										$representative = $_POST['representative'];
+										$panelOne = $_POST['panel-1'];
+										$panelTwo = $_POST['panel-2'];
+										$panelThree = $_POST['panel-3'];
+										$client = $_POST['client'];
+										$code = uniqid();
+
+										$representative_id = $model->fetchAccountID($representative);
+										if(empty($representative_id[0])) {
+											echo "<script>alert('Representative not found!');</script>";
+										}
+
+										else {
+											if ($representative_id[1] == NULL && $representative_id[2] == NULL) {
+												$last_id = $model->createCollaboration($title, $subject, $grNum, $subjCoor, $techAdv, $representative_id[0], $_SESSION['faculty'], $department_id, $panelOne, $panelTwo, $panelThree, $client, $code, 1);
+												$model->updateAccountCollaboration($last_id, 1, $representative_id[0]);
+												echo "<script>alert('Collaboration added!');</script>";
+											}
+
+											else {
+												echo "<script>alert('Student is already representing another group!');</script>";
+											}
+										}
+									}
+
+								?>
 							</div>
 						</div>
 					</div>

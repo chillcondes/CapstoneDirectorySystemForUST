@@ -1,25 +1,4 @@
-			<?php
-
-			$model = new Model();
-			$rows = $model->count_widget($_SESSION['sess']);
-			if (!empty($rows)) {
-				foreach ($rows as $row) {
-					$faculty = $row['faculty'];
-					$students = $row['students'];
-				}
-		  	}
-
-		  	$rows = $model->count_archive($_SESSION['sess']);
-			if (!empty($rows)) {
-				foreach ($rows as $row) {
-					$a_faculty = $row['faculty'];
-					$a_students = $row['students'];
-				}
-		  	}
-
-			?>
-
-			<div class="row">
+				<div class="row">
 					<div class="col-md-6 col-lg-3 col-xl-3 col-sm-6 col-6">
 						<div class="widget-card widget-bg2" style="background-image: linear-gradient(to right, #13bed4, #00c5dc, #00c5dc, #95dde6);">	
 							<div class="icon">
@@ -48,7 +27,7 @@
 									<?php echo $abbrv; ?>
 								</span>
 								<span class="wc-stats">
-									<span class="counter">N/A</span>
+									<span class="counter"><?php echo $registered_proj; ?></span>
 								</span>		
 							</div>				      
 						</div>

@@ -104,7 +104,7 @@
 									<a href="registered-projects" class="ttr-material-button"><span class="ttr-label">IP Registered Capstone Projects</span></a>
 								</li>
 								<li>
-									<a href="pending-projects" class="ttr-material-button"><span class="ttr-label">Pending Capstone Projects</span></a>
+									<a href="pending-projects" class="ttr-material-button"><span class="ttr-label">Pending Capstone Projects (<?php echo $pending_proj; ?>)</span></a>
 								</li>
 								<li>
 									<a href="best-projects" class="ttr-material-button"><span class="ttr-label">Best IT Capstone Projects</span></a>
@@ -117,7 +117,7 @@
 			</div>
 		</div>
 
-		<main class="ttr-wrapper">
+		<main class="ttr-wrapper" style="background-color: #F3F3F3;">
 			<div class="container-fluid">
 				<div class="db-breadcrumb">
 					<h4 class="breadcrumb-title">Capstone Projects Management</h4>
@@ -162,18 +162,20 @@
 											$pappid = $proj['approval_id'];
 											$pstatus = $proj['status'];
 											$paward = $proj['award'];
+											$pkeywords = $proj['keywords'];
+											$spec = $proj['category'];
 
 											if ($pstatus == "1") {
-												$pstatus = "<span style='color: green;'>REGISTERED</span>";
+												$ppstatus = "<span style='color: green;'>REGISTERED</span>";
 											}
 											elseif ($pstatus == "2") {
-												$pstatus = "<span style='color: blue;'>PENDING</span>";
+												$ppstatus = "<span style='color: blue;'>PENDING</span>";
 											}
 											elseif ($pstatus == "3") {
-												$pstatus = "<span style='color: red;'>REJECTED</span>";
+												$ppstatus = "<span style='color: red;'>REJECTED</span>";
 											}
 											else {
-												$pstatus = "N/A";
+												$ppstatus = "N/A";
 											}
 
 										}
@@ -181,9 +183,9 @@
 									?>
 									<div class="row">
 										<div class="col-lg-6">
-											<h3><?php echo $ptitle	; ?></h3>
+											<h3><?php echo strtoupper($ptitle); ?></h3>
 											<span style="text-align: justify;text-justify: inter-word;font-size: 20px;"><b>Authors:</b></span>
-											<p style="text-align: justify;text-justify: inter-word;font-size: 22px;"><?php echo $pauthor; ?></p>
+											<p style="text-align: justify;text-justify: inter-word;font-size: 22px;"><?php echo strtoupper($pauthor); ?></p>
 											<div class="new-user-list">
 												<ul>
 													<li>
@@ -199,7 +201,7 @@
 															<a href="#" class="new-users-name">Specialization</a>
 														</span>
 														<span class="new-users-btn">
-															<?php echo $spec; ?>
+															<?php echo strtoupper($spec); ?>
 														</span>
 													</li>
 													<li>
@@ -215,7 +217,7 @@
 															<a href="#" class="new-users-name">Technical Adviser</a>
 														</span>
 														<span class="new-users-btn">
-															<?php echo $ptechadv; ?>
+															<?php echo strtoupper($ptechadv); ?>
 														</span>
 													</li>
 													<li>
@@ -223,7 +225,7 @@
 															<a href="#" class="new-users-name">Status</a>
 														</span>
 														<span class="new-users-btn">
-															<b><?php echo $pstatus; ?></b>
+															<b><?php echo $ppstatus; ?></b>
 														</span>
 													</li>
 												</ul>
@@ -254,7 +256,7 @@
 															<a href="#" class="new-users-name">AVP</a>
 														</span>
 														<span class="new-users-btn">
-															N/A
+															<a href="video-file.php?code=<?php echo $pavpid; ?>&type=avp&title=<?php echo $ptitle; ?>" target="_blank"><u><?php echo $pavp; ?></u></a>
 														</span>
 													</li>
 													<li>
@@ -262,7 +264,7 @@
 															<a href="#" class="new-users-name">Source Code</a>
 														</span>
 														<span class="new-users-btn">
-															N/A
+															<a href="../directory/source-code/<?php echo $pcodeid; ?>.zip" target="_blank"><u><?php echo $pcode; ?></u></a>
 														</span>
 													</li>
 													<li>
@@ -273,24 +275,35 @@
 															<a href="file.php?code=<?php echo $pappid; ?>&type=approval-form&title=<?php echo $ptitle; ?>" target="_blank"><u><?php echo $papp; ?></u></a>
 														</span>
 													</li>
+													<li>
+														<span class="new-users-text">
+															<a href="#" class="new-users-name">Keywords</a>
+														</span>
+														<span class="new-users-btn">
+															<?php echo $pkeywords; ?>
+														</span>
+													</li>
 												</ul>
 											</div>
 											<hr>
+											<?php
+											if ($pstatus == "1") {
+											?>
 											<form class="edit-profile m-b30" method="POST">
 											<div class="row">
 												<div class="col-lg-6" align="center">
-													<a href="" class="btn green radius-xl" data-toggle="modal" data-target="#update_condition" style="width: 220px;height: 50px;display: flex;align-items: center;justify-content: center;background-color: #B22323;"><i class="ti-marker-alt" style="font-size: 15px;"></i><span style="font-size: 15px;">&nbsp;&nbsp;Edit Project Details</span></a>
+													<a href="update-project?id=<?php echo $proj_id; ?>&spec=<?php echo $spec; ?>" class="btn green radius-xl" style="width: 220px;height: 50px;display: flex;align-items: center;justify-content: center;background-color: #B22323;"><i class="ti-marker-alt" style="font-size: 15px;"></i><span style="font-size: 15px;">&nbsp;&nbsp;Edit Project Details</span></a>
 												</div>
 												<div class="col-lg-6" align="center">
 													<?php
 													if ($paward == 1) {
 													?>
-													<button type="submit" class="btn green radius-xl" name="remove" style="width: 240px;height: 50px;display: flex;align-items: center;justify-content: center;background-color: #B22323;"><i class="ti-star" style="font-size: 15px;"></i><span style="font-size: 15px;">&nbsp;&nbsp;Remove to Best Capstone</span></button>
+														<button type="submit" class="btn green radius-xl" name="remove" style="width: 240px;height: 50px;display: flex;align-items: center;justify-content: center;background-color: #B22323;"><i class="ti-star" style="font-size: 15px;"></i><span style="font-size: 15px;">&nbsp;&nbsp;Remove to Best Capstone</span></button>
 													<?php
 													}
 													elseif ($paward == 0) {
 													?>
-													<button type="submit" class="btn green radius-xl" name="update" style="width: 220px;height: 50px;display: flex;align-items: center;justify-content: center;background-color: #B22323;"><i class="ti-star" style="font-size: 15px;"></i><span style="font-size: 15px;">&nbsp;&nbsp;Add to Best Capstone</span></button>
+														<button type="submit" class="btn green radius-xl" name="update" style="width: 220px;height: 50px;display: flex;align-items: center;justify-content: center;background-color: #B22323;"><i class="ti-star" style="font-size: 15px;"></i><span style="font-size: 15px;">&nbsp;&nbsp;Add to Best Capstone</span></button>
 													<?php
 													}
 													else {}
@@ -299,17 +312,27 @@
 											</div>
 											</form>
 											<?php
-												if (isset($_POST['update'])) {
-													$award = 1;
-													$model->editBestCapstone($award, $proj_id);
-													echo "<script>window.open('best-projects','_self');</script>";
-												}
+											}
+											elseif ($pstatus == "2") {
+												$pstatus = "<span style='color: blue;'>PENDING</span>";
+											}
+											elseif ($pstatus == "3") {
+												$pstatus = "<span style='color: red;'>REJECTED</span>";
+											}
+											else {
+												$pstatus = "N/A";
+											}
 
-												if (isset($_POST['remove'])) {
-													$award = 0;
-													$model->editBestCapstone($award, $proj_id);
-													echo "<script>window.open('project-details?id=".$proj_id."&spec=".$spec."','_self');</script>";
-												}
+											if (isset($_POST['update'])) {
+												$award = 1;
+												$model->editBestCapstone($award, $proj_id);
+												echo "<script>window.open('best-projects','_self');</script>";
+											}
+											if (isset($_POST['remove'])) {
+												$award = 0;
+												$model->editBestCapstone($award, $proj_id);
+												echo "<script>window.open('project-details?id=".$proj_id."&spec=".$spec."','_self');</script>";
+											}
 											?>
 										</div>
 									</div>

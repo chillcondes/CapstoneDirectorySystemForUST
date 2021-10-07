@@ -276,21 +276,30 @@
 
 			password.onchange = validatePassword;
 			confirm_password.onkeyup = validatePassword;
-
-			var accept = ["ust.edu.ph"];
+			var accept = [".lics@ust.edu.ph", ".cics@ust.edu.ph"];
 
 			function validateEmailField() {
 				var email = document.getElementById("email");
 				var emailVal = $('#email').val();
 				var split = emailVal.split('@');
 
-				if(accept.indexOf(split[1]) >= 0) {
+				var last = emailVal.slice(-15);
+
+				if(accept.indexOf(last) >= 0) {
 					email.setCustomValidity('');
 				}
 
-				else{
-					email.setCustomValidity("Please use an @ust.edu.ph email address.");
+				else {
+					email.setCustomValidity("Please use an '.lics@ust.edu.ph' or '.cics@ust.edu.ph' email address.");
 				}
+
+				// if(accept.indexOf(split[1]) >= 0) {
+				// 	email.setCustomValidity('');
+				// }
+
+				// else{
+				// 	email.setCustomValidity("Please use an @ust.edu.ph email address.");
+				// }
 
 			}
 

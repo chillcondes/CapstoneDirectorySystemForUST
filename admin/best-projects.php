@@ -103,7 +103,7 @@
 									<a href="registered-projects" class="ttr-material-button"><span class="ttr-label">IP Registered Capstone Projects</span></a>
 								</li>
 								<li>
-									<a href="pending-projects" class="ttr-material-button"><span class="ttr-label">Pending Capstone Projects</span></a>
+									<a href="pending-projects" class="ttr-material-button"><span class="ttr-label">Pending Capstone Projects (<?php echo $pending_proj; ?>)</span></a>
 								</li>
 								<li>
 									<a href="best-projects" class="ttr-material-button"><span class="ttr-label" style="color: #BE1630;">Best IT Capstone Projects</span></a>
@@ -115,7 +115,7 @@
 				</nav>
 			</div>
 		</div>
-		<main class="ttr-wrapper">
+		<main class="ttr-wrapper" style="background-color: #F3F3F3;">
 			<div class="container-fluid">
 				<div class="db-breadcrumb">
 					<h4 class="breadcrumb-title">Capstone Projects Management</h4>
@@ -145,8 +145,9 @@
 										<thead>
 											<tr>
 												<th width="200">Action</th>
-												<th>IP Reg. Num.</th>
+												<th width="120">IP Reg. Num.</th>
 												<th>Capstone Title</th>
+												<th>Tech. Adviser</th>
 												<th>Specialization</th>
 												<th>Year</th>
 											</tr>
@@ -163,6 +164,7 @@
 													$ipReg = $row['ip_reg'];
 													$title = $row['title'];
 													$year = $row['year'];
+													$tech_adv = $row['tech_adv'];
 													$category = $row['category'];
 													$date_added = date('M d, Y g:i A', strtotime($row['date_added']));
 											?>
@@ -173,6 +175,7 @@
 												</td>
 												<td><?php echo $ipReg; ?></td>
 												<td><?php echo strtoupper($title); ?></td>
+												<td><?php echo strtoupper($tech_adv); ?></td>
 												<td><?php echo strtoupper($category); ?></td>
 												<td><?php echo $year; ?></td>
 											</tr>

@@ -4,7 +4,7 @@
 	Class Model {
 		private $server = "localhost";
 		private $username = "root";
-		private $password = "";
+		private $password = "12345";
 		private $dbname = "u134789687_ust";
 		private $conn;
 
@@ -285,6 +285,118 @@
 			return $data;
 		}
 
+		public function displayAllCollaborations($department_id, $collab_status) {
+			$data = null;
+			$query = "SELECT a.*, b.* FROM collaboration AS a INNER JOIN accounts AS b ON a.representative_id = b.id WHERE a.department_id = ? AND a.status = ? ORDER BY a.date_added DESC";
+			if ($stmt = $this->conn->prepare($query)) {
+				$stmt->bind_param('ii', $department_id, $collab_status);
+				$stmt->execute();
+				$result = $stmt->get_result();
+				$num_of_rows = $stmt->num_rows;
+				while ($row = $result->fetch_assoc()) {
+					$data[] = $row;
+				}
+				$stmt->close();
+			}
+			return $data;
+		}
+
+		public function updateCollabStatus($collab_status, $student_id, $department_id) {
+			$query = "UPDATE accounts SET collaboration_status = ? WHERE id = ? AND department_id = ?";
+
+			if($stmt = $this->conn->prepare($query)) {
+				$stmt->bind_param('iii', $collab_status, $student_id, $department_id);
+				$stmt->execute();
+				$stmt->close();
+
+				//echo "<script>alert('Student has been removed!');window.open('collaboration-details?id=".$key."','_self');</script>";
+			}
+		}
+
+		public function displayCollaborations($department_id, $account_id, $collab_status) {
+			$data = null;
+			$query = "SELECT a.*, b.* FROM collaboration AS a INNER JOIN accounts AS b ON a.representative_id = b.id WHERE a.department_id = ? AND a.faculty_id = ? AND a.status = ? ORDER BY a.date_added DESC";
+			if ($stmt = $this->conn->prepare($query)) {
+				$stmt->bind_param('iii', $department_id, $account_id, $collab_status);
+				$stmt->execute();
+				$result = $stmt->get_result();
+				$num_of_rows = $stmt->num_rows;
+				while ($row = $result->fetch_assoc()) {
+					$data[] = $row;
+				}
+				$stmt->close();
+			}
+			return $data;
+		}
+
+		public function collaborationArchiveRestore($status, $collab_id, $dep_id) {
+			$query = "UPDATE collaboration SET status = ? WHERE collaboration_id = ? AND department_id = ?";
+
+			if($stmt = $this->conn->prepare($query)) {
+				$stmt->bind_param('iii', $status, $collab_id, $dep_id);
+				$stmt->execute();
+				$stmt->close();
+			}
+		}
+
+		public function updateCollaboration($title, $subject, $grNum, $subjCoor, $techAdv, $panelOne, $panelTwo, $panelThree, $client, $collab_id, $department_id) {
+			$query = "UPDATE collaboration SET title = ?, subject = ?, group_num = ?, subj_coordinator = ?, tech_adv = ?, panel_1 = ?, panel_2 = ?, panel_3 = ?, client = ? WHERE collaboration_id = ? AND department_id = ?";
+
+			if($stmt = $this->conn->prepare($query)) {
+				$stmt->bind_param('sssssssssii', $title, $subject, $grNum, $subjCoor, $techAdv, $panelOne, $panelTwo, $panelThree, $client, $collab_id, $department_id);
+				$stmt->execute();
+				$stmt->close();
+			}
+		}
+
+		public function displayCollaborationsDetailsStudents($department_id, $collab_id) {
+			$data = null;
+			$query = "SELECT a.*, b.id FROM collaboration AS a INNER JOIN accounts AS b ON a.representative_id = b.id WHERE a.department_id = ? AND a.collaboration_id = ?";
+			if ($stmt = $this->conn->prepare($query)) {
+				$stmt->bind_param('ii', $department_id, $collab_id);
+				$stmt->execute();
+				$result = $stmt->get_result();
+				$num_of_rows = $stmt->num_rows;
+				while ($row = $result->fetch_assoc()) {
+					$data[] = $row;
+				}
+				$stmt->close();
+			}
+			return $data;
+		}
+
+		public function displayCollaborationsDetails($department_id, $collab_id) {
+			$data = null;
+			$query = "SELECT a.*, b.id FROM collaboration AS a INNER JOIN accounts AS b ON a.representative_id = b.id WHERE a.department_id = ? AND a.collaboration_id = ?";
+			if ($stmt = $this->conn->prepare($query)) {
+				$stmt->bind_param('ii', $department_id, $collab_id);
+				$stmt->execute();
+				$result = $stmt->get_result();
+				$num_of_rows = $stmt->num_rows;
+				while ($row = $result->fetch_assoc()) {
+					$data[] = $row;
+				}
+				$stmt->close();
+			}
+			return $data;
+		}
+
+		public function displayCollaborationsMembers($department_id, $collab_id, $collab_status) {
+			$data = null;
+			$query = "SELECT * FROM accounts WHERE department_id = ? AND access = 1 AND collaboration_id = ? AND collaboration_status = ? ORDER BY lname ASC";
+			if ($stmt = $this->conn->prepare($query)) {
+				$stmt->bind_param('iii', $department_id, $collab_id, $collab_status);
+				$stmt->execute();
+				$result = $stmt->get_result();
+				$num_of_rows = $stmt->num_rows;
+				while ($row = $result->fetch_assoc()) {
+					$data[] = $row;
+				}
+				$stmt->close();
+			}
+			return $data;
+		}
+
 		public function editBestCapstone($award, $proj_id) {
 			$query = "UPDATE projects SET award = ? WHERE project_id = ?";
 			if($stmt = $this->conn->prepare($query)) {
@@ -377,6 +489,74 @@
 			}
 
 			return $last_id;
+		}
+
+		public function fetchAccountID($email) {
+			$query = "SELECT id, collaboration_id, collaboration_status FROM accounts WHERE email = ? AND access = 1";
+			if($stmt = $this->conn->prepare($query)) {
+				$stmt->bind_param("s", $email);
+				$stmt->execute();
+				$stmt->bind_result($id, $collaboration_id, $collaboration_status);
+				$stmt->store_result();
+				if($stmt->num_rows > 0) {
+					if($stmt->fetch()) {
+						$data = array($id, $collaboration_id, $collaboration_status);
+						return $data;
+					}
+				}
+				else {
+					return false;
+				}
+				$stmt->close();
+			}
+			$this->conn->close();
+		}
+
+		public function fetchCollaborationCode($collab_id, $dep_id) {
+			$query = "SELECT code FROM collaboration WHERE collaboration_id = ? AND department_id = ?";
+			if($stmt = $this->conn->prepare($query)) {
+				$stmt->bind_param("ii", $collab_id, $dep_id);
+				$stmt->execute();
+				$stmt->bind_result($code);
+				$stmt->store_result();
+				if($stmt->num_rows > 0) {
+					if($stmt->fetch()) {
+						return $code;
+					}
+				}
+				else {
+					return false;
+				}
+				$stmt->close();
+			}
+			$this->conn->close();
+		}
+
+		public function createCollaboration($title, $subject, $grNum, $subjCoor, $techAdv, $representative_id, $faculty_id, $department_id, $panelOne, $panelTwo, $panelThree, $client, $code, $status) {
+			$query = "INSERT INTO collaboration (title, subject, group_num, subj_coordinator, tech_adv, representative_id, faculty_id, department_id, panel_1, panel_2, panel_3, client, code, date_added, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+			if($stmt = $this->conn->prepare($query)) {
+				$date = date("Y-m-d H:i:s");
+
+				$stmt->bind_param('sssssiiissssssi', $title, $subject, $grNum, $subjCoor, $techAdv, $representative_id, $faculty_id, $department_id, $panelOne, $panelTwo, $panelThree, $client, $code, $date, $status);
+				$stmt->execute();
+
+				$last_id = $this->conn->insert_id;
+
+				$stmt->close();
+			}
+
+			return $last_id;
+		}
+
+		public function updateAccountCollaboration($collab_id, $co_status, $account_id) {
+			$query = "UPDATE accounts SET collaboration_id = ?, collaboration_status = ? WHERE id = ?";
+
+			if($stmt = $this->conn->prepare($query)) {
+				$stmt->bind_param('ssi', $collab_id, $co_status, $account_id);
+				$stmt->execute();
+				$stmt->close();
+			}
 		}
 
 		public function updateProjectID($project_id, $id) {

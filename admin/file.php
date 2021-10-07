@@ -120,7 +120,7 @@
 									<a href="registered-projects" class="ttr-material-button"><span class="ttr-label" style="color: #BE1630;">IP Registered Capstone Projects</span></a>
 								</li>
 								<li>
-									<a href="pending-projects" class="ttr-material-button"><span class="ttr-label">Pending Capstone Projects</span></a>
+									<a href="pending-projects" class="ttr-material-button"><span class="ttr-label">Pending Capstone Projects (<?php echo $pending_proj; ?>)</span></a>
 								</li>
 								<li>
 									<a href="best-projects" class="ttr-material-button"><span class="ttr-label">Best IT Capstone Projects</span></a>
@@ -133,7 +133,7 @@
 			</div>
 		</div>
 
-		<main class="ttr-wrapper">
+		<main class="ttr-wrapper" style="background-color: #F3F3F3;">
 			<div class="container-fluid">
 				<div class="db-breadcrumb">
 				<h4 class="breadcrumb-title">File Viewer</h4>

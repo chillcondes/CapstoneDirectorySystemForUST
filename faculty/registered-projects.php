@@ -115,7 +115,7 @@
 				</nav>
 			</div>
 		</div>
-		<main class="ttr-wrapper">
+		<main class="ttr-wrapper" style="background-color: #F3F3F3;">
 			<div class="container-fluid">
 				<div class="db-breadcrumb">
 					<h4 class="breadcrumb-title">Capstone Projects</h4>
@@ -147,35 +147,43 @@
 									<table id="table" class="table table-bordered hover" style="width:100%">
 										<thead>
 											<tr>
-												<th width="100">Action</th>
-												<th>IP Reg. Num.</th>
+												<th width="50">Action</th>
+												<th width="120">IP Reg. Num.</th>
 												<th>Capstone Title</th>
+												<th>Tech. Adviser</th>
 												<th>Specialization</th>
-												<th>Year Published</th>
+												<th>Year</th>
 											</tr>
 										</thead>
 										<tbody>
 											<?php
 
-											$proj_status =1;
-											$rows = $model->displayProjects($department_id, $proj_status);;
+											$proj_status = 1;
+											$rows = $model->displayProjects($department_id, $proj_status);
 
 											if (!empty($rows)) {
 												foreach ($rows as $row) {
+													$project_id = $row['project_id'];
+													$ipReg = $row['ip_reg'];
+													$title = $row['title'];
+													$year = $row['year'];
+													$category = $row['category'];
+													$tech_adv = $row['tech_adv'];
 											?>
 											<tr>
 												<td>
-													<a href="" class="btn blue" style="width: 95px; height: 37px;"><i class="ti-search" style="font-size: 12px;"></i><span>&nbsp;View</span></a>&nbsp;
+													<a href="project-details?id=<?php echo $project_id; ?>&spec=<?php echo $category; ?>" class="btn blue" style="width: 95px; height: 37px;"><i class="ti-search" style="font-size: 12px;"></i><span>&nbsp;View</span></a>
 												</td>
-												<td>1234567-7897123</td>
-												<td>Capstone Project Directory System for IT Department</td>
-												<td>Network and Security</td>
-												<td>2019</td>
+												<td><?php echo $ipReg; ?></td>
+												<td><?php echo strtoupper($title); ?></td>
+												<td><?php echo strtoupper($tech_adv); ?></td>
+												<td><?php echo strtoupper($category); ?></td>
+												<td><?php echo $year; ?></td>
 											</tr>
 											<?php
-
 												}
 											}
+
 											?>
 										</tbody>
 									</table>

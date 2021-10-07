@@ -1,3 +1,33 @@
+				<?php
+
+				$model = new Model();
+				$rows = $model->count_widget($_SESSION['sess']);
+				if (!empty($rows)) {
+					foreach ($rows as $row) {
+						$faculty = $row['faculty'];
+						$students = $row['students'];
+					}
+			  	}
+
+			  	$rows = $model->count_capstone($_SESSION['sess']);
+				if (!empty($rows)) {
+					foreach ($rows as $row) {
+						$registered_proj = $row['registered_proj'];
+						$pending_proj = $row['pending_proj'];
+						$rejected_proj = $row['rejected_proj'];
+					}
+			  	}
+
+			  	$rows = $model->count_archive($_SESSION['sess']);
+				if (!empty($rows)) {
+					foreach ($rows as $row) {
+						$a_faculty = $row['faculty'];
+						$a_students = $row['students'];
+					}
+			  	}
+
+				?>
+
 				<div class="ttr-sidebar-logo" style="background-image: url('../assets/images/background.png');background-position: center;background-repeat: no-repeat;background-size: cover;height: 135px;">
 					<div class="ttr-sidebar-toggle-button">
 						<i class="ti-arrow-left"></i>

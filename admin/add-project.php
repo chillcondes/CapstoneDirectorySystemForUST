@@ -102,7 +102,7 @@
 									<a href="registered-projects" class="ttr-material-button"><span class="ttr-label">IP Registered Capstone Projects</span></a>
 								</li>
 								<li>
-									<a href="pending-projects" class="ttr-material-button"><span class="ttr-label">Pending Capstone Projects</span></a>
+									<a href="pending-projects" class="ttr-material-button"><span class="ttr-label">Pending Capstone Projects (<?php echo $pending_proj; ?>)</span></a>
 								</li>
 								<li>
 									<a href="best-projects" class="ttr-material-button"><span class="ttr-label">Best IT Capstone Projects</span></a>
@@ -214,13 +214,13 @@
 										<div class="form-group col-12">
 											<label class="col-form-label">AVP: <span style="color: red;">*</span></label>
 											<div>
-												<input class="form-control" name="avp" style="padding: 0px; border-width: 0px;" type="file" required>
+												<input class="form-control" name="avp" style="padding: 0px; border-width: 0px;" accept="video/mp4" type="file" required>
 											</div>
 										</div>
 										<div class="form-group col-12">
 											<label class="col-form-label">Source Code: <span style="color: red;">*</span></label>
 											<div>
-												<input class="form-control" name="source-code" style="padding: 0px; border-width: 0px;" type="file" required>
+												<input class="form-control" name="source-code" style="padding: 0px; border-width: 0px;" accept=".zip" type="file" required>
 											</div>
 										</div>
 										<div class="form-group col-12">
@@ -245,6 +245,8 @@
 									if (isset($_POST['submit'])) {
 										$firstPath = '../directory/full-document/';
 										$secondPath = '../directory/conference-paper/';
+										$thirdPath = '../directory/avp/';
+										$fourthPath = '../directory/source-code/';
 										$fifthPath = '../directory/approval-form/';
 
 										$firstUnique = time().uniqid(rand());
@@ -256,6 +258,16 @@
 										$secondDest = $secondPath . $secondUnique . '.pdf';
 										$secondBase = basename($_FILES["con-paper"]["name"]);
 										$secondType = strtolower(pathinfo($secondPath . $secondBase, PATHINFO_EXTENSION));
+										
+										$thirdUnique = time().uniqid(rand());
+										$thirdDest = $thirdPath . $thirdUnique . '.mp4';
+										$thirdBase = basename($_FILES["avp"]["name"]);
+										$thirdType = strtolower(pathinfo($thirdPath . $thirdBase, PATHINFO_EXTENSION));
+										
+										$fourthUnique = time().uniqid(rand());
+										$fourthDest = $fourthPath . $fourthUnique . '.zip';
+										$fourthBase = basename($_FILES["source-code"]["name"]);
+										$fourthType = strtolower(pathinfo($fourthPath . $fourthBase, PATHINFO_EXTENSION));
 
 										$fifthUnique = time().uniqid(rand());
 										$fifthDest = $fifthPath . $fifthUnique . '.pdf';
@@ -269,12 +281,14 @@
 										else {
 											$first = $_FILES["full-doc"]["tmp_name"];
 											$second = $_FILES["con-paper"]["tmp_name"];
-											$third = 'N/A';
-											$fourth = 'N/A';
+											$third = $_FILES["avp"]["tmp_name"];
+											$fourth = $_FILES["source-code"]["tmp_name"];
 											$fifth = $_FILES["approval-form"]["tmp_name"];
 
 											move_uploaded_file($first, $firstDest);
 											move_uploaded_file($second, $secondDest);
+											move_uploaded_file($third, $thirdDest);
+											move_uploaded_file($fourth, $fourthDest);
 											move_uploaded_file($fifth, $fifthDest);
 
 											$ipReg = ''.$_POST['reg-1'].'-'.$_POST['reg-2'].'';
@@ -285,7 +299,7 @@
 											$adviser = $_POST['adviser'];
 											$keywords = $_POST['keywords'];
 
-											$model->addCapstoneProject($ipReg, $specialization, $title, $author, $year, $adviser, $firstBase, $firstUnique, $secondBase, $secondUnique, $third, $third, $fourth, $fourth, $fifthBase, $fifthUnique, $keywords, $department_id);
+											$model->addCapstoneProject($ipReg, $specialization, $title, $author, $year, $adviser, $firstBase, $firstUnique, $secondBase, $secondUnique, $thirdBase, $thirdUnique, $fourthBase, $fourthUnique, $fifthBase, $fifthUnique, $keywords, 1, $department_id);
 											echo "<script>;window.open('registered-projects','_self');</script>";
 
 										}

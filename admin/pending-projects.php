@@ -103,7 +103,7 @@
 									<a href="registered-projects" class="ttr-material-button"><span class="ttr-label">IP Registered Capstone Projects</span></a>
 								</li>
 								<li>
-									<a href="pending-projects" class="ttr-material-button"><span class="ttr-label" style="color: #BE1630;">Pending Capstone Projects</span></a>
+									<a href="pending-projects" class="ttr-material-button"><span class="ttr-label" style="color: #BE1630;">Pending Capstone Projects (<?php echo $pending_proj; ?>)</span></a>
 								</li>
 								<li>
 									<a href="best-projects" class="ttr-material-button"><span class="ttr-label">Best IT Capstone Projects</span></a>
@@ -115,7 +115,7 @@
 				</nav>
 			</div>
 		</div>
-		<main class="ttr-wrapper">
+		<main class="ttr-wrapper" style="background-color: #F3F3F3;">
 			<div class="container-fluid">
 				<div class="db-breadcrumb">
 					<h4 class="breadcrumb-title">Capstone Projects Management</h4>
@@ -140,7 +140,7 @@
 							</div>
 							<div class="widget-inner">
 								<div align="right">
-									<a href="add-project" class="btn red radius-xl" style="float: right;background-color: #BE1630;"><i class="ti-harddrives"></i><span>&nbsp;REJECTED CAPSTONE PROJECT</span></a><br>
+									<a href="rejected-projects" class="btn red radius-xl" style="float: right;background-color: #BE1630;"><i class="ti-harddrives"></i><span>&nbsp;REJECTED CAPSTONE PROJECT (<?php echo $rejected_proj; ?>)</span></a><br>
 								</div>
 								<div style="padding: 25px;"></div>
 								<div class="table-responsive">
@@ -148,8 +148,9 @@
 										<thead>
 											<tr>
 												<th width="200">Action</th>
-												<th>IP Reg. Num.</th>
+												<th width="120">IP Reg. Num.</th>
 												<th>Capstone Title</th>
+												<th>Tech. Adviser</th>
 												<th>Specialization</th>
 												<th>Year</th>
 											</tr>
@@ -162,24 +163,159 @@
 
 											if (!empty($rows)) {
 												foreach ($rows as $row) {
+													$proj_id = $row['project_id'];
 													$ipReg = $row['ip_reg'];
 													$title = $row['title'];
 													$spec = $row['spec_id'];
 													$year = $row['year'];
+													$category = $row['category'];
+													$tech_adv = $row['tech_adv'];
+													$date_added = date('M d, Y g:i A', strtotime($row['date_added']));
 											?>
 											<tr>
 												<td>
-													<a href="" class="btn green" style="height: 37px;"><i class="ti-check" style="font-size: 12px;"></i><span>&nbsp;Approve</span></a>&nbsp;
-													<a href="" class="btn red" style="width: 95px; height: 37px;"><i class="ti-close" style="font-size: 12px;"></i><span>&nbsp;Reject</span></a>
+													<a href="" class="btn green" style="height: 37px;" data-toggle="modal" data-target="#approve-<?php echo $proj_id; ?>"><i class="ti-check" style="font-size: 12px;"></i><span>&nbsp;Approve</span></a>&nbsp;
+													<a href="" class="btn red" style="width: 95px; height: 37px;" data-toggle="modal" data-target="#reject-<?php echo $proj_id; ?>"><i class="ti-close" style="font-size: 12px;"></i><span>&nbsp;Reject</span></a>
 												</td>
 												<td><?php echo $ipReg; ?></td>
-												<td><?php echo $title; ?></td>
-												<td><?php echo $spec; ?></td>
+												<td><?php echo strtoupper($title); ?></td>
+												<td><?php echo strtoupper($tech_adv); ?></td>
+												<td><?php echo strtoupper($spec); ?></td>
 												<td><?php echo $year; ?></td>
 											</tr>
+											<div id="approve-<?php echo $proj_id; ?>" class="modal fade" role="dialog">
+												<form class="edit-profile m-b30" method="POST">
+													<div class="modal-dialog modal-lg">
+														<div class="modal-content">
+															<div class="modal-header">
+																<h4 class="modal-title"><img src="../assets/images/icon.png" style="width: 30px; height: 30px;">&nbsp;Approve Project</h4>
+																<button type="button" class="close" data-dismiss="modal">&times;</button>
+															</div>
+															<div class="modal-body">
+																<div class="row">
+																	<div class="form-group col-6">
+																		<label class="col-form-label">IP Reg. Num.</label>
+																		<div>
+																			<input type="hidden" name="capstone_id" value="<?php echo $proj_id; ?>">
+																			<input class="form-control" type="text" name="first_name" value="<?php echo $ipReg;; ?>" disabled>
+																		</div>
+																	</div>
+																	<div class="form-group col-6">
+																		<label class="col-form-label">Course</label>
+																		<div>
+																			<input class="form-control" type="text" value="<?php echo $dpt; ?>" disabled>
+																		</div>
+																	</div>
+																	<div class="form-group col-12">
+																		<label class="col-form-label">Capstone Title</label>
+																		<div>
+																			<input class="form-control" type="text" name="middle_name" value="<?php echo $title; ?>" disabled>
+																		</div>
+																	</div>
+																	<div class="form-group col-6">
+																		<label class="col-form-label">Specialization</label>
+																		<div>
+																			<input class="form-control" type="text" value="<?php echo strtoupper($category); ?>" disabled> 
+																		</div>
+																	</div>
+																	<div class="form-group col-6">
+																		<label class="col-form-label">Year</label>
+																		<div>
+																			<input class="form-control" type="email" value="<?php echo $year; ?>" disabled>
+																		</div>
+																	</div>
+																	<div class="form-group col-12">
+																		<label class="col-form-label">Date Registered</label>
+																		<div>
+																			<input class="form-control" type="text" name="contact" value="<?php echo $date_added; ?>" disabled>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<div class="modal-footer">
+																<input type="submit" class="btn green radius-xl outline" name="approve" value="Approve">
+																<button type="button" class="btn red outline radius-xl" data-dismiss="modal">Close</button>
+															</div>
+														</div>
+													</div>
+												</form>
+											</div>
+
+											<div id="reject-<?php echo $proj_id; ?>" class="modal fade" role="dialog">
+												<form class="edit-profile m-b30" method="POST">
+													<div class="modal-dialog modal-lg">
+														<div class="modal-content">
+															<div class="modal-header">
+																<h4 class="modal-title"><img src="../assets/images/icon.png" style="width: 30px; height: 30px;">&nbsp;Reject Project</h4>
+																<button type="button" class="close" data-dismiss="modal">&times;</button>
+															</div>
+															<div class="modal-body">
+																<div class="row">
+																	<div class="form-group col-6">
+																		<label class="col-form-label">IP Reg. Num.</label>
+																		<div>
+																			<input type="hidden" name="capstone_id" value="<?php echo $proj_id; ?>">
+																			<input class="form-control" type="text" name="first_name" value="<?php echo $ipReg;; ?>" disabled>
+																		</div>
+																	</div>
+																	<div class="form-group col-6">
+																		<label class="col-form-label">Course</label>
+																		<div>
+																			<input class="form-control" type="text" value="<?php echo $dpt; ?>" disabled>
+																		</div>
+																	</div>
+																	<div class="form-group col-12">
+																		<label class="col-form-label">Capstone Title</label>
+																		<div>
+																			<input class="form-control" type="text" name="middle_name" value="<?php echo $title; ?>" disabled>
+																		</div>
+																	</div>
+																	<div class="form-group col-6">
+																		<label class="col-form-label">Specialization</label>
+																		<div>
+																			<input class="form-control" type="text" value="<?php echo strtoupper($category); ?>" disabled> 
+																		</div>
+																	</div>
+																	<div class="form-group col-6">
+																		<label class="col-form-label">Year</label>
+																		<div>
+																			<input class="form-control" type="email" value="<?php echo $year; ?>" disabled>
+																		</div>
+																	</div>
+																	<div class="form-group col-12">
+																		<label class="col-form-label">Date Registered</label>
+																		<div>
+																			<input class="form-control" type="text" name="contact" value="<?php echo $date_added; ?>" disabled>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<div class="modal-footer">
+																<input type="submit" class="btn red radius-xl outline" name="reject" value="Reject">
+																<button type="button" class="btn red outline radius-xl" data-dismiss="modal">Close</button>
+															</div>
+														</div>
+													</div>
+												</form>
+											</div>
 											<?php
 												}
 											}
+
+											if (isset($_POST['approve'])) {
+												$project_id = $_POST['capstone_id'];
+
+												$model->approveProject(1, $project_id);
+												echo "<script>window.open('pending-projects','_self');</script>";
+											}
+
+											if (isset($_POST['reject'])) {
+												$project_id = $_POST['capstone_id'];
+
+												$model->approveProject(3, $project_id);
+												echo "<script>window.open('pending-projects','_self');</script>";
+											}
+
 
 											?>
 										</tbody>

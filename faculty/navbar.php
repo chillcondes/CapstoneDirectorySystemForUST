@@ -20,8 +20,9 @@
 						<a href="#" class="ttr-material-button ttr-submenu-toggle"><span class="ttr-user-avatar"><i class="fa fa-cog fa-spin" style="font-size: 32px;"></i></span></a>
 						<div class="ttr-header-submenu">
 							<ul>
-								<li><a href="index.php">My profile</a></li>
-								<li><a href="logout.php">Logout</a></li>
+								<li><a href="index">My profile</a></li>
+								<li><a href="change-password">Change Password</a></li>
+								<li><a href="logout">Logout</a></li>
 							</ul>
 						</div>
 					</li>
