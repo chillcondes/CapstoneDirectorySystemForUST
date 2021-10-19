@@ -169,6 +169,7 @@
 													$year = $row['year'];
 													$category = $row['category'];
 													$tech_adv = $row['tech_adv'];
+													$keywords = $row['keywords'];
 											?>
 											<tr>
 												<td>
@@ -177,7 +178,7 @@
 												<td><?php echo $ipReg; ?></td>
 												<td><?php echo strtoupper($title); ?></td>
 												<td><?php echo strtoupper($tech_adv); ?></td>
-												<td><?php echo strtoupper($category); ?></td>
+												<td><?php echo strtoupper($category); ?><span style="font-size: 1px;color: white;"><?php echo strtolower($keywords); ?></td>
 												<td><?php echo $year; ?></td>
 											</tr>
 											<?php

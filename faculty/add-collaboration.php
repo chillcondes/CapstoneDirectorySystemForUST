@@ -105,7 +105,7 @@
 									<a href="panel-review" class="ttr-material-button"><span class="ttr-label">Panel Review</span></a>
 								</li>
 								<li>
-									<a href="archived-panel-review" class="ttr-material-button"><span class="ttr-label">Archieved Groups</span></a>
+									<a href="archived-panel-review" class="ttr-material-button"><span class="ttr-label">Archived Groups</span></a>
 								</li>
 							</ul>
 						</li>
@@ -148,61 +148,43 @@
 										<div class="form-group col-12">
 											<label class="col-form-label">Title of Project:</label>
 											<div>
-												<input class="form-control" name="title" type="text" required>
+												<input class="form-control" name="title" minlength="5" maxlength="150"  type="text" required>
 											</div>
 										</div>
 										<div class="form-group col-12">
-											<label class="col-form-label">Subject:</label>
+											<label class="col-form-label">Section:</label>
 											<div>
-												<input class="form-control" name="subject" type="text" required>
+												<input class="form-control" name="subject" minlength="1" maxlength="20" type="text" required>
 											</div>
 										</div>
 										<div class="form-group col-12">
 											<label class="col-form-label">Group Number:</label>
 											<div>
-												<input class="form-control" name="group-number" type="text" required>
+												<input class="form-control" name="group-number" minlength="1" maxlength="20" type="text" required>
 											</div>
 										</div>
 										<div class="form-group col-12">
 											<label class="col-form-label">Subject Coordinator:</label>
 											<div>
-												<input class="form-control" name="subject-coordinator" type="text" required>
+												<input class="form-control" name="subject-coordinator" minlength="5" maxlength="100" type="text" required>
 											</div>
 										</div>
 										<div class="form-group col-12">
 											<label class="col-form-label">Technical Adviser:</label>
 											<div>
-												<input class="form-control" name="technical-adviser" type="text" required>
+												<input class="form-control" name="technical-adviser" minlength="5" maxlength="100" type="text" required>
 											</div>
 										</div>
 										<div class="form-group col-12">
 											<label class="col-form-label">Representative:</label>
 											<div>
-												<input class="form-control" name="representative" type="text" required>
-											</div>
-										</div>
-										<div class="form-group col-12">
-											<label class="col-form-label">Panel 1:</label>
-											<div>
-												<input class="form-control" name="panel-1" type="text" required>
-											</div>
-										</div>
-										<div class="form-group col-12">
-											<label class="col-form-label">Panel 2:</label>
-											<div>
-												<input class="form-control" name="panel-2" type="text" required>
-											</div>
-										</div>
-										<div class="form-group col-12">
-											<label class="col-form-label">Panel 3:</label>
-											<div>
-												<input class="form-control" name="panel-3" type="text" required>
+												<input class="form-control" name="representative" type="text" minlength="5" maxlength="70" required>
 											</div>
 										</div>
 										<div class="form-group col-12">
 											<label class="col-form-label">Client:</label>
 											<div>
-												<input class="form-control" name="client" type="text" required>
+												<input class="form-control" name="client" type="text" minlength="5" maxlength="100" required>
 											</div>
 										</div>
 										<div class="col-12" style="padding-top: 20px;">
@@ -219,11 +201,9 @@
 										$subjCoor = $_POST['subject-coordinator'];
 										$techAdv = $_POST['technical-adviser'];
 										$representative = $_POST['representative'];
-										$panelOne = $_POST['panel-1'];
-										$panelTwo = $_POST['panel-2'];
-										$panelThree = $_POST['panel-3'];
 										$client = $_POST['client'];
 										$code = uniqid();
+										$co_status = 1;
 
 										$representative_id = $model->fetchAccountID($representative);
 										if(empty($representative_id[0])) {
@@ -232,9 +212,9 @@
 
 										else {
 											if ($representative_id[1] == NULL && $representative_id[2] == NULL) {
-												$last_id = $model->createCollaboration($title, $subject, $grNum, $subjCoor, $techAdv, $representative_id[0], $_SESSION['faculty'], $department_id, $panelOne, $panelTwo, $panelThree, $client, $code, 1);
-												$model->updateAccountCollaboration($last_id, 1, $representative_id[0]);
-												echo "<script>alert('Collaboration added!');</script>";
+												$last_id = $model->createCollaboration($title, $subject, $grNum, $subjCoor, $techAdv, $representative_id[0], $_SESSION['faculty'], $department_id, $client, $code, 1);
+												$model->updateAccountCollaboration($last_id, $co_status, $representative_id[0]);
+												echo "<script>window.open('my-panel-review','_self');</script>";
 											}
 
 											else {

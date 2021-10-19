@@ -2,10 +2,23 @@
 											<label class="col-form-label">IP Registration #: <span style="color: red;">*</span></label>
 											<div class="row">
 												<div class="form-group col-6">
-													<input class="form-control" name="reg-1" type="text" required>
+													<?php 
+														$ip_code = $model->fetchIpCode($department_id);
+														$ip_counter = $model->fetchIpCounter();
+
+														if ($ip_counter == false) {
+															$ip_counter = 1;
+															$checker = 0;
+														}
+
+														else {
+															$checker = 1;
+														}
+													?>
+													<input class="form-control" name="reg-1" type="text" value="<?php echo $ip_code; ?>" readonly>
 												</div>
 												<div class="form-group col-6">
-													<input class="form-control" name="reg-2" type="text" required>
+													<input class="form-control" name="reg-2" type="text" value="<?php echo str_pad($ip_counter, 4, "0", STR_PAD_LEFT); ?>" readonly>
 												</div>
 											</div>
 										</div>
@@ -14,7 +27,7 @@
 											<div>
 												<select class="form-control" name="specialization" id="specialization" required>
 													<?php
-														$ca = $model->displaySpecialization($_SESSION['sess']);
+														$ca = $model->displaySpecialization($department_id);
 														if (!empty($ca)) {
 															foreach ($ca as $c) {
 																
@@ -154,6 +167,15 @@
 											$last_id = $model->addCapstoneProject($ipReg, $specialization, $title, $author, $year, $adviser, $firstBase, $firstUnique, $secondBase, $secondUnique, $thirdBase, $thirdUnique, $fourthBase, $fourthUnique, $fifthBase, $fifthUnique, $keywords, 2, $department_id);
 
 											$model->updateProjectID($last_id, $account_id);
+
+											if ($checker == 0) {
+												$model->updateIpCounter();
+												$model->updateIpCounter();
+											}
+
+											elseif ($checker == 1) {
+												$model->updateIpCounter();
+											}
 
 											echo "<script>;window.open('submit-final-requirements','_self');</script>";
 

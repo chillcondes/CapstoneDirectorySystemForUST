@@ -22,6 +22,7 @@
 							<ul>
 								<li><a href="change-password">Change Password</a></li>
 								<li><a href="manage-specialization">Manage Specialization</a></li>
+								<li><a href="manage-ip">Manage IP Registration Num.</a></li>
 								<li><a href="logout">Logout</a></li>
 							</ul>
 						</div>

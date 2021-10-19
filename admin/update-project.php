@@ -119,7 +119,7 @@
 				<div class="db-breadcrumb">
 					<h4 class="breadcrumb-title">Capstone Projects Management</h4>
 					<ul class="db-breadcrumb-list">
-						<li><i class="ti-agenda"></i>Add Capstone Projects</li>
+						<li><i class="ti-harddrives"></i>Edit Capstone Projects</li>
 					</ul>
 				</div>  
 				
@@ -140,7 +140,7 @@
 					<div class="col-lg-12 m-b30">
 						<div class="widget-box">
 							<div class="wc-title">
-								<h4><img src="../assets/images/icon.png" style="width: 30px; height: 30px;">&nbsp;Add Capstone Projects</h4>
+								<h4><img src="../assets/images/icon.png" style="width: 30px; height: 30px;">&nbsp;Edit Capstone Projects</h4>
 							</div>
 							<div class="widget-inner">
 								<form class="edit-profile m-b30" method="POST" enctype="multipart/form-data">
@@ -170,7 +170,7 @@
 											<label class="col-form-label">IP Registration #: <span style="color: red;">*</span></label>
 											<div class="row">
 												<div class="form-group col-12">
-													<input class="form-control" name="ipReg" type="text" value="<?php echo $ipReg; ?>" required>
+													<input class="form-control" name="ipReg" type="text" value="<?php echo $ipReg; ?>" minlength="5" maxlength="40" required>
 												</div>
 											</div>
 										</div>
@@ -183,10 +183,16 @@
 														$ca = $model->displaySpecialization($_SESSION['sess']);
 														if (!empty($ca)) {
 															foreach ($ca as $c) {
-																
+															
+															if ($spec == $c['id']) {
+																echo "";
+															}
+															else {
 													?>
 													<option value="<?php echo $c['id']; ?>"><?php echo $c['category']; ?></option>
 													<?php
+
+															}
 															}
 														}
 
@@ -197,31 +203,31 @@
 										<div class="form-group col-12">
 											<label class="col-form-label">Capstone Title: <span style="color: red;">*</span></label>
 											<div>
-												<input class="form-control" name="title" type="text" minlength="5" maxlength="200" value="<?php echo $title; ?>" required>
+												<input class="form-control" name="title" type="text" minlength="5" maxlength="200" value="<?php echo $title; ?>" minlength="5" maxlength="120" required>
 											</div>
 										</div>
 										<div class="form-group col-12">
 											<label class="col-form-label">Author/s: <span style="color: red;">*</span></label>
 											<div>
-												<input class="form-control" name="author" type="text" minlength="5" maxlength="200" value="<?php echo $authors; ?>" required>
+												<input class="form-control" name="author" type="text" minlength="5" maxlength="200" value="<?php echo $authors; ?>" minlength="5" maxlength="150"  required>
 											</div>
 										</div>
 										<div class="form-group col-6">
 											<label class="col-form-label">Year Published:</label>
 											<div>
-												<input class="form-control" name="year" type="text" minlength="4" maxlength="4"  value="<?php echo $year; ?>" required>
+												<input class="form-control" name="year" type="text" minlength="4" maxlength="4"  value="<?php echo $year; ?>" required minlength="2" maxlength="4" >
 											</div>
 										</div>
 										<div class="form-group col-6">
 											<label class="col-form-label">Technical Adviser: <span style="color: red;">*</span></label>
 											<div>
-												<input class="form-control" name="adviser" type="text" minlength="5" maxlength="100" value="<?php echo $adviser; ?>" required>
+												<input class="form-control" name="adviser" type="text" minlength="5" maxlength="100" value="<?php echo $adviser; ?>" minlength="5" maxlength="50"  required>
 											</div>
 										</div>
 										<div class="form-group col-12">
 											<label class="col-form-label">Keywords: <span style="color: red;">*</span></label>
 											<div>
-												<input class="form-control" name="keywords" type="text" minlength="5" maxlength="200" value="<?php echo $keywords; ?>" required>
+												<input class="form-control" name="keywords" type="text" minlength="5" maxlength="200" value="<?php echo $keywords; ?>" minlength="2" maxlength="100" required>
 											</div>
 										</div>
 										<div class="col-12" style="padding-top: 20px;">

@@ -183,7 +183,7 @@
 											?>
 											<tr>
 												<td>
-													<a href="" class="btn blue" style="width: 95px; height: 37px;"><i class="ti-marker-alt" style="font-size: 12px;"></i><span>&nbsp;Profile</span></a>&nbsp;
+													<a href="account-profile?id=<?php echo $uid; ?>" class="btn blue" style="width: 95px; height: 37px;"><i class="ti-marker-alt" style="font-size: 12px;"></i><span>&nbsp;Profile</span></a>&nbsp;
 													<button type="button" class="btn red" style="width: 95px; height: 37px;" data-toggle="modal" data-target="#archive-<?php echo $uid; ?>"><i class="ti-archive" style="font-size: 12px;"></i><span>&nbsp;Archive</span></button>
 												</td>
 												<td><?php echo $fname." ".$mname." ".$lname; ?></td>

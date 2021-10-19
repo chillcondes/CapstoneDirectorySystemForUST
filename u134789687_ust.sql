@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 28, 2021 at 07:33 AM
+-- Generation Time: Oct 11, 2021 at 10:07 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.9
 
@@ -50,7 +50,7 @@ CREATE TABLE `accounts` (
 --
 
 INSERT INTO `accounts` (`id`, `fname`, `mname`, `lname`, `email`, `contact`, `gender`, `pword`, `access`, `status`, `date_added`, `department_id`, `collaboration_id`, `collaboration_status`, `project_id`) VALUES
-(1, 'Emmer Grace', 'Delos Santos', 'Logronio', 'emmer.logronio@ust.edu.ph', '090900911111', 1, '$2y$10$u4ZAT8iG2hzZHdsCdV1vlOx.ngwX9KlcEIQbcwwY9C4cKJ4PnvcQK', 1, '1', '2021-04-11 16:35:46', 1, '5', '', NULL),
+(1, 'Emmer Grace', 'Delos Santos', 'Logronio', 'emmer.logronio@ust.edu.ph', '090900911111', 1, '$2y$10$u4ZAT8iG2hzZHdsCdV1vlOx.ngwX9KlcEIQbcwwY9C4cKJ4PnvcQK', 1, '1', '2021-04-11 16:35:46', 1, '7', '1', '17'),
 (30, 'Faith Ann', 'De Guzman', 'Vidallo', 'faith.vidallo@ust.edu.ph', '09154123108', 1, '$2y$10$zT2sNvJ2YV3wUkrh7SE03..ckqFajBjp5Nn.yCcxHtJMINdnWWF3W', 1, '1', '2021-02-13 19:38:32', 1, '7', '1', NULL),
 (31, 'Krizzia Mae', 'Padelan', 'Padernal', 'krizzia.padernal@ust.edu.ph', '09225874492', 1, '$2y$10$DssoSOyCnIoXyrXf6X/Y1OlXdfwYCAx0Dcfi86u.cILhxn/4MxBXy', 1, '1', '2021-02-13 19:47:34', 1, '2', '1', NULL),
 (32, 'Ian Paul', 'De Guzman', 'Cantada', 'ian.cantada@ust.edu.ph', '09154123108', 0, '$2y$10$dg1hMnh.yiI5H3rTvp4lEe.oyxHpZMkqCWJilOee6B2pKlwoc0Wi2', 1, '1', '2021-02-13 19:48:19', 1, '2', '1', NULL),
@@ -66,7 +66,12 @@ INSERT INTO `accounts` (`id`, `fname`, `mname`, `lname`, `email`, `contact`, `ge
 (42, 'Paulo', 'Diaz', 'Cruz', 'paulo.cruz@ust.edu.ph', '09365472298', 0, '$2y$10$8c32L5Rgh.5f33NnLQ04kuqAfyMKl8Eku1KS64ltq/eWxFDDHLNWS', 0, '1', '2021-02-13 21:18:06', 1, NULL, NULL, NULL),
 (43, 'Eric John', 'Cruz', 'Mariano', 'eric.mariano@ust.edu.ph', '09775418836', 0, '$2y$10$/s3iK54Ku1UzSgmckHqBc.O3ygBSqWbAsIBspiu0Jn8nBSZQqdLD6', 0, '1', '2021-02-13 21:18:50', 1, NULL, NULL, NULL),
 (44, 'Faculty', 'Middle', 'Last', 'faculty.last@ust.edu.ph', '09528593318', 0, '$2y$10$UMtwa38zvnqZkG42J2F2w.q/3EURv9pEjFxi7W8seUaOIMrwu9U7i', 0, '0', '2021-09-12 21:30:11', 1, NULL, NULL, NULL),
-(45, 'Dwadaw', 'DWA', 'Dwad', 'cheeeezymozzaaarella@ust.edu.ph', '09225407738', 0, '$2y$10$u4ZAT8iG2hzZHdsCdV1vlOx.ngwX9KlcEIQbcwwY9C4cKJ4PnvcQK', 1, '0', '2021-09-12 23:36:27', 1, NULL, NULL, NULL);
+(45, 'Cheezy', 'DWA', 'Sticks', 'cheeeezymozzaaarella@ust.edu.ph', '09225407738', 0, '$2y$10$u4ZAT8iG2hzZHdsCdV1vlOx.ngwX9KlcEIQbcwwY9C4cKJ4PnvcQK', 1, '0', '2021-09-12 23:36:27', 1, '3', '1', NULL),
+(48, 'Ghieann', 'Dwa', 'Vidar', 'vidarghieann@ust.edu.ph', '09225407738', 0, '$2y$10$XTwrq1R4vInvNf8I0z.KR.DudcIcxcSennPPowWQ7Z31Bia4Y7iJO', 1, '1', '2021-10-04 14:24:45', 1, '3', '2', NULL),
+(49, 'Motlu', 'Presnent', 'Patlu', 'vidarghieann.iics@ust.edu.ph', '09154123108', 0, '$2y$10$LCL2zoeiPzZE5jY0xSeDCez2cI7fOq7xcBoR1uDRsua0TNIlkJMki', 1, '1', '2021-10-04 14:45:59', 1, '9', '1', NULL),
+(50, 'Dawdaw', 'Dwad', 'Awdwa', 'cheadezymozzarella.cics@ust.edu.ph', '234234234234', 0, '$2y$10$UXUabP9KVtRVB48dJZirV.6uNDjoEHwEjf2gjs.ZLpAeaVYTKY0i6', 1, '1', '2021-10-04 14:46:46', 1, '', '', '14'),
+(51, 'Jose Maria Edito', 'K.', 'Tirol', 'joseedito.cics@ust.edu.ph', '09154123108', 0, '$2y$10$IWwjkFYtimkUdfzu/okvae05uxuPJsaVoiyc2.xcvZejWGdndbCCi', 1, '1', '2021-10-11 16:06:20', 1, NULL, NULL, NULL),
+(52, 'Jose Maria Edito', 'K.', 'Tirol', 'joseedito@ust.edu.ph', '2025550123', 0, '$2y$10$wHBUU52GTL/pNWlvrJyHP..HIcmB0dwVSvoZoaBHoix2CdQwSliPm', 0, '1', '2021-10-11 16:07:06', 1, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -106,9 +111,6 @@ CREATE TABLE `collaboration` (
   `representative_id` int(11) NOT NULL,
   `faculty_id` int(11) NOT NULL,
   `department_id` int(11) NOT NULL,
-  `panel_1` varchar(50) NOT NULL,
-  `panel_2` varchar(50) NOT NULL,
-  `panel_3` varchar(50) NOT NULL,
   `client` varchar(100) NOT NULL,
   `code` varchar(50) NOT NULL,
   `link` varchar(200) DEFAULT NULL,
@@ -120,11 +122,61 @@ CREATE TABLE `collaboration` (
 -- Dumping data for table `collaboration`
 --
 
-INSERT INTO `collaboration` (`collaboration_id`, `title`, `subject`, `group_num`, `subj_coordinator`, `tech_adv`, `representative_id`, `faculty_id`, `department_id`, `panel_1`, `panel_2`, `panel_3`, `client`, `code`, `link`, `date_added`, `status`) VALUES
-(2, 'BATTERY-INDEPENDENT MOBILE PHONE BOOT-UP CIRCUIT WITH ISOLATED UNIVERSAL BATTERY CHARGERr', 'THESIS', '4', 'KARLO P. MALABANAN', 'RICKY R. TEPORA', 32, 36, 1, 'RONEL E. ASAS', 'GIECEL B. RODERO', 'SHEY B. FAFARDO', 'ACE HARDWARE', '61503e67e4277', NULL, '2021-09-26 17:33:27', 1),
-(3, 'GSM-BASED SENSOR SYSTEM FOR SOLAR DEHYDRATOR IN  MONITORING THE MANGO DRYING PROCESS', 'THESIS', '5', 'GIECEL B. RAMOS', 'EZEKIEL D. GUZMAN', 35, 36, 1, 'ZALDY B. ROXAS', 'ARMAND T. TORRES', 'ANDREA B. MONTALAN', 'MAYNILAD', '615136d2b9609', NULL, '2021-09-27 11:13:22', 1),
-(4, 'dwa', 'dwa', 'dwa', 'dwa', 'daw', 0, 36, 1, 'daw', 'wadaw', 'daw', 'dwa', '61528a3e49a55', NULL, '2021-09-28 11:21:34', 1),
-(7, 'Sluggers snitch 2nd straight softball tourneyyyZZZ', 'sdsdsdsdasd', '31231233', 'DWADAW', 'DWADWA', 30, 36, 1, '1', '2', '3', 'client', '615292913667c', NULL, '2021-09-28 11:57:05', 1);
+INSERT INTO `collaboration` (`collaboration_id`, `title`, `subject`, `group_num`, `subj_coordinator`, `tech_adv`, `representative_id`, `faculty_id`, `department_id`, `client`, `code`, `link`, `date_added`, `status`) VALUES
+(2, 'BATTERY-INDEPENDENT MOBILE PHONE BOOT-UP CIRCUIT WITH ISOLATED UNIVERSAL BATTERY CHARGERr', 'BSIT 4-A', '4', 'KARLO P. MALABANAN', 'RICKY R. TEPORA', 32, 37, 1, 'ACE HARDWARE', '61503e67e4277', 'https://developer.mozilla.org/', '2021-09-26 17:33:27', 1),
+(3, 'GSM-BASED SENSOR SYSTEM FOR SOLAR DEHYDRATOR IN  MONITORING THE MANGO DRYING PROCESS', 'BSIT 4-B', '5', 'GIECEL B. RAMOS', 'EZEKIEL D. GUZMAN', 35, 37, 1, 'MAYNILAD', '615136d2b9609', NULL, '2021-09-27 11:13:22', 1),
+(7, 'Sluggers snitch 2nd straight softball tourneyyyZZZ', 'BSIT 4-C', '31231233', 'DWADAW', 'DWADWA', 30, 36, 1, 'client', '615292913667c', NULL, '2021-09-28 11:57:05', 1),
+(9, 'TITLE', 'SECTION', 'GROUP', 'SUBJ', 'TECH', 49, 36, 1, 'CLIENT', '615b19fc8b7bc', NULL, '2021-10-04 23:13:00', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ip_code`
+--
+
+CREATE TABLE `ip_code` (
+  `id` int(11) NOT NULL,
+  `ip` varchar(100) NOT NULL,
+  `department_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `ip_code`
+--
+
+INSERT INTO `ip_code` (`id`, `ip`, `department_id`) VALUES
+(1, 'CP(IT)2022-2023', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ip_counter`
+--
+
+CREATE TABLE `ip_counter` (
+  `id` int(4) UNSIGNED ZEROFILL NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `panels`
+--
+
+CREATE TABLE `panels` (
+  `id` int(11) NOT NULL,
+  `collaboration_id` varchar(11) NOT NULL,
+  `collaboration_status` varchar(11) NOT NULL,
+  `account_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `panels`
+--
+
+INSERT INTO `panels` (`id`, `collaboration_id`, `collaboration_status`, `account_id`) VALUES
+(7, '3', '1', 36),
+(9, '3', '2', 38);
 
 -- --------------------------------------------------------
 
@@ -162,7 +214,7 @@ CREATE TABLE `projects` (
 --
 
 INSERT INTO `projects` (`project_id`, `ip_reg`, `spec_id`, `title`, `author`, `year`, `tech_adv`, `document`, `document_id`, `conference`, `conference_id`, `avp`, `avp_id`, `code`, `code_id`, `approval`, `approval_id`, `keywords`, `award`, `status`, `department_id`, `date_added`) VALUES
-(3, '223-456', 3, 'BATTERY-INDEPENDENT MOBILE PHONE BOOT-UP CIRCUIT WITH  ISOLATED UNIVERSAL BATTERY CHARGER', 'Ana Liza R. Publico, Dennis Llander D. Vidar, Ian Paul D. Cantada', '2020', 'MRS. SOCORRO M. ESPAÑOLA', 'Group-7-Final-Document.pdf', '16313557981286070606613c83969e70c', 'August Bill.pdf', '1631355798745042145613c83969e71b', 'N/A', 'N/A', 'N/A', 'N/A', 'Group-7-Final-Document.pdf', '16313557981906215361613c83969e721', 'yea', 1, 1, 1, '2021-09-11 18:23:18'),
+(3, '223-456', 3, 'BATTERY-INDEPENDENT MOBILE PHONE BOOT-UP CIRCUIT WITH  ISOLATED UNIVERSAL BATTERY CHARGER', 'Ana Liza R. Publico, Dennis Llander D. Vidar, Ian Paul D. Cantada', '2020', 'MRS. SOCORRO M. ESPAÑOLA', 'Group-7-Final-Document.pdf', '16313557981286070606613c83969e70c', 'August Bill.pdf', '1631355798745042145613c83969e71b', 'N/A', 'N/A', 'N/A', 'N/A', 'Group-7-Final-Document.pdf', '16313557981906215361613c83969e721', 'yea', 1, 2, 1, '2021-09-11 18:23:18'),
 (4, '123124-12312321', 3, 'GSM-BASED SENSOR SYSTEM FOR SOLAR DEHYDRATOR IN  MONITORING THE MANGO DRYING PROCESS', 'Krizzia Mae V. Padernal, Geneveve C. Dumlao, Ezekiel P. Laresma', '2020', 'tech adv', 'demo cert.pdf', '1631421294246920551613d836eb81df', 'demo cert 2.pdf', '1631421294311615782613d836eb81e9', 'N/A', 'N/A', 'N/A', 'N/A', 'demo cert 2.pdf', '1631421294832814830613d836eb81f0', '12345', 0, 3, 1, '2021-09-12 12:34:54'),
 (5, '123456-12345', 3, 'Job Satisfaction and Employee Turnover Intention', 'Harry D. Lovecraft, Robert E.Howard, Edgar Allan C. Poe', '2021', 'Mr. Karlo P. Malabanan', 'WEEK 4-Health-LAS-(MELC 4-7).pdf', '1631469309374752200613e3efd89b07', 'WEEK 4-Health-LAS-(MELC 4-7).pdf', '16314693091900463842613e3efd89b26', 'N/A', 'N/A', 'N/A', 'N/A', 'WEEK 4-Health-LAS-(MELC 4-7).pdf', '16314693091303463498613e3efd89b2f', 'edwadawdawaw', 0, 3, 1, '2021-09-13 01:55:09'),
 (6, '32432-23423', 2, 'Hotel Reservation and Billing System using C#/MSAccess', 'Nina O. Desales', '2020', 'Ronel E. Asas', 'WEEK 4-Health-LAS-(MELC 4-7).pdf', '1631469549599715748613e3fed13289', 'WEEK 4-Health-LAS-(MELC 4-7).pdf', '16314695491707998578613e3fed13297', 'N/A', 'N/A', 'N/A', 'N/A', 'WEEK 4-Health-LAS-(MELC 4-7).pdf', '1631469549697707049613e3fed1329f', 'keywords', 0, 1, 1, '2021-09-13 01:59:09'),
@@ -172,7 +224,9 @@ INSERT INTO `projects` (`project_id`, `ip_reg`, `spec_id`, `title`, `author`, `y
 (10, '123124-12312321', 3, 'Sluggers snitch 2nd straight softball tourney', 'Nina O. Desales', '2023', 'tech adv', 'WEEK 4-Health-LAS-(MELC 4-7).pdf', '16320390843005470036146f0acecf50', 'WEEK 4-Health-LAS-(MELC 4-7).pdf', '163203908415685422146146f0acecf5d', 'Genshin Impact 2021-09-13 15-56-36_Trim.mp4', '16320390845841461296146f0acecf66', 'Diagnostic Results of Gameloop.zip', '163203908415954004686146f0acecf6f', 'WEEK 4-Health-LAS-(MELC 4-7).pdf', '16320390845267642606146f0acecf77', 'keywords', 0, 1, 1, '2021-09-19 16:11:24'),
 (11, '123124-12312321', 2, 'Sluggers snitch 2nd straight softball tourney', 'Nina O. Desales', '2021', 'MRS. SOCORRO M. ESPAÑOLA', 'WEEK 4-Health-LAS-(MELC 4-7).pdf', '163204025813811298366146f542a0279', 'WEEK 4-Health-LAS-(MELC 4-7).pdf', '16320402586452906586146f542a0287', 'Genshin Impact 2021-09-13 15-56-36_Trim.mp4', '16320402587161141426146f542a0290', 'Diagnostic Results of Gameloop.zip', '163204025818744176836146f542a0299', 'WEEK 4-Health-LAS-(MELC 4-7).pdf', '16320402588254011256146f542a02a1', 'Keywords', 0, 3, 1, '2021-09-19 16:30:58'),
 (12, 'DWADAW-DWADAW', 3, 'DWADAWD', 'DWADAWDAWD', 'DWADAWDA', 'DWADAWDAWDAW', 'demo cert 2.pdf', '163214163318793012206148814151f4b', 'demo cert 2.pdf', '163214163310733908746148814151f63', 'video.mp4', '16321416334185027536148814151f69', 'nicla.zip', '163214163320428366676148814151f6d', 'DEMO Region B1.pdf', '16321416331132359046148814151f71', 'DWADAWAW', 0, 1, 1, '2021-09-20 20:40:33'),
-(13, '123124-12312321', 2, 'Sluggers snitch 2nd straight softball tourney', 'Nina O. DesalesDAW', '2019', 'MRS. SOCORRO M. ESPAÑOLA', 'WEEK 4-Health-LAS-(MELC 4-7).pdf', '163214426145525141661488b8543632', 'WEEK 4-Health-LAS-(MELC 4-7).pdf', '163214426155752049061488b8543643', 'Genshin Impact 2021-09-13 15-56-36_Trim.mp4', '1632144261167810390161488b8543650', 'Diagnostic Results of Gameloop.zip', '1632144261189530607261488b854365d', 'WEEK 4-Health-LAS-(MELC 4-7).pdf', '1632144261149960064861488b8543669', 'edwadawdawaw', 0, 1, 1, '2021-09-20 21:24:21');
+(13, '123', 2, 'Sluggers snitch 2nd straight softball tourney', 'Nina O. DesalesDAW', '2019', 'MRS. SOCORRO M. ESPAÑOLA', 'WEEK 4-Health-LAS-(MELC 4-7).pdf', '163214426145525141661488b8543632', 'WEEK 4-Health-LAS-(MELC 4-7).pdf', '163214426155752049061488b8543643', 'Genshin Impact 2021-09-13 15-56-36_Trim.mp4', '1632144261167810390161488b8543650', 'Diagnostic Results of Gameloop.zip', '1632144261189530607261488b854365d', 'WEEK 4-Health-LAS-(MELC 4-7).pdf', '1632144261149960064861488b8543669', 'edwadawdawaw', 0, 1, 1, '2021-09-20 21:24:21'),
+(14, 'CP(IT)2021-2022-0001', 1, 'Sluggers snitch 2nd straight softball tourney', 'Darwin C. Frias', '2020', 'Mr. Karlo P. Malabanan', 'COORD roadshow.pdf', '163385150628496374461629872166fc', 'COORD roadshow.pdf', '16338515064003167286162987216716', 'tokyo-wonder.mp4', '1633851506236187947616298721671d', 'ffmpeg-4.4-essentials_build.zip', '16338515066866890216162987216722', 'COORD roadshow.pdf', '16338515061466288144616298721672a', 'keywordsssssssssssssssssssssssssss', 0, 2, 1, '2021-10-10 15:38:26'),
+(17, 'CP(IT)2021-2022-0002', 1, 'Sluggers snitch 2nd straight softball tourney', 'Darwin C. Frias', '2020', 'Mr. Karlo P. Malabanan', 'COORD roadshow.pdf', '1633852296148448179561629b88822a3', 'COORD roadshow.pdf', '163385229611349765161629b88822ae', 'tokyo-wonder.mp4', '163385229685605014661629b88822b6', 'ffmpeg-4.4-essentials_build.zip', '1633852296148571516361629b88822bc', 'COORD roadshow.pdf', '163385229689273700061629b88822c4', 'Keywords', 0, 2, 1, '2021-10-10 15:51:36');
 
 -- --------------------------------------------------------
 
@@ -220,6 +274,24 @@ ALTER TABLE `collaboration`
   ADD PRIMARY KEY (`collaboration_id`);
 
 --
+-- Indexes for table `ip_code`
+--
+ALTER TABLE `ip_code`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `ip_counter`
+--
+ALTER TABLE `ip_counter`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `panels`
+--
+ALTER TABLE `panels`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `projects`
 --
 ALTER TABLE `projects`
@@ -239,7 +311,7 @@ ALTER TABLE `specialization`
 -- AUTO_INCREMENT for table `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `admin`
@@ -251,13 +323,31 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `collaboration`
 --
 ALTER TABLE `collaboration`
-  MODIFY `collaboration_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `collaboration_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `ip_code`
+--
+ALTER TABLE `ip_code`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `ip_counter`
+--
+ALTER TABLE `ip_counter`
+  MODIFY `id` int(4) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `panels`
+--
+ALTER TABLE `panels`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `project_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `project_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `specialization`

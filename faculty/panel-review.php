@@ -106,7 +106,7 @@
 									<a href="panel-review" class="ttr-material-button"><span class="ttr-label" style="color: #BE1630;">Panel Review</span></a>
 								</li>
 								<li>
-									<a href="archived-panel-review" class="ttr-material-button"><span class="ttr-label">Archieved Groups</span></a>
+									<a href="archived-panel-review" class="ttr-material-button"><span class="ttr-label">Archived Groups</span></a>
 								</li>
 							</ul>
 						</li>
@@ -140,16 +140,16 @@
 							</div>
 							<div class="widget-inner">
 								<div align="right">
-									<a href="add-collaboration" class="btn green radius-xl" style="float: right;background-color: #BE1630;"><i class="ti-view-grid"></i><span>&nbsp;CREATE GROUP COLLABORATION</span></a><br>
+									<a href="my-panel-review" class="btn green radius-xl" style="float: right;background-color: #BE1630;"><i class="ti-view-grid"></i><span>&nbsp;MY GROUP COLLABORATION</span></a><br>
 								</div>
 								<div style="padding: 25px;"></div>
 								<div class="table-responsive">
 									<table id="table" class="table table-bordered hover" style="width:100%">
 										<thead>
 											<tr>
-												<th width="175">Action</th>
+												<th width="200">Action</th>
 												<th>Title</th>
-												<th width="145">Subj. Coordinator</th>
+												<th width="80">Section</th>
 												<th width="145">Tech. Adviser</th>
 												<th width="145">Representative</th>
 												<th width="125">Date Added</th>
@@ -159,12 +159,13 @@
 											<?php
 
 											$collab_status = 1;
-											$rows = $model->displayCollaborations($department_id, $account_id, $collab_status);
+											$rows = $model->displayAllCollaborations($department_id, $collab_status);
 
 											if (!empty($rows)) {
 												foreach ($rows as $row) {
 													$s_id = $row['id'];
 													$collaboration_id = $row['collaboration_id'];
+													$faculty_id = $row['faculty_id'];
 													$title = $row['title'];
 													$subject = $row['subject'];
 													$group_num = $row['group_num'];
@@ -189,135 +190,219 @@
 													}
 											?>
 											<tr>
-												<td>
-													<a href="collaboration-details?id=<?php echo $collaboration_id; ?>" class="btn blue" style="width: 85px; height: 37px;"><i class="ti-search" style="font-size: 12px;"></i><span>&nbsp;View</span></a>&nbsp;
-													<a href="" data-toggle="modal" data-target="#archive-<?php echo $s_id; ?>" class="btn red" style="width: 95px; height: 37px;"><i class="ti-archive" style="font-size: 12px;"></i><span>&nbsp;Archive</span></a>
-												</td>
+												<td><center>
+													<?php  
+													if ($account_id == $faculty_id) {
+													?>
+													<a href="my-collaboration-details?id=<?php echo $collaboration_id; ?>" class="btn blue" style="width: 85px; height: 37px;"><i class="ti-search" style="font-size: 12px;"></i><span>&nbsp;View</span></a>&nbsp;<a href="edit-collaboration-details?id=<?php echo $collaboration_id; ?>" class="btn green" style="width: 95px; height: 37px;"><i class="ti-marker-alt" style="font-size: 12px;"></i><span>&nbsp;Edit</span></a>
+													<?php
+													}
+													else {
+
+														$data = $model->fetchPanelStatus($collaboration_id, $account_id);
+														if ($data[0] == 1) {
+															$panel_id = $data[1];
+															echo 	'<a href="collaboration-details?id='.$collaboration_id.'" class="btn blue" style="width: 184px; height: 37px;background-color:green;""><i class="ti-control-shuffle" style="font-size: 12px;"></i><span>&nbsp;Approved</span></a>&nbsp;';
+														}
+														else if ($data[0] == 2) {
+															$panel_id = $data[1];
+															echo '<a href="" data-toggle="modal" data-target="#pending-'.$collaboration_id.'" class="btn blue" style="width: 184px; height: 37px;background-color:blue;""><i class="ti-control-shuffle" style="font-size: 12px;"></i><span>&nbsp;Pending</span></a>&nbsp;';
+														}
+														else if ($data[0] == 3) {
+															$panel_id = $data[1];
+															echo '<a href="" data-toggle="modal" data-target="#removed-'.$collaboration_id.'" class="btn blue" style="width: 184px; height: 37px;background-color:red;""><i class="ti-control-shuffle" style="font-size: 12px;"></i><span>&nbsp;Removed</span></a>&nbsp;';
+														}
+														else if ($data[0] == 4) {
+															$panel_id = $data[1];
+															echo '<a href="" data-toggle="modal" data-target="#rejected-'.$collaboration_id.'" class="btn blue" style="width: 184px; height: 37px;background-color:red;""><i class="ti-control-shuffle" style="font-size: 12px;"></i><span>&nbsp;Rejected</span></a>&nbsp;';
+														}
+														else {
+															echo '<a href="" data-toggle="modal" data-target="#join-collab-'.$collaboration_id.'" class="btn blue" style="width: 184px; height: 37px;"><i class="ti-control-shuffle" style="font-size: 12px;"></i><span>&nbsp;Join</span></a>&nbsp';
+														}
+													}
+													?>
+												</center></td>
 												<td><?php echo strtoupper($title); ?></td>
-												<td><?php echo strtoupper($subj_coordinator); ?></td>
+												<td><?php echo strtoupper($subject); ?></td>
 												<td><?php echo strtoupper($tech_adv); ?></td>
-												<td><a href="" data-toggle="modal" data-target="#student-<?php echo $s_id; ?>"><?php echo strtoupper($name); ?></a></td>
+												<td><?php echo strtoupper($name); ?></td>
 												<td style="font-size: 13px;"><?php echo $date_added; ?></td>
 											</tr>
-											<div id="student-<?php echo $s_id; ?>" class="modal fade" role="dialog">
+											<div id="join-collab-<?php echo $collaboration_id; ?>" class="modal fade" role="dialog">
 												<form class="edit-profile m-b30" method="POST">
 													<div class="modal-dialog modal-lg">
 														<div class="modal-content">
 															<div class="modal-header">
-																<h4 class="modal-title"><img src="../assets/images/icon.png" style="width: 30px; height: 30px;">&nbsp;Student Profile</h4>
+																<h4 class="modal-title"><img src="../assets/images/icon.png" style="width: 30px; height: 30px;">&nbsp;Join Collaboration</h4>
 																<button type="button" class="close" data-dismiss="modal">&times;</button>
 															</div>
 															<div class="modal-body">
 																<div class="row">
-																	<div class="form-group col-4">
-																		<label class="col-form-label">First Name</label>
+																	<div class="form-group col-12">
+																		<input type="hidden" name="col_id" value="<?php echo $collaboration_id; ?>">
+																		<label class="col-form-label">Code</label>
 																		<div>
-																			<input type="hidden" name="user_id" value="<?php echo $uid; ?>">
-																			<input class="form-control" type="text" name="first_name" value="<?php echo $fname; ?>" disabled>
-																		</div>
-																	</div>
-																	<div class="form-group col-4">
-																		<label class="col-form-label">Middle Name</label>
-																		<div>
-																			<input class="form-control" type="text" name="middle_name" value="<?php echo $mname; ?>" disabled>
-																		</div>
-																	</div>
-																	<div class="form-group col-4">
-																		<label class="col-form-label">Last Name</label>
-																		<div>
-																			<input class="form-control" type="text" name="last_name" value="<?php echo $lname; ?>" disabled>
-																		</div>
-																	</div>
-																	<div class="form-group col-8">
-																		<label class="col-form-label">Course</label>
-																		<div>
-																			<input class="form-control" type="text" value="<?php echo $dpt; ?>" disabled>
-																		</div>
-																	</div>
-																	<div class="form-group col-4">
-																		<label class="col-form-label">Gender</label>
-																		<div>
-																			<input class="form-control" type="text" value="<?php echo $gender; ?>" disabled> 
-																		</div>
-																	</div>
-																	<div class="form-group col-6">
-																		<label class="col-form-label">Email</label>
-																		<div>
-																			<input class="form-control" type="email" name="email" value="<?php echo $email; ?>" disabled>
-																		</div>
-																	</div>
-																	<div class="form-group col-6">
-																		<label class="col-form-label">Contact</label>
-																		<div>
-																			<input class="form-control" type="text" name="contact" value="<?php echo $contact; ?>" disabled>
+																			<input class="form-control" type="text" name="code" required>
 																		</div>
 																	</div>
 																</div>
 															</div>
 															<div class="modal-footer">
+																<button type="submit" name="join" class="btn green outline radius-xl">Join</button>
 																<button type="button" class="btn red outline radius-xl" data-dismiss="modal">Close</button>
 															</div>
 														</div>
 													</div>
 												</form>
 											</div>
-											<div id="archive-<?php echo $s_id; ?>" class="modal fade" role="dialog">
+											<div id="pending-<?php echo $collaboration_id; ?>" class="modal fade" role="dialog">
 												<form class="edit-profile m-b30" method="POST">
 													<div class="modal-dialog modal-lg">
 														<div class="modal-content">
 															<div class="modal-header">
-																<h4 class="modal-title"><img src="../assets/images/icon.png" style="width: 30px; height: 30px;">&nbsp;Archive Student</h4>
+																<h4 class="modal-title"><img src="../assets/images/icon.png" style="width: 30px; height: 30px;">&nbsp;Pending Request</h4>
 																<button type="button" class="close" data-dismiss="modal">&times;</button>
 															</div>
 															<div class="modal-body">
 																<div class="row">
-																	<div class="form-group col-4">
-																		<label class="col-form-label">First Name</label>
+																	<input class="form-control" type="hidden" name="panel_id" value="<?php echo $panel_id; ?>" readonly> 
+																	<div class="form-group col-12">
+																		<label class="col-form-label">Title</label>
 																		<div>
-																			<input type="hidden" name="collab_id" value="<?php echo $collaboration_id; ?>">
-																			<input class="form-control" type="text" name="first_name" value="<?php echo $fname; ?>" disabled>
-																		</div>
-																	</div>
-																	<div class="form-group col-4">
-																		<label class="col-form-label">Middle Name</label>
-																		<div>
-																			<input class="form-control" type="text" name="middle_name" value="<?php echo $mname; ?>" disabled>
-																		</div>
-																	</div>
-																	<div class="form-group col-4">
-																		<label class="col-form-label">Last Name</label>
-																		<div>
-																			<input class="form-control" type="text" name="last_name" value="<?php echo $lname; ?>" disabled>
-																		</div>
-																	</div>
-																	<div class="form-group col-8">
-																		<label class="col-form-label">Course</label>
-																		<div>
-																			<input class="form-control" type="text" value="<?php echo $dpt; ?>" disabled>
-																		</div>
-																	</div>
-																	<div class="form-group col-4">
-																		<label class="col-form-label">Gender</label>
-																		<div>
-																			<input class="form-control" type="text" value="<?php echo $gender; ?>" disabled> 
+																			<input class="form-control" type="text" name="code" value="<?php echo strtoupper($title); ?>" readonly> 
 																		</div>
 																	</div>
 																	<div class="form-group col-6">
-																		<label class="col-form-label">Email</label>
+																		<label class="col-form-label">Section</label>
 																		<div>
-																			<input class="form-control" type="email" name="email" value="<?php echo $email; ?>" disabled>
+																			<input class="form-control" type="text" name="code" value="<?php echo strtoupper($subject); ?>" readonly> 
 																		</div>
 																	</div>
 																	<div class="form-group col-6">
-																		<label class="col-form-label">Contact</label>
+																		<label class="col-form-label">Technical Adviser</label>
 																		<div>
-																			<input class="form-control" type="text" name="contact" value="<?php echo $contact; ?>" disabled>
+																			<input class="form-control" type="text" name="code" value="<?php echo strtoupper($tech_adv); ?>" readonly> 
+																		</div>
+																	</div>
+																	<div class="form-group col-6">
+																		<label class="col-form-label">Group Representative</label>
+																		<div>
+																			<input class="form-control" type="text" name="code" value="<?php echo strtoupper($name); ?>" readonly> 
+																		</div>
+																	</div>
+																	<div class="form-group col-6">
+																		<label class="col-form-label">Date Created</label>
+																		<div>
+																			<input class="form-control" type="text" name="code" value="<?php echo strtoupper($date_added); ?>" readonly> 
 																		</div>
 																	</div>
 																</div>
 															</div>
 															<div class="modal-footer">
-																<button type="submit" name="archive" class="btn red outline radius-xl" >Archive</button>
+																<button type="submit" name="cancel" class="btn red outline radius-xl">Cancel Request</button>
+																<button type="button" class="btn red outline radius-xl" data-dismiss="modal">Close</button>
+															</div>
+														</div>
+													</div>
+												</form>
+											</div>
+											<div id="removed-<?php echo $collaboration_id; ?>" class="modal fade" role="dialog">
+												<form class="edit-profile m-b30" method="POST">
+													<div class="modal-dialog modal-lg">
+														<div class="modal-content">
+															<div class="modal-header">
+																<h4 class="modal-title"><img src="../assets/images/icon.png" style="width: 30px; height: 30px;">&nbsp;Removed Request</h4>
+																<button type="button" class="close" data-dismiss="modal">&times;</button>
+															</div>
+															<div class="modal-body">
+																<div class="row">
+																	<input class="form-control" type="hidden" name="panel_id" value="<?php echo $panel_id; ?>" readonly> 
+																	<div class="form-group col-12">
+																		<label class="col-form-label">Title</label>
+																		<div>
+																			<input class="form-control" type="text" name="code" value="<?php echo strtoupper($title); ?>" readonly> 
+																		</div>
+																	</div>
+																	<div class="form-group col-6">
+																		<label class="col-form-label">Section</label>
+																		<div>
+																			<input class="form-control" type="text" name="code" value="<?php echo strtoupper($subject); ?>" readonly> 
+																		</div>
+																	</div>
+																	<div class="form-group col-6">
+																		<label class="col-form-label">Technical Adviser</label>
+																		<div>
+																			<input class="form-control" type="text" name="code" value="<?php echo strtoupper($tech_adv); ?>" readonly> 
+																		</div>
+																	</div>
+																	<div class="form-group col-6">
+																		<label class="col-form-label">Group Representative</label>
+																		<div>
+																			<input class="form-control" type="text" name="code" value="<?php echo strtoupper($name); ?>" readonly> 
+																		</div>
+																	</div>
+																	<div class="form-group col-6">
+																		<label class="col-form-label">Date Created</label>
+																		<div>
+																			<input class="form-control" type="text" name="code" value="<?php echo strtoupper($date_added); ?>" readonly> 
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<div class="modal-footer">
+																<button type="submit" name="cancel" class="btn red outline radius-xl">Cancel Request</button>
+																<button type="button" class="btn red outline radius-xl" data-dismiss="modal">Close</button>
+															</div>
+														</div>
+													</div>
+												</form>
+											</div>
+											<div id="rejected-<?php echo $collaboration_id; ?>" class="modal fade" role="dialog">
+												<form class="edit-profile m-b30" method="POST">
+													<div class="modal-dialog modal-lg">
+														<div class="modal-content">
+															<div class="modal-header">
+																<h4 class="modal-title"><img src="../assets/images/icon.png" style="width: 30px; height: 30px;">&nbsp;Rejected Request</h4>
+																<button type="button" class="close" data-dismiss="modal">&times;</button>
+															</div>
+															<div class="modal-body">
+																<div class="row">
+																	<input class="form-control" type="hidden" name="panel_id" value="<?php echo $panel_id; ?>" readonly> 
+																	<div class="form-group col-12">
+
+																		<label class="col-form-label">Title</label>
+																		<div>
+																			<input class="form-control" type="text" name="code" value="<?php echo strtoupper($title); ?>" readonly> 
+																		</div>
+																	</div>
+																	<div class="form-group col-6">
+																		<label class="col-form-label">Section</label>
+																		<div>
+																			<input class="form-control" type="text" name="code" value="<?php echo strtoupper($subject); ?>" readonly> 
+																		</div>
+																	</div>
+																	<div class="form-group col-6">
+																		<label class="col-form-label">Technical Adviser</label>
+																		<div>
+																			<input class="form-control" type="text" name="code" value="<?php echo strtoupper($tech_adv); ?>" readonly> 
+																		</div>
+																	</div>
+																	<div class="form-group col-6">
+																		<label class="col-form-label">Group Representative</label>
+																		<div>
+																			<input class="form-control" type="text" name="code" value="<?php echo strtoupper($name); ?>" readonly> 
+																		</div>
+																	</div>
+																	<div class="form-group col-6">
+																		<label class="col-form-label">Date Created</label>
+																		<div>
+																			<input class="form-control" type="text" name="code" value="<?php echo strtoupper($date_added); ?>" readonly> 
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<div class="modal-footer">
+																<button type="submit" name="cancel" class="btn red outline radius-xl">Cancel Request</button>
 																<button type="button" class="btn red outline radius-xl" data-dismiss="modal">Close</button>
 															</div>
 														</div>
@@ -326,13 +411,32 @@
 											</div>
 											<?php
 
+												}
+													if (isset($_POST['cancel'])) {
+														$model->cancelRequest($_POST['panel_id']);
+
+														echo "<script>window.open('panel-review','_self');</script>";
+													}
+
 													if (isset($_POST['archive'])) {
 														$model->collaborationArchiveRestore(0, $_POST['collab_id'], $department_id);
 
 														echo "<script>window.open('panel-review','_self');</script>";
 													}
 
-												}
+													if (isset($_POST['join'])) {
+														$code = $model->fetchCollaborationCode($_POST['col_id'], $department_id);
+
+														if ($code == $_POST['code']) {
+															$co_status = 2;
+															$model->requestPanel($_POST['col_id'], $co_status, $account_id);
+															echo "<script>window.open('panel-review','_self');</script>";
+														}
+
+														else {
+															echo "<script>alert('Wrong code!')</script>";
+														}
+													}
 											}
 
 											?>

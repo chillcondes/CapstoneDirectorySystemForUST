@@ -106,7 +106,7 @@
 									<a href="panel-review" class="ttr-material-button"><span class="ttr-label">Panel Review</span></a>
 								</li>
 								<li>
-									<a href="archived-panel-review" class="ttr-material-button"><span class="ttr-label" style="color: #BE1630;">Archieved Groups</span></a>
+									<a href="archived-panel-review" class="ttr-material-button"><span class="ttr-label" style="color: #BE1630;">Archived Groups</span></a>
 								</li>
 							</ul>
 						</li>
@@ -146,10 +146,9 @@
 											<tr>
 												<th width="200">Action</th>
 												<th>Title</th>
-												<th>Subj. Coordinator</th>
-												<th>Tech. Adviser</th>
-												<th>Representative</th>
-												<th>Client</th>
+												<th width="120">Section</th>
+												<th width="145">Tech. Adviser</th>
+												<th width="145">Representative</th>
 												<th width="125">Date Added</th>
 											</tr>
 										</thead>
@@ -192,10 +191,9 @@
 													<a href="" data-toggle="modal" data-target="#restore-<?php echo $s_id; ?>" class="btn green" style="width: 105px; height: 37px;"><i class="ti-back-left" style="font-size: 12px;"></i><span>&nbsp;Restore</span></a>
 												</td>
 												<td><?php echo strtoupper($title); ?></td>
-												<td><?php echo strtoupper($subj_coordinator); ?></td>
+												<td><?php echo strtoupper($subject); ?></td>
 												<td><?php echo strtoupper($tech_adv); ?></td>
-												<td><a href="" data-toggle="modal" data-target="#student-<?php echo $s_id; ?>"><?php echo strtoupper($name); ?></a></td>
-												<td><?php echo strtoupper($client); ?></td>
+												<td><?php echo strtoupper($name); ?></td>
 												<td style="font-size: 13px;"><?php echo $date_added; ?></td>
 											</tr>
 											<div id="student-<?php echo $s_id; ?>" class="modal fade" role="dialog">

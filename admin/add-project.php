@@ -147,14 +147,7 @@
 									<div class="row">
 										<div class="form-group col-6">
 											<label class="col-form-label">IP Registration #: <span style="color: red;">*</span></label>
-											<div class="row">
-												<div class="form-group col-6">
-													<input class="form-control" name="reg-1" type="text" required>
-												</div>
-												<div class="form-group col-6">
-													<input class="form-control" name="reg-2" type="text" required>
-												</div>
-											</div>
+											<input class="form-control" name="reg-1" type="text" required>
 										</div>
 										<div class="form-group col-6">
 											<label class="col-form-label">Specialization</label>
@@ -184,19 +177,19 @@
 										<div class="form-group col-12">
 											<label class="col-form-label">Author/s: <span style="color: red;">*</span></label>
 											<div>
-												<input class="form-control" name="author" type="text" required>
+												<input class="form-control" name="author" type="text" minlength="5" maxlength="150" required>
 											</div>
 										</div>
 										<div class="form-group col-6">
 											<label class="col-form-label">Year Published:</label>
 											<div>
-												<input class="form-control" name="year" type="text" required>
+												<input class="form-control" name="year" type="text" minlength="2" maxlength="4"  required>
 											</div>
 										</div>
 										<div class="form-group col-6">
 											<label class="col-form-label">Technical Adviser: <span style="color: red;">*</span></label>
 											<div>
-												<input class="form-control" name="adviser" type="text" required>
+												<input class="form-control" name="adviser" type="text" minlength="5" maxlength="50"  required>
 											</div>
 										</div>
 										<div class="form-group col-12">
@@ -232,7 +225,7 @@
 										<div class="form-group col-12">
 											<label class="col-form-label">Keywords: <span style="color: red;">*</span></label>
 											<div>
-												<input class="form-control" name="keywords" type="text" required>
+												<input class="form-control" name="keywords" type="text" minlength="2" maxlength="100"  required>
 											</div>
 										</div>
 										<div class="col-12" style="padding-top: 20px;">
@@ -291,7 +284,7 @@
 											move_uploaded_file($fourth, $fourthDest);
 											move_uploaded_file($fifth, $fifthDest);
 
-											$ipReg = ''.$_POST['reg-1'].'-'.$_POST['reg-2'].'';
+											$ipReg = $_POST['reg-1'];
 											$specialization = $_POST['specialization'];
 											$title = $_POST['title'];
 											$author = $_POST['author'];

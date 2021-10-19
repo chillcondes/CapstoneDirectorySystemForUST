@@ -26,7 +26,7 @@
 
 			?>
 
-			<div class="row">
+<!-- 			<div class="row">
 					<div class="col-md-6 col-lg-3 col-xl-3 col-sm-6 col-6">
 						<div class="widget-card widget-bg2" style="background-image: linear-gradient(to right, #13bed4, #00c5dc, #00c5dc, #95dde6);">	
 							<div class="icon">
@@ -97,4 +97,4 @@
 						</div>
 					</div>
 					
-				</div>
+				</div> -->

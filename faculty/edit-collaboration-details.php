@@ -106,7 +106,7 @@
 									<a href="panel-review" class="ttr-material-button"><span class="ttr-label">Panel Review</span></a>
 								</li>
 								<li>
-									<a href="archived-panel-review" class="ttr-material-button"><span class="ttr-label">Archieved Groups</span></a>
+									<a href="archived-panel-review" class="ttr-material-button"><span class="ttr-label">Archived Groups</span></a>
 								</li>
 							</ul>
 						</li>
@@ -120,7 +120,7 @@
 				<div class="db-breadcrumb">
 					<h4 class="breadcrumb-title">Collaboration Group</h4>
 					<ul class="db-breadcrumb-list">
-						<li><i class="ti-view-grid"></i>Create Group Collaboration</li>
+						<li><i class="ti-view-grid"></i>Edit Group Collaboration Details</li>
 					</ul>
 				</div> 
 				
@@ -141,7 +141,7 @@
 					<div class="col-lg-12 m-b30">
 						<div class="widget-box">
 							<div class="wc-title">
-								<h4><img src="../assets/images/icon.png" style="width: 30px; height: 30px;">&nbsp;Create Group Collaboration</h4>
+								<h4><img src="../assets/images/icon.png" style="width: 30px; height: 30px;">&nbsp;Edit Group Collaboration Details</h4>
 							</div>
 							<div class="widget-inner">
 								<form class="edit-profile m-b30" method="POST">
@@ -156,9 +156,6 @@
 											$subj_coordinator = $row['subj_coordinator'];
 											$tech_adv = $row['tech_adv'];
 											$client = $row['client'];
-											$panel1 = $row['panel_1'];
-											$panel2 = $row['panel_2'];
-											$panel3 = $row['panel_3'];
 											$status = $row['status'];
 											$link = $row['link'];
 											$date_added = date('M. d, Y g:i A', strtotime($row['date_added']));
@@ -176,61 +173,43 @@
 										<div class="form-group col-12">
 											<label class="col-form-label">Title of Project:</label>
 											<div>
-												<input class="form-control" name="title" type="text" value="<?php echo $title; ?>" required>
+												<input class="form-control" name="title" type="text" value="<?php echo strtoupper($title); ?>" minlength="5" maxlength="150" required>
 											</div>
 										</div>
 										<div class="form-group col-12">
-											<label class="col-form-label">Subject:</label>
+											<label class="col-form-label">Section:</label>
 											<div>
-												<input class="form-control" name="subject" type="text" value="<?php echo $subject; ?>" required>
+												<input class="form-control" name="subject" type="text" value="<?php echo strtoupper($subject); ?>" minlength="1" maxlength="20" required>
 											</div>
 										</div>
 										<div class="form-group col-12">
 											<label class="col-form-label">Group Number:</label>
 											<div>
-												<input class="form-control" name="group-number" type="text" value="<?php echo $group_num; ?>" required>
+												<input class="form-control" name="group-number" type="text" value="<?php echo strtoupper($group_num); ?>" minlength="1" maxlength="20" required>
 											</div>
 										</div>
 										<div class="form-group col-12">
 											<label class="col-form-label">Subject Coordinator:</label>
 											<div>
-												<input class="form-control" name="subject-coordinator" type="text" value="<?php echo $subj_coordinator; ?>"  required>
+												<input class="form-control" name="subject-coordinator" type="text" value="<?php echo strtoupper($subj_coordinator); ?>" minlength="5" maxlength="100" required>
 											</div>
 										</div>
 										<div class="form-group col-12">
 											<label class="col-form-label">Technical Adviser:</label>
 											<div>
-												<input class="form-control" name="technical-adviser" type="text" value="<?php echo $tech_adv; ?>" required>
-											</div>
-										</div>
-										<div class="form-group col-12">
-											<label class="col-form-label">Panel 1:</label>
-											<div>
-												<input class="form-control" name="panel-1" type="text" value="<?php echo $panel1; ?>"  required>
-											</div>
-										</div>
-										<div class="form-group col-12">
-											<label class="col-form-label">Panel 2:</label>
-											<div>
-												<input class="form-control" name="panel-2" type="text" value="<?php echo $panel2; ?>" required>
-											</div>
-										</div>
-										<div class="form-group col-12">
-											<label class="col-form-label">Panel 3:</label>
-											<div>
-												<input class="form-control" name="panel-3" type="text" value="<?php echo $panel3; ?>" required>
+												<input class="form-control" name="technical-adviser" type="text" value="<?php echo strtoupper($tech_adv); ?>" minlength="5" maxlength="100" required>
 											</div>
 										</div>
 										<div class="form-group col-12">
 											<label class="col-form-label">Client:</label>
 											<div>
-												<input class="form-control" name="client" type="text" value="<?php echo $client; ?>"  required>
+												<input class="form-control" name="client" type="text" value="<?php echo strtoupper($client); ?>" minlength="5" maxlength="100" required>
 											</div>
 										</div>
 										<div class="form-group col-12">
 											<label class="col-form-label">Link:</label>
 											<div>
-												<input class="form-control" name="link" type="text" value="<?php echo $link; ?>"  required>
+												<input class="form-control" name="link" type="text" value="<?php echo strtoupper($link); ?>"  minlength="1" maxlength="100" required>
 											</div>
 										</div>
 										<div class="col-12" style="padding-top: 20px;">
@@ -246,12 +225,9 @@
 										$grNum = $_POST['group-number'];
 										$subjCoor = $_POST['subject-coordinator'];
 										$techAdv = $_POST['technical-adviser'];
-										$panelOne = $_POST['panel-1'];
-										$panelTwo = $_POST['panel-2'];
-										$panelThree = $_POST['panel-3'];
 										$client = $_POST['client'];
 
-										$model->updateCollaboration($title, $subject, $grNum, $subjCoor, $techAdv, $panelOne, $panelTwo, $panelThree, $client, $collab_id, $department_id);
+										$model->updateCollaboration($title, $subject, $grNum, $subjCoor, $techAdv, $client, $collab_id, $department_id);
 										echo "<script>;window.open('collaboration-details?id=".$collab_id."','_self');</script>";
 									}
 

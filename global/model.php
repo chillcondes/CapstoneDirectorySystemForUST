@@ -124,7 +124,7 @@
 		}
 
 		public function addAccount($fname, $mname, $lname, $email, $cont, $gender, $pword, $access, $status, $date, $course) {
-			$query = "INSERT INTO accounts(fname, mname, lname, email, contact, gender, pword, access, status, date_added, department_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			$query = "INSERT INTO accounts (fname, mname, lname, email, contact, gender, pword, access, status, date_added, department_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			if($stmt = $this->conn->prepare($query)) {
 				$stmt->bind_param('sssssisiisi', $fname, $mname, $lname, $email, $cont, $gender, $pword, $access, $status, $date, $course);
 				$stmt->execute();
@@ -207,7 +207,7 @@
 
 		public function displayAccountProfile($account_id) {
 			$data = null;
-			$query = "SELECT * FROM accounts WHERE id = ? AND status = 1";
+			$query = "SELECT * FROM accounts WHERE id = ?";
 			if($stmt = $this->conn->prepare($query)) {
 				$stmt->bind_param("i", $account_id);
 				$stmt->execute();
@@ -287,7 +287,7 @@
 
 		public function displayAllCollaborations($department_id, $collab_status) {
 			$data = null;
-			$query = "SELECT a.*, b.* FROM collaboration AS a INNER JOIN accounts AS b ON a.representative_id = b.id WHERE a.department_id = ? AND a.status = ? ORDER BY a.date_added DESC";
+			$query = "SELECT a.collaboration_id AS co_id, a.*, b.* FROM collaboration AS a INNER JOIN accounts AS b ON a.representative_id = b.id WHERE a.department_id = ? AND a.status = ? ORDER BY a.date_added DESC";
 			if ($stmt = $this->conn->prepare($query)) {
 				$stmt->bind_param('ii', $department_id, $collab_status);
 				$stmt->execute();
@@ -339,11 +339,21 @@
 			}
 		}
 
-		public function updateCollaboration($title, $subject, $grNum, $subjCoor, $techAdv, $panelOne, $panelTwo, $panelThree, $client, $collab_id, $department_id) {
-			$query = "UPDATE collaboration SET title = ?, subject = ?, group_num = ?, subj_coordinator = ?, tech_adv = ?, panel_1 = ?, panel_2 = ?, panel_3 = ?, client = ? WHERE collaboration_id = ? AND department_id = ?";
+		public function updateCollaboration($title, $subject, $grNum, $subjCoor, $techAdv, $client, $collab_id, $department_id) {
+			$query = "UPDATE collaboration SET title = ?, subject = ?, group_num = ?, subj_coordinator = ?, tech_adv = ?, client = ? WHERE collaboration_id = ? AND department_id = ?";
 
 			if($stmt = $this->conn->prepare($query)) {
-				$stmt->bind_param('sssssssssii', $title, $subject, $grNum, $subjCoor, $techAdv, $panelOne, $panelTwo, $panelThree, $client, $collab_id, $department_id);
+				$stmt->bind_param('ssssssii', $title, $subject, $grNum, $subjCoor, $techAdv, $client, $collab_id, $department_id);
+				$stmt->execute();
+				$stmt->close();
+			}
+		}
+
+		public function updateCollaborationLink($link, $collab_id, $department_id) {
+			$query = "UPDATE collaboration SET link = ? WHERE collaboration_id = ? AND department_id = ?";
+
+			if($stmt = $this->conn->prepare($query)) {
+				$stmt->bind_param('sii', $link, $collab_id, $department_id);
 				$stmt->execute();
 				$stmt->close();
 			}
@@ -395,6 +405,32 @@
 				$stmt->close();
 			}
 			return $data;
+		}
+
+		public function displayCollaborationsPanels($collab_id, $collab_status) {
+			$data = null;
+			$query = "SELECT a.*, b.*, b.id as panel_id FROM accounts AS a INNER JOIN panels AS b ON a.id = b.account_id WHERE b.collaboration_id = ? AND b.collaboration_status = ? ORDER BY a.lname ASC";
+			if ($stmt = $this->conn->prepare($query)) {
+				$stmt->bind_param('ii', $collab_id, $collab_status);
+				$stmt->execute();
+				$result = $stmt->get_result();
+				$num_of_rows = $stmt->num_rows;
+				while ($row = $result->fetch_assoc()) {
+					$data[] = $row;
+				}
+				$stmt->close();
+			}
+			return $data;
+		}
+
+		public function updatePanelStatus($panel_status, $panel_id) {
+			$query = "UPDATE panels SET collaboration_status = ? WHERE id = ?";
+
+			if($stmt = $this->conn->prepare($query)) {
+				$stmt->bind_param('ii', $panel_status, $panel_id);
+				$stmt->execute();
+				$stmt->close();
+			}
 		}
 
 		public function editBestCapstone($award, $proj_id) {
@@ -532,13 +568,13 @@
 			$this->conn->close();
 		}
 
-		public function createCollaboration($title, $subject, $grNum, $subjCoor, $techAdv, $representative_id, $faculty_id, $department_id, $panelOne, $panelTwo, $panelThree, $client, $code, $status) {
-			$query = "INSERT INTO collaboration (title, subject, group_num, subj_coordinator, tech_adv, representative_id, faculty_id, department_id, panel_1, panel_2, panel_3, client, code, date_added, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		public function createCollaboration($title, $subject, $grNum, $subjCoor, $techAdv, $representative_id, $faculty_id, $department_id, $client, $code, $status) {
+			$query = "INSERT INTO collaboration (title, subject, group_num, subj_coordinator, tech_adv, representative_id, faculty_id, department_id, client, code, date_added, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 			if($stmt = $this->conn->prepare($query)) {
 				$date = date("Y-m-d H:i:s");
 
-				$stmt->bind_param('sssssiiissssssi', $title, $subject, $grNum, $subjCoor, $techAdv, $representative_id, $faculty_id, $department_id, $panelOne, $panelTwo, $panelThree, $client, $code, $date, $status);
+				$stmt->bind_param('sssssiiisssi', $title, $subject, $grNum, $subjCoor, $techAdv, $representative_id, $faculty_id, $department_id, $client, $code, $date, $status);
 				$stmt->execute();
 
 				$last_id = $this->conn->insert_id;
@@ -789,6 +825,115 @@
 				$stmt->close();
 			}
 			$this->conn->close();
+		}
+
+		public function requestPanel($collaboration_id, $collaboration_status, $account_id) {
+			$query = "INSERT INTO panels (collaboration_id, collaboration_status, account_id) VALUES (?, ?, ?)";
+			if($stmt = $this->conn->prepare($query)) {
+				$stmt->bind_param('isi', $collaboration_id, $collaboration_status, $account_id);
+				$stmt->execute();
+				$stmt->close();
+			}
+		}
+
+		public function fetchPanelStatus($collab_id, $account_id) {
+			$query = "SELECT collaboration_status, id FROM panels WHERE collaboration_id = ? AND account_id = ?";
+			if($stmt = $this->conn->prepare($query)) {
+				$stmt->bind_param("ii", $collab_id, $account_id);
+				$stmt->execute();
+				$stmt->bind_result($panel_status, $panel_id);
+				$stmt->store_result();
+				if($stmt->num_rows > 0) {
+					if($stmt->fetch()) {
+						$data = [$panel_status, $panel_id];
+
+						return $data;
+					}
+				}
+				else {
+					$data = ['', ''];
+					return $data;
+				}
+				$stmt->close();
+			}
+			$this->conn->close();
+		}
+
+		public function cancelRequest($id) {
+			$query = "DELETE FROM panels WHERE id = ?";
+
+			if($stmt = $this->conn->prepare($query)) {
+				$stmt->bind_param('i', $id);
+				$stmt->execute();
+				$stmt->close();
+			}
+		}
+
+		public function fetchIpCode($department_id) {
+			$query = "SELECT ip FROM ip_code WHERE department_id = ?";
+			if($stmt = $this->conn->prepare($query)) {
+				$stmt->bind_param("i", $department_id);
+				$stmt->execute();
+				$stmt->bind_result($ip_code);
+				$stmt->store_result();
+				if($stmt->num_rows > 0) {
+					if($stmt->fetch()) {
+						return $ip_code;
+					}
+				}
+				else {
+					return false;
+				}
+				$stmt->close();
+			}
+			$this->conn->close();
+		}
+
+		public function fetchIpCounter() {
+			$query = "SELECT id FROM ip_counter ORDER BY id DESC";
+			if($stmt = $this->conn->prepare($query)) {
+				$stmt->execute();
+				$stmt->bind_result($ip_counter);
+				$stmt->store_result();
+				if($stmt->num_rows > 0) {
+					if($stmt->fetch()) {
+						return $ip_counter;
+					}
+				}
+				else {
+					return false;
+				}
+				$stmt->close();
+			}
+			$this->conn->close();
+		}
+
+		public function updateIpCounter() {
+			$query = "INSERT INTO ip_counter (id) VALUES (NULL)";
+
+			if($stmt = $this->conn->prepare($query)) {
+				$stmt->execute();
+				$stmt->close();
+			}
+		}
+
+		public function updateIpCode($ip_code, $department_id) {
+			$query = "UPDATE ip_code SET ip = ? WHERE department_id = ?";
+
+			if($stmt = $this->conn->prepare($query)) {
+				$stmt->bind_param('si', $ip_code, $department_id);
+				$stmt->execute();
+				$stmt->close();
+			}
+		}
+
+		public function resetIpCounter() {
+			$query = "DELETE FROM ip_counter";
+
+			if($stmt = $this->conn->prepare($query)) {
+				$stmt->execute();
+				$stmt->close();
+			}
 		}
 	}
 ?>

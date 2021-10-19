@@ -149,9 +149,9 @@
 											<tr>
 												<th width="80">Action</th>
 												<th>Title</th>
-												<th>Subj. Coordinator</th>
-												<th>Tech. Adviser</th>
-												<th>Representative</th>
+												<th width="120">Section</th>
+												<th width="145">Tech. Adviser</th>
+												<th width="145">Representative</th>
 												<th width="125">Date Added</th>
 											</tr>
 										</thead>
@@ -164,7 +164,7 @@
 											if (!empty($rows)) {
 												foreach ($rows as $row) {
 													$s_id = $row['id'];
-													$collaboration_id = $row['collaboration_id'];
+													$collaboration_id = $row['co_id'];
 													$title = $row['title'];
 													$subject = $row['subject'];
 													$group_num = $row['group_num'];
@@ -190,12 +190,30 @@
 											?>
 											<tr>
 												<td>
-													<a href="collaboration-details?id=<?php echo $collaboration_id; ?>" class="btn blue" style="width: 95px; height: 37px;"><i class="ti-search" style="font-size: 12px;"></i><span>&nbsp;View</span></a>&nbsp;
+													<?php  
+
+														if (empty($co_id)) { 
+
+													?>
+													<a href="" data-toggle="modal" data-target="#join-collab-<?php echo $collaboration_id; ?>" class="btn blue" style="width: 95px; height: 37px;"><i class="ti-control-shuffle" style="font-size: 12px;"></i><span>&nbsp;Join</span></a>
+													<?php 
+
+														} 
+
+														else {
+
+													?>
+													<button type="button" class="btn blue" style="width: 95px; height: 37px;" disabled><i class="ti-control-shuffle" style="font-size: 12px;"></i><span>&nbsp;Join</span></button>&nbsp;
+													<?php 
+
+														} 
+
+													?>
 												</td>
 												<td><?php echo strtoupper($title); ?></td>
-												<td><?php echo strtoupper($subj_coordinator); ?></td>
+												<td><?php echo strtoupper($subject); ?></td>
 												<td><?php echo strtoupper($tech_adv); ?></td>
-												<td><a href="" data-toggle="modal" data-target="#student-<?php echo $s_id; ?>"><?php echo strtoupper($name); ?></a></td>
+												<td><?php echo strtoupper($name); ?></td>
 												<td style="font-size: 13px;"><?php echo $date_added; ?></td>
 											</tr>
 											<div id="student-<?php echo $s_id; ?>" class="modal fade" role="dialog">
@@ -260,8 +278,50 @@
 													</div>
 												</form>
 											</div>
+											<div id="join-collab-<?php echo $collaboration_id; ?>" class="modal fade" role="dialog">
+												<form class="edit-profile m-b30" method="POST">
+													<div class="modal-dialog modal-lg">
+														<div class="modal-content">
+															<div class="modal-header">
+																<h4 class="modal-title"><img src="../assets/images/icon.png" style="width: 30px; height: 30px;">&nbsp;Join Collaboration</h4>
+																<button type="button" class="close" data-dismiss="modal">&times;</button>
+															</div>
+															<div class="modal-body">
+																<div class="row">
+																	<div class="form-group col-12">
+																		<input type="hidden" name="col_id" value="<?php echo $collaboration_id; ?>">
+																		<label class="col-form-label">Code</label>
+																		<div>
+																			<input class="form-control" type="text" name="code">
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<div class="modal-footer">
+																<button type="submit" name="join" class="btn green outline radius-xl">Join</button>
+																<button type="button" class="btn red outline radius-xl" data-dismiss="modal">Close</button>
+															</div>
+														</div>
+													</div>
+												</form>
+											</div>
 											<?php
+
 												}
+
+													if (isset($_POST['join'])) {
+														$code = $model->fetchCollaborationCode($_POST['col_id'], $department_id);
+
+														if ($code == $_POST['code']) {
+															$co_status = 2;
+															$model->updateAccountCollaboration($_POST['col_id'], $co_status, $account_id);
+															echo "<script>window.open('my-collaboration-details','_self');</script>";
+														}
+
+														else {
+															echo "<script>alert('Wrong code!')</script>";
+														}
+													}
 											}
 
 											?>

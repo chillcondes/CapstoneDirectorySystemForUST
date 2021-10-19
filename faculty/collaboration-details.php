@@ -152,9 +152,6 @@
 											$subj_coordinator = $row['subj_coordinator'];
 											$tech_adv = $row['tech_adv'];
 											$client = $row['client'];
-											$panel1 = $row['panel_1'];
-											$panel2 = $row['panel_2'];
-											$panel3 = $row['panel_3'];
 											$status = $row['status'];
 											$date_added = date('M. d, Y g:i A', strtotime($row['date_added']));
 											$code = $row['code'];
@@ -173,13 +170,13 @@
 										<div class="col-lg-6">
 											<h3><?php echo strtoupper($title); ?></h3>
 											<span style="text-align: justify;text-justify: inter-word;font-size: 20px;"><b>Code:</b> <?php echo $code; ?></span><hr>
-											<span style="text-align: justify;text-justify: inter-word;font-size: 20px;"><b>Manage Members</b></span><div style="padding: 7px"></div>
+											<span style="text-align: justify;text-justify: inter-word;font-size: 20px;"><b>Student Members</b></span><div style="padding: 7px"></div>
 											<div class="table-responsive">
 												<table class="table table-bordered hover" style="width:100%">
 													<thead>
 														<tr>
 															<th>Name</th>
-															<th width="85">Action</th>
+															<th width="120">Gender</th>
 														</tr>
 													</thead>
 													<tbody>
@@ -207,146 +204,10 @@
 														}
 													?>
 													<tr>
-														<td><a href="" data-toggle="modal" data-target="#student-<?php echo $s_id; ?>"><?php echo strtoupper($name); ?></a></td>
-														<td><center><?php if ($r_id == $s_id) { echo "<span style='font-size: 13px;'><b>LEADER</b></span>"; } else {
-														?><a href="" data-toggle="modal" data-target="#remove-<?php echo $s_id; ?>" class="btn red" style="width: 55px; height: 37px;"><i class="ti-trash" style="font-size: 16px;"></i></a><?php } ?></center></td>
+														<td><?php echo strtoupper($name); ?></td>
+														<td><?php echo strtoupper($gender); ?></td>
 													</tr>
-													<div id="remove-<?php echo $s_id; ?>" class="modal fade" role="dialog">
-														<form class="edit-profile m-b30" method="POST">
-															<div class="modal-dialog modal-lg">
-																<div class="modal-content">
-																	<div class="modal-header">
-																		<h4 class="modal-title"><img src="../assets/images/icon.png" style="width: 30px; height: 30px;">&nbsp;Student Profile</h4>
-																		<button type="button" class="close" data-dismiss="modal">&times;</button>
-																	</div>
-																	<div class="modal-body">
-																		<div class="row">
-																			<div class="form-group col-4">
-																				<label class="col-form-label">First Name</label>
-																				<div>
-																					<input type="hidden" name="user_id" value="<?php echo $s_id; ?>">
-																					<input class="form-control" type="text" name="first_name" value="<?php echo $fname; ?>" disabled>
-																				</div>
-																			</div>
-																			<div class="form-group col-4">
-																				<label class="col-form-label">Middle Name</label>
-																				<div>
-																					<input class="form-control" type="text" name="middle_name" value="<?php echo $mname; ?>" disabled>
-																				</div>
-																			</div>
-																			<div class="form-group col-4">
-																				<label class="col-form-label">Last Name</label>
-																				<div>
-																					<input class="form-control" type="text" name="last_name" value="<?php echo $lname; ?>" disabled>
-																				</div>
-																			</div>
-																			<div class="form-group col-8">
-																				<label class="col-form-label">Course</label>
-																				<div>
-																					<input class="form-control" type="text" value="<?php echo $dpt; ?>" disabled>
-																				</div>
-																			</div>
-																			<div class="form-group col-4">
-																				<label class="col-form-label">Gender</label>
-																				<div>
-																					<input class="form-control" type="text" value="<?php echo $gender; ?>" disabled> 
-																				</div>
-																			</div>
-																			<div class="form-group col-6">
-																				<label class="col-form-label">Email</label>
-																				<div>
-																					<input class="form-control" type="email" name="email" value="<?php echo $email; ?>" disabled>
-																				</div>
-																			</div>
-																			<div class="form-group col-6">
-																				<label class="col-form-label">Contact</label>
-																				<div>
-																					<input class="form-control" type="text" name="contact" value="<?php echo $contact; ?>" disabled>
-																				</div>
-																			</div>
-																		</div>
-																	</div>
-																	<div class="modal-footer">
-																		<button type="submit" name="remove" class="btn red outline radius-xl">Remove</button>
-																		<button type="button" class="btn red outline radius-xl" data-dismiss="modal">Close</button>
-																	</div>
-																</div>
-															</div>
-														</form>
-													</div>
 													<?php 
-
-														if (isset($_POST['remove'])) {
-															$collab_status = 3;
-															$student_id = $_POST['user_id'];
-															$model->updateCollabStatus($collab_status, $student_id, $department_id);
-															echo "<script>alert('Student has been removed!');window.open('collaboration-details?id=".$c_id."','_self');</script>";
-														}
-
-													?>
-													<div id="student-<?php echo $s_id; ?>" class="modal fade" role="dialog">
-														<form class="edit-profile m-b30" method="POST">
-															<div class="modal-dialog modal-lg">
-																<div class="modal-content">
-																	<div class="modal-header">
-																		<h4 class="modal-title"><img src="../assets/images/icon.png" style="width: 30px; height: 30px;">&nbsp;Student Profile</h4>
-																		<button type="button" class="close" data-dismiss="modal">&times;</button>
-																	</div>
-																	<div class="modal-body">
-																		<div class="row">
-																			<div class="form-group col-4">
-																				<label class="col-form-label">First Name</label>
-																				<div>
-																					<!-- <input type="hidden" name="user_id" value="<?php echo $s_id; ?>"> -->
-																					<input class="form-control" type="text" name="first_name" value="<?php echo $fname; ?>" disabled>
-																				</div>
-																			</div>
-																			<div class="form-group col-4">
-																				<label class="col-form-label">Middle Name</label>
-																				<div>
-																					<input class="form-control" type="text" name="middle_name" value="<?php echo $mname; ?>" disabled>
-																				</div>
-																			</div>
-																			<div class="form-group col-4">
-																				<label class="col-form-label">Last Name</label>
-																				<div>
-																					<input class="form-control" type="text" name="last_name" value="<?php echo $lname; ?>" disabled>
-																				</div>
-																			</div>
-																			<div class="form-group col-8">
-																				<label class="col-form-label">Course</label>
-																				<div>
-																					<input class="form-control" type="text" value="<?php echo $dpt; ?>" disabled>
-																				</div>
-																			</div>
-																			<div class="form-group col-4">
-																				<label class="col-form-label">Gender</label>
-																				<div>
-																					<input class="form-control" type="text" value="<?php echo $gender; ?>" disabled> 
-																				</div>
-																			</div>
-																			<div class="form-group col-6">
-																				<label class="col-form-label">Email</label>
-																				<div>
-																					<input class="form-control" type="email" name="email" value="<?php echo $email; ?>" disabled>
-																				</div>
-																			</div>
-																			<div class="form-group col-6">
-																				<label class="col-form-label">Contact</label>
-																				<div>
-																					<input class="form-control" type="text" name="contact" value="<?php echo $contact; ?>" disabled>
-																				</div>
-																			</div>
-																		</div>
-																	</div>
-																	<div class="modal-footer">
-																		<button type="button" class="btn red outline radius-xl" data-dismiss="modal">Close</button>
-																	</div>
-																</div>
-															</div>
-														</form>
-													</div>
-													<?php
 														}
 													}
 
@@ -354,23 +215,24 @@
 													</tbody>
 												</table>
 											</div>
-											<span style="text-align: justify;text-justify: inter-word;font-size: 20px;"><b>Pending Members</b></span><div style="padding: 7px"></div>
+											<hr>
+											<span style="text-align: justify;text-justify: inter-word;font-size: 20px;"><b>Panel Members</b></span><div style="padding: 7px"></div>
 											<div class="table-responsive">
 												<table class="table table-bordered hover" style="width:100%">
 													<thead>
 														<tr>
 															<th>Name</th>
-															<th width="140">Action</th>
+															<th width="120">Gender</th>
 														</tr>
 													</thead>
 													<tbody>
 													<?php
-													$collab_status = 2;
-													$rows = $model->displayCollaborationsMembers($department_id, $c_id, $collab_status);
+													$collab_status = 1;
+													$rows = $model->displayCollaborationsPanels($c_id, $collab_status);
 
 													if (!empty($rows)) {
 														foreach ($rows as $row) {
-															$ss_id = $row['id'];
+															$s_id = $row['id'];
 															$name = $row['fname'] ." ". $row['lname'];
 															$fname = strtoupper($row['fname']);
 															$mname = strtoupper($row['mname']);
@@ -388,214 +250,10 @@
 														}
 													?>
 													<tr>
-														<td><a href="" data-toggle="modal" data-target="#student-<?php echo $ss_id; ?>"><?php echo strtoupper($name); ?></a></td>
-														<td><a href="" data-toggle="modal" data-target="#approve-<?php echo $ss_id; ?>" class="btn green" style="width: 55px; height: 37px;"><i class="ti-check" style="font-size: 16px;"></i></a>&nbsp;<a href="" data-toggle="modal" data-target="#reject-<?php echo $ss_id; ?>" class="btn red" style="width: 55px; height: 37px;"><i class="ti-close" style="font-size: 16px;"></i></a></td>
+														<td><?php echo strtoupper($name); ?></td>
+														<td><?php echo strtoupper($gender); ?></td>
 													</tr>
-													<div id="student-<?php echo $ss_id; ?>" class="modal fade" role="dialog">
-														<form class="edit-profile m-b30" method="POST">
-															<div class="modal-dialog modal-lg">
-																<div class="modal-content">
-																	<div class="modal-header">
-																		<h4 class="modal-title"><img src="../assets/images/icon.png" style="width: 30px; height: 30px;">&nbsp;Student Profile</h4>
-																		<button type="button" class="close" data-dismiss="modal">&times;</button>
-																	</div>
-																	<div class="modal-body">
-																		<div class="row">
-																			<div class="form-group col-4">
-																				<label class="col-form-label">First Name</label>
-																				<div>
-																					<input class="form-control" type="text" name="first_name" value="<?php echo $fname; ?>" disabled>
-																				</div>
-																			</div>
-																			<div class="form-group col-4">
-																				<label class="col-form-label">Middle Name</label>
-																				<div>
-																					<input class="form-control" type="text" name="middle_name" value="<?php echo $mname; ?>" disabled>
-																				</div>
-																			</div>
-																			<div class="form-group col-4">
-																				<label class="col-form-label">Last Name</label>
-																				<div>
-																					<input class="form-control" type="text" name="last_name" value="<?php echo $lname; ?>" disabled>
-																				</div>
-																			</div>
-																			<div class="form-group col-8">
-																				<label class="col-form-label">Course</label>
-																				<div>
-																					<input class="form-control" type="text" value="<?php echo $dpt; ?>" disabled>
-																				</div>
-																			</div>
-																			<div class="form-group col-4">
-																				<label class="col-form-label">Gender</label>
-																				<div>
-																					<input class="form-control" type="text" value="<?php echo $gender; ?>" disabled> 
-																				</div>
-																			</div>
-																			<div class="form-group col-6">
-																				<label class="col-form-label">Email</label>
-																				<div>
-																					<input class="form-control" type="email" name="email" value="<?php echo $email; ?>" disabled>
-																				</div>
-																			</div>
-																			<div class="form-group col-6">
-																				<label class="col-form-label">Contact</label>
-																				<div>
-																					<input class="form-control" type="text" name="contact" value="<?php echo $contact; ?>" disabled>
-																				</div>
-																			</div>
-																		</div>
-																	</div>
-																	<div class="modal-footer">
-																		<button type="button" class="btn red outline radius-xl" data-dismiss="modal">Close</button>
-																	</div>
-																</div>
-															</div>
-														</form>
-													</div>
-
-													<div id="approve-<?php echo $ss_id; ?>" class="modal fade" role="dialog">
-														<form class="edit-profile m-b30" method="POST">
-															<div class="modal-dialog modal-lg">
-																<div class="modal-content">
-																	<div class="modal-header">
-																		<h4 class="modal-title"><img src="../assets/images/icon.png" style="width: 30px; height: 30px;">&nbsp;Approve Request</h4>
-																		<button type="button" class="close" data-dismiss="modal">&times;</button>
-																	</div>
-																	<div class="modal-body">
-																		<div class="row">
-																			<div class="form-group col-4">
-																				<label class="col-form-label">First Name</label>
-																				<div>
-																					<input type="hidden" name="auser_id" value="<?php echo $ss_id; ?>">
-																					<input class="form-control" type="text" name="first_name" value="<?php echo $fname; ?>" disabled>
-																				</div>
-																			</div>
-																			<div class="form-group col-4">
-																				<label class="col-form-label">Middle Name</label>
-																				<div>
-																					<input class="form-control" type="text" name="middle_name" value="<?php echo $mname; ?>" disabled>
-																				</div>
-																			</div>
-																			<div class="form-group col-4">
-																				<label class="col-form-label">Last Name</label>
-																				<div>
-																					<input class="form-control" type="text" name="last_name" value="<?php echo $lname; ?>" disabled>
-																				</div>
-																			</div>
-																			<div class="form-group col-8">
-																				<label class="col-form-label">Course</label>
-																				<div>
-																					<input class="form-control" type="text" value="<?php echo $dpt; ?>" disabled>
-																				</div>
-																			</div>
-																			<div class="form-group col-4">
-																				<label class="col-form-label">Gender</label>
-																				<div>
-																					<input class="form-control" type="text" value="<?php echo $gender; ?>" disabled> 
-																				</div>
-																			</div>
-																			<div class="form-group col-6">
-																				<label class="col-form-label">Email</label>
-																				<div>
-																					<input class="form-control" type="email" name="email" value="<?php echo $email; ?>" disabled>
-																				</div>
-																			</div>
-																			<div class="form-group col-6">
-																				<label class="col-form-label">Contact</label>
-																				<div>
-																					<input class="form-control" type="text" name="contact" value="<?php echo $contact; ?>" disabled>
-																				</div>
-																			</div>
-																		</div>
-																	</div>
-																	<div class="modal-footer">
-																		<button type="submit" name="approve" class="btn green outline radius-xl">Approve</button>
-																		<button type="button" class="btn red outline radius-xl" data-dismiss="modal">Close</button>
-																	</div>
-																</div>
-															</div>
-														</form>
-													</div>
-
-													<div id="reject-<?php echo $ss_id; ?>" class="modal fade" role="dialog">
-														<form class="edit-profile m-b30" method="POST">
-															<div class="modal-dialog modal-lg">
-																<div class="modal-content">
-																	<div class="modal-header">
-																		<h4 class="modal-title"><img src="../assets/images/icon.png" style="width: 30px; height: 30px;">&nbsp;Reject Request</h4>
-																		<button type="button" class="close" data-dismiss="modal">&times;</button>
-																	</div>
-																	<div class="modal-body">
-																		<div class="row">
-																			<div class="form-group col-4">
-																				<label class="col-form-label">First Name</label>
-																				<div>
-																					<input type="hidden" name="ruser_id" value="<?php echo $ss_id; ?>">
-																					<input class="form-control" type="text" name="first_name" value="<?php echo $fname; ?>" disabled>
-																				</div>
-																			</div>
-																			<div class="form-group col-4">
-																				<label class="col-form-label">Middle Name</label>
-																				<div>
-																					<input class="form-control" type="text" name="middle_name" value="<?php echo $mname; ?>" disabled>
-																				</div>
-																			</div>
-																			<div class="form-group col-4">
-																				<label class="col-form-label">Last Name</label>
-																				<div>
-																					<input class="form-control" type="text" name="last_name" value="<?php echo $lname; ?>" disabled>
-																				</div>
-																			</div>
-																			<div class="form-group col-8">
-																				<label class="col-form-label">Course</label>
-																				<div>
-																					<input class="form-control" type="text" value="<?php echo $dpt; ?>" disabled>
-																				</div>
-																			</div>
-																			<div class="form-group col-4">
-																				<label class="col-form-label">Gender</label>
-																				<div>
-																					<input class="form-control" type="text" value="<?php echo $gender; ?>" disabled> 
-																				</div>
-																			</div>
-																			<div class="form-group col-6">
-																				<label class="col-form-label">Email</label>
-																				<div>
-																					<input class="form-control" type="email" name="email" value="<?php echo $email; ?>" disabled>
-																				</div>
-																			</div>
-																			<div class="form-group col-6">
-																				<label class="col-form-label">Contact</label>
-																				<div>
-																					<input class="form-control" type="text" name="contact" value="<?php echo $contact; ?>" disabled>
-																				</div>
-																			</div>
-																		</div>
-																	</div>
-																	<div class="modal-footer">
-																		<button type="submit" name="reject" class="btn red outline radius-xl">Reject</button>
-																		<button type="button" class="btn red outline radius-xl" data-dismiss="modal">Close</button>
-																	</div>
-																</div>
-															</div>
-														</form>
-													</div>
-													<?php
-
-														if (isset($_POST['approve'])) {
-															$collab_status = 1;
-															$student_id = $_POST['auser_id'];
-															$model->updateCollabStatus($collab_status, $student_id, $department_id);
-															echo "<script>alert('Student has been approved!');window.open('collaboration-details?id=".$c_id."','_self');</script>";
-														}
-
-														if (isset($_POST['reject'])) {
-															$collab_status = 4;
-															$student_id = $_POST['ruser_id'];
-															$model->updateCollabStatus($collab_status, $student_id, $department_id);
-															echo "<script>alert('Student has been rejected!');window.open('collaboration-details?id=".$c_id."','_self');</script>";
-														}
-
+													<?php 
 														}
 													}
 
@@ -603,13 +261,15 @@
 													</tbody>
 												</table>
 											</div>
+											<center><h4 style="color: green;">Your request to join the Panel is approved.</h4></center>
+
 										</div>
 										<div class="col-lg-6">
 											<div class="new-user-list">
 												<ul>
 													<li>
 														<span class="new-users-text">
-															<a href="#" class="new-users-name">Subject</a>
+															<a href="#" class="new-users-name">Section</a>
 														</span>
 														<span class="new-users-btn">
 															<?php echo strtoupper($subject); ?>
@@ -639,30 +299,8 @@
 															<?php echo strtoupper($tech_adv); ?>
 														</span>
 													</li>
-													<li>
-														<span class="new-users-text">
-															<a href="#" class="new-users-name">Panel 1</a>
-														</span>
-														<span class="new-users-btn">
-															<?php echo strtoupper($panel1); ?>
-														</span>
-													</li>
-													<li>
-														<span class="new-users-text">
-															<a href="#" class="new-users-name">Panel 2</a>
-														</span>
-														<span class="new-users-btn">
-															<?php echo strtoupper($panel2); ?>
-														</span>
-													</li>
-													<li>
-														<span class="new-users-text">
-															<a href="#" class="new-users-name">Panel 3</a>
-														</span>
-														<span class="new-users-btn">
-															<?php echo strtoupper($panel3); ?>
-														</span>
-													</li>
+
+
 													<li>
 														<span class="new-users-text">
 															<a href="#" class="new-users-name">Client</a>
@@ -691,7 +329,7 @@
 															?></b>
 														</span>
 													</li>
-													<center><a href="edit-collaboration-details?id=<?php echo $c_id; ?>" class="btn blue radius-xl" style="width: 180px;height: 50px;display: flex;align-items: center;justify-content: center;background-color: #B22323;"><i class="ti-marker-alt" style="font-size: 15px;"></i><span style="font-size: 15px;">&nbsp;&nbsp;EDIT DETAILS</span></a></center>
+													<!-- <center><a href="edit-collaboration-details?id=<?php echo $c_id; ?>" class="btn blue radius-xl" style="width: 180px;height: 50px;display: flex;align-items: center;justify-content: center;background-color: #B22323;"><i class="ti-marker-alt" style="font-size: 15px;"></i><span style="font-size: 15px;">&nbsp;&nbsp;EDIT DETAILS</span></a></center> -->
 												</ul>
 											</div>
 										</div>

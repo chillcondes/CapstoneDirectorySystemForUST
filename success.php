@@ -45,8 +45,7 @@ $details_id = isset($_GET['id']) ? $_GET['id'] : '';
 				<div class="account-form-inner">
 					<div class="">
 						<div class="heading-bx left" align="center">
-							<h2><span>
-									You have succesfully registered<br><img src='assets/images/icon.png' style='width: 200px; height: 200px;'><br>An administrator needs to activate<br>your account before you can login.<br>Please check back here for updates.</span>
+							<h2><span>You have succesfully registered<br><img src='assets/images/icon.png' style='width: 200px; height: 200px;'><br></span>
 							<?php
 							if ($details_id == 0) {
 								echo "<p>Log in your account <a href='faculty.php' style='color: #be1630;'>Click here</a></p>";

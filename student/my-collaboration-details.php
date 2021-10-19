@@ -168,9 +168,6 @@
 											$subj_coordinator = $row['subj_coordinator'];
 											$tech_adv = $row['tech_adv'];
 											$client = $row['client'];
-											$panel1 = $row['panel_1'];
-											$panel2 = $row['panel_2'];
-											$panel3 = $row['panel_3'];
 											$status = $row['status'];
 											$date_added = date('M. d, Y g:i A', strtotime($row['date_added']));
 											$code = $row['code'];
@@ -180,7 +177,8 @@
 												$link = "N/A";
 											}
 											else {
-												$link = strtolower($row['link']);
+												$link1 = strtolower($row['link']);
+												$link = "<a href='".$link1."' target='_blank'>".$link1."</a>";
 											}
 										}
 									}
@@ -223,7 +221,7 @@
 														}
 													?>
 													<tr>
-														<td><a href="" data-toggle="modal" data-target="#student-<?php echo $s_id; ?>"><?php echo strtoupper($name); ?></a></td>
+														<td><?php echo strtoupper($name); ?></td>
 														<td><center>
 
 														<?php if ($r_id == $s_id) { echo "<span style='font-size: 13px;'><b>LEADER</b></span>"; } 
@@ -240,67 +238,6 @@
 														</center></td>
 													</tr>
 
-													<div id="student-<?php echo $s_id; ?>" class="modal fade" role="dialog">
-														<form class="edit-profile m-b30" method="POST">
-															<div class="modal-dialog modal-lg">
-																<div class="modal-content">
-																	<div class="modal-header">
-																		<h4 class="modal-title"><img src="../assets/images/icon.png" style="width: 30px; height: 30px;">&nbsp;Student Profile</h4>
-																		<button type="button" class="close" data-dismiss="modal">&times;</button>
-																	</div>
-																	<div class="modal-body">
-																		<div class="row">
-																			<div class="form-group col-4">
-																				<label class="col-form-label">First Name</label>
-																				<div>
-																					<input class="form-control" type="text" name="first_name" value="<?php echo $fname; ?>" disabled>
-																				</div>
-																			</div>
-																			<div class="form-group col-4">
-																				<label class="col-form-label">Middle Name</label>
-																				<div>
-																					<input class="form-control" type="text" name="middle_name" value="<?php echo $mname; ?>" disabled>
-																				</div>
-																			</div>
-																			<div class="form-group col-4">
-																				<label class="col-form-label">Last Name</label>
-																				<div>
-																					<input class="form-control" type="text" name="last_name" value="<?php echo $lname; ?>" disabled>
-																				</div>
-																			</div>
-																			<div class="form-group col-8">
-																				<label class="col-form-label">Course</label>
-																				<div>
-																					<input class="form-control" type="text" value="<?php echo $dpt; ?>" disabled>
-																				</div>
-																			</div>
-																			<div class="form-group col-4">
-																				<label class="col-form-label">Gender</label>
-																				<div>
-																					<input class="form-control" type="text" value="<?php echo $gender; ?>" disabled> 
-																				</div>
-																			</div>
-																			<div class="form-group col-6">
-																				<label class="col-form-label">Email</label>
-																				<div>
-																					<input class="form-control" type="email" name="email" value="<?php echo $email; ?>" disabled>
-																				</div>
-																			</div>
-																			<div class="form-group col-6">
-																				<label class="col-form-label">Contact</label>
-																				<div>
-																					<input class="form-control" type="text" name="contact" value="<?php echo $contact; ?>" disabled>
-																				</div>
-																			</div>
-																		</div>
-																	</div>
-																	<div class="modal-footer">
-																		<button type="button" class="btn red outline radius-xl" data-dismiss="modal">Close</button>
-																	</div>
-																</div>
-															</div>
-														</form>
-													</div>
 													<?php
 														}
 													}
@@ -309,26 +246,53 @@
 													</tbody>
 												</table>
 											</div>
-											<form class="edit-profile m-b30" method="POST">
-											<?php if ($r_id == $account_id) { ?>
-												<center><h4 style='color:green;'>Your are the representative of Group Collaboration.</h4><a href="edit-collaboration-details" class="btn blue radius-xl" style="width: 180px;height: 50px;display: flex;align-items: center;justify-content: center;background-color: #B22323;"><i class="ti-marker-alt" style="font-size: 15px;"></i><span style="font-size: 15px;">&nbsp;&nbsp;EDIT DETAILS</span></a></a></center>
+											<hr>
+											<span style="text-align: justify;text-justify: inter-word;font-size: 20px;"><b>Panel Members</b></span><div style="padding: 7px"></div>
+											<div class="table-responsive">
+												<table class="table table-bordered hover" style="width:100%">
+													<thead>
+														<tr>
+															<th>Name</th>
+															<th width="105">Gender</th>
+														</tr>
+													</thead>
+													<tbody>
+													<?php
+													$collab_status = 1;
+													$rows = $model->displayCollaborationsPanels($c_id, $collab_status);
 
-											<?php } else { if ($co_status == 1) { ?>
-												<center><h4 style='color:green;'>Your request to join the Collaboration Group is approved.</h4></center>
-											<?php } else if ($co_status == 2) { ?>
-												<center><h4 style='color:blue;'>Your request to join the Collaboration Group is pending.</h4><button type="submit" class="btn green radius-xl" name="remove" style="width: 200px;height: 50px;display: flex;align-items: center;justify-content: center;background-color: #B22323;"><i class="ti-control-shuffle" style="font-size: 15px;"></i><span style="font-size: 15px;">&nbsp;&nbsp;CANCEL REQUEST</span></button></center>
-											<?php } else if ($co_status == 3) { ?>
-												<center><h4 style='color:red;'>You have been removed to Collaboration Group.</h4>
-												<button type="submit" class="btn green radius-xl" name="remove" style="width: 320px;height: 50px;display: flex;align-items: center;justify-content: center;background-color: #B22323;"><i class="ti-control-shuffle" style="font-size: 15px;"></i><span style="font-size: 15px;">&nbsp;&nbsp;JOIN NEW COLLABORATION GROUP</span></button></center>
+													if (!empty($rows)) {
+														foreach ($rows as $row) {
+															$s_id = $row['id'];
+															$name = $row['fname'] ." ". $row['lname'];
+															$fname = strtoupper($row['fname']);
+															$mname = strtoupper($row['mname']);
+															$lname = strtoupper($row['lname']);
+															$email = strtolower($row['email']);
+															$contact = $row['contact'];
+															$gender = $row['gender'];
+															switch ($gender) {
+																case 0:
+																	$gender = 'MALE';
+																break;
+																case 1:
+																	$gender = 'FEMALE';
+																break;
+														}
+													?>
+													<tr>
+														<td><?php echo strtoupper($name); ?></td>
+														<td><?php echo strtoupper($gender); ?></td>
+													</tr>
 
-											<?php } else if ($co_status == 4) { ?>
-												<center><h4 style='color:red;'>Your request to join the Collaboration Group is rejected.</h4>
-												<button type="submit" class="btn green radius-xl" name="remove" style="width: 320px;height: 50px;display: flex;align-items: center;justify-content: center;background-color: #B22323;"><i class="ti-control-shuffle" style="font-size: 15px;"></i><span style="font-size: 15px;">&nbsp;&nbsp;JOIN NEW COLLABORATION GROUP</span></button></center>
-											<?php }  else { ?>
-												<center><h4 style='color:red;'>Your request to join the Collaboration Group is rejected.</h4>
-												<button type="submit" class="btn green radius-xl" name="remove" style="width: 320px;height: 50px;display: flex;align-items: center;justify-content: center;background-color: #B22323;"><i class="ti-control-shuffle" style="font-size: 15px;"></i><span style="font-size: 15px;">&nbsp;&nbsp;JOIN NEW COLLABORATION GROUP</span></button></center>
-											<?php } }?> 
-											</form>
+													<?php
+														}
+													}
+
+													?>
+													</tbody>
+												</table>
+											</div>
 											<?php if (isset($_POST['remove'])) {
 												$collab_id = ""; $co_status = "";
 												$model->updateAccountCollaboration($collab_id, $co_status, $account_id);
@@ -340,7 +304,7 @@
 												<ul>
 													<li>
 														<span class="new-users-text">
-															<a href="#" class="new-users-name">Subject</a>
+															<a href="#" class="new-users-name">Section</a>
 														</span>
 														<span class="new-users-btn">
 															<?php echo strtoupper($subject); ?>
@@ -372,30 +336,6 @@
 													</li>
 													<li>
 														<span class="new-users-text">
-															<a href="#" class="new-users-name">Panel 1</a>
-														</span>
-														<span class="new-users-btn">
-															<?php echo strtoupper($panel1); ?>
-														</span>
-													</li>
-													<li>
-														<span class="new-users-text">
-															<a href="#" class="new-users-name">Panel 2</a>
-														</span>
-														<span class="new-users-btn">
-															<?php echo strtoupper($panel2); ?>
-														</span>
-													</li>
-													<li>
-														<span class="new-users-text">
-															<a href="#" class="new-users-name">Panel 3</a>
-														</span>
-														<span class="new-users-btn">
-															<?php echo strtoupper($panel3); ?>
-														</span>
-													</li>
-													<li>
-														<span class="new-users-text">
 															<a href="#" class="new-users-name">Client</a>
 														</span>
 														<span class="new-users-btn">
@@ -422,6 +362,26 @@
 															?></b>
 														</span>
 													</li>
+													<form class="edit-profile m-b30" method="POST">
+											<?php if ($r_id == $account_id) { ?>
+												<center><h4 style='color:green;'>You are the representative of Group Collaboration.</h4><a href="" data-toggle="modal" data-target="#update-link" class="btn blue radius-xl" style="width: 180px;height: 50px;display: flex;align-items: center;justify-content: center;background-color: #B22323;"><i class="ti-marker-alt" style="font-size: 15px;"></i><span style="font-size: 15px;">&nbsp;&nbsp;UPDATE LINK</span></a></a></center>
+
+											<?php } else { if ($co_status == 1) { ?>
+												<center><h4 style='color:green;'>Your request to join the Collaboration Group is approved.</h4></center>
+											<?php } else if ($co_status == 2) { ?>
+												<center><h4 style='color:blue;'>Your request to join the Collaboration Group is pending.</h4><button type="submit" class="btn green radius-xl" name="remove" style="width: 200px;height: 50px;display: flex;align-items: center;justify-content: center;background-color: #B22323;"><i class="ti-control-shuffle" style="font-size: 15px;"></i><span style="font-size: 15px;">&nbsp;&nbsp;CANCEL REQUEST</span></button></center>
+											<?php } else if ($co_status == 3) { ?>
+												<center><h4 style='color:red;'>You have been removed to Collaboration Group.</h4>
+												<button type="submit" class="btn green radius-xl" name="remove" style="width: 320px;height: 50px;display: flex;align-items: center;justify-content: center;background-color: #B22323;"><i class="ti-control-shuffle" style="font-size: 15px;"></i><span style="font-size: 15px;">&nbsp;&nbsp;JOIN NEW COLLABORATION GROUP</span></button></center>
+
+											<?php } else if ($co_status == 4) { ?>
+												<center><h4 style='color:red;'>Your request to join the Collaboration Group is rejected.</h4>
+												<button type="submit" class="btn green radius-xl" name="remove" style="width: 320px;height: 50px;display: flex;align-items: center;justify-content: center;background-color: #B22323;"><i class="ti-control-shuffle" style="font-size: 15px;"></i><span style="font-size: 15px;">&nbsp;&nbsp;JOIN NEW COLLABORATION GROUP</span></button></center>
+											<?php }  else { ?>
+												<center><h4 style='color:red;'>Your request to join the Collaboration Group is rejected.</h4>
+												<button type="submit" class="btn green radius-xl" name="remove" style="width: 320px;height: 50px;display: flex;align-items: center;justify-content: center;background-color: #B22323;"><i class="ti-control-shuffle" style="font-size: 15px;"></i><span style="font-size: 15px;">&nbsp;&nbsp;JOIN NEW COLLABORATION GROUP</span></button></center>
+											<?php } }?> 
+											</form>
 												</ul>
 											</div>
 											<hr>
@@ -438,6 +398,39 @@
 					</div>
 				</div>
 			</div>
+
+													<div id="update-link" class="modal fade" role="dialog">
+														<form class="edit-profile m-b30" method="POST">
+															<div class="modal-dialog modal-lg">
+																<div class="modal-content">
+																	<div class="modal-header">
+																		<h4 class="modal-title"><img src="../assets/images/icon.png" style="width: 30px; height: 30px;">&nbsp;Update Link</h4>
+																		<button type="button" class="close" data-dismiss="modal">&times;</button>
+																	</div>
+																	<div class="modal-body">
+																		<div class="row">
+																			<div class="form-group col-12">
+																				<label class="col-form-label">Link</label>
+																				<div>
+																					<input class="form-control" type="url" name="link" value="<?php echo $link1; ?>" required>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="modal-footer">
+																		<button type="submit" name="update_link" class="btn blue outline radius-xl" >Save</button>
+																		<button type="button" class="btn red outline radius-xl" data-dismiss="modal">Close</button>
+																	</div>
+																</div>
+															</div>
+														</form>
+													</div>
+													<?php
+													if (isset($_POST['update_link'])) {
+														$model->updateCollaborationLink($_POST['link'], $c_id, $department_id);
+														echo "<script>window.open('my-collaboration-details','_self');</script>";
+													}
+													?>
 		</main>
 		<div class="ttr-overlay"></div>
 		<script src="../dashboard/assets/js/jquery.min.js"></script>

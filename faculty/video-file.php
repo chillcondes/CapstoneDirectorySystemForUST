@@ -123,7 +123,7 @@
 									<a href="panel-review" class="ttr-material-button"><span class="ttr-label">Panel Review</span></a>
 								</li>
 								<li>
-									<a href="archived-panel-review" class="ttr-material-button"><span class="ttr-label">Archieved Groups</span></a>
+									<a href="archived-panel-review" class="ttr-material-button"><span class="ttr-label">Archived Groups</span></a>
 								</li>
 							</ul>
 						</li>

@@ -99,7 +99,7 @@
 														<a href="#" class="new-users-name">AVP</a>
 													</span>
 													<span class="new-users-btn">
-														N/A
+														<a href="video-file.php?code=<?php echo $pavpid; ?>&type=avp&title=<?php echo $ptitle; ?>" target="_blank"><u><?php echo $pavp; ?></u></a>
 													</span>
 												</li>
 												<li>
@@ -107,7 +107,7 @@
 														<a href="#" class="new-users-name">Source Code</a>
 													</span>
 													<span class="new-users-btn">
-														N/A
+														<a href="../directory/source-code/<?php echo $pcodeid; ?>.zip" target="_blank"><u><?php echo $pcode; ?></u></a>
 													</span>
 												</li>
 												<li>

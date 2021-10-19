@@ -171,6 +171,7 @@
 													$category = $row['category'];
 													$tech_adv = $row['tech_adv'];
 													$date_added = date('M d, Y g:i A', strtotime($row['date_added']));
+													$keywords = $row['keywords'];
 											?>
 											<tr>
 												<td>
@@ -180,7 +181,7 @@
 												<td><?php echo $ipReg; ?></td>
 												<td><?php echo strtoupper($title); ?></td>
 												<td><?php echo strtoupper($tech_adv); ?></td>
-												<td><?php echo strtoupper($spec); ?></td>
+												<td><?php echo strtoupper($category); ?><span style="font-size: 1px;color: white;"><?php echo strtolower($keywords); ?></td>
 												<td><?php echo $year; ?></td>
 											</tr>
 											<div id="approve-<?php echo $proj_id; ?>" class="modal fade" role="dialog">
